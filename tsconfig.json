@@ -1,0 +1,86 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+    "lib": [
+      "ES2020",
+      "DOM",
+      "DOM.Iterable"
+    ],
+    "module": "ESNext",
+    "skipLibCheck": true,
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+    /* Linting */
+    "strict": true,
+    // "noUnusedLocals": true,
+    // "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitAny": true,
+    //
+    "plugins": [
+      {
+        "name": "typescript-plugin-css-modules"
+      },
+      // {
+      //   "name": "babel-plugin-root-import",
+      //   "options": {
+      //     // "rootPathSuffix": "./",
+      //     "rootPathPrefix": "~/"
+      //   }
+      // }
+    ],
+    //
+    "experimentalDecorators": true,
+    // "emitDecoratorMetadata": true, // <see [ResolveCircularDependenyWhenPlainToClass.spec.ts][ReferenceError: Cannot access 'Photo' before initialization][https://github.com/typestack/class-transformer/issues/1622][https://stackoverflow.com/questions/56870661/angular-7-2-1-es6-class-referenceerror-cannot-access-x-before-initializatio]>
+    //
+    // 
+    // []
+    // {
+    //   "type" : "module",
+    //   "imports": {
+    //     "#root/*.js": "./*.js"
+    //   }
+    // }
+    // <>
+    // https://stackoverflow.com/questions/75806206/how-to-import-javascript-files-in-nodejs-using-file-paths-from-project-root-in
+    // 
+    // []
+    //     "compilerOptions": {
+    //         "baseUrl": ".",
+    //         "paths": {
+    //             "#utils/*": ["./utils/*"],
+    // <>
+    // https://stackoverflow.com/questions/68268894/how-to-get-node-subpath-imports-intellisense-working
+    // doesnt work that well with type infer & .module.css 
+    // 
+    // []
+    // [Here is the Plugin (tested and with a clear README)](https://github.com/michaelzoidl/babel-root-import)
+    // <>
+    // https://stackoverflow.com/questions/29755065/es6-import-from-root
+    // ~~~~// doesnt even work 
+    // "baseUrl": "src",
+    // "baseUrl": ".",
+    // "paths": {
+    //   "#src/*": [
+    //     "./src/*"
+    //   ]
+    // }
+  },
+  "include": [
+    "src",
+    // "./Globals.d.ts"
+  ],
+  "references": [
+    {
+      "path": "./tsconfig.node.json"
+    }
+  ],
+  // 
+  "declarationMap": true
+}
