@@ -1,0 +1,114 @@
+@use "sass:list";
+@use "sass:map";
+@use "sass:string";
+@use "sass:math";
+
+
+@mixin convertScssRuleToCssRule($list_scssRule, $det_Imp: false) {
+  @each $scssRuleMap_curr in $list_scssRule {
+    $sel_curr: map.get($scssRuleMap_curr, "sel");
+    #{$sel_curr} {
+      @each $scssPropName_curr, $scssPropVal_curr in $scssRuleMap_curr {
+        @if ($scssPropName_curr != "sel") {
+          @if ($det_Imp == false) {
+            #{$scssPropName_curr}: #{$scssPropVal_curr};
+          } @else {
+            #{$scssPropName_curr}: #{$scssPropVal_curr} !important;
+          }
+        }
+      }
+    }
+  }
+}
+
+$listSep: comma;
+
+
+@function to-number($value) {
+  @if type-of($value) == 'number' {
+    @return $value;
+  } @else if type-of($value) != 'string' {
+    $_: log('Value for `to-number` should be a number or a string.');
+  }
+  
+  $result: 0;
+  $digits: 0;
+  $minus: str-slice($value, 1, 1) == '-';
+  $numbers: ('0': 0, '1': 1, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9);
+  
+  @for $i from if($minus, 2, 1) through str-length($value) {
+    $character: str-slice($value, $i, $i);
+    
+    @if not (index(map-keys($numbers), $character) or $character == '.') {
+      @return to-length(if($minus, -$result, $result), str-slice($value, $i))
+    }
+    
+    @if $character == '.' {
+      $digits: 1; 
+    } @else if $digits == 0 {
+      $result: $result * 10 + map-get($numbers, $character);  
+    } @else {
+      $digits: $digits * 10;
+      $result: $result + map-get($numbers, $character) / $digits;
+    }
+  }
+  
+  @return if($minus, -$result, $result);;
+}
+
+
+@function to-length($value, $unit) {
+  $units: ('px': 1px, 'cm': 1cm, 'mm': 1mm, '%': 1%, 'ch': 1ch, 'pc': 1pc, 'in': 1in, 'em': 1em, 'rem': 1rem, 'pt': 1pt, 'ex': 1ex, 'vw': 1vw, 'vh': 1vh, 'vmin': 1vmin, 'vmax': 1vmax);
+  
+  @if not index(map-keys($units), $unit) {
+    $_: log('Invalid unit `#{$unit}`.');
+  }
+  
+  @return $value * map-get($units, $unit);
+}
+
+// Trims the start/left of the string:
+@function str-trimStart($str) {
+  @if (str-slice($str, 1, 1) == ' ') {
+      @return str-trimStart(str-slice($str, 2));
+  } @else {
+      @return $str;
+  }
+}
+
+// Trims the end/right of the string:
+@function str-trimEnd($str) {
+  @if (str-slice($str, str-length($str), -1) == ' ') {
+      @return str-trimEnd(str-slice($str, 1, -2));
+  } @else {
+      @return $str;
+  }
+}
+
+// Trims both the start and end of the string:
+@function str-trim($str) {
+  @return str-trimStart(str-trimEnd($str));
+}
+
+
+@function rgb2list($rgb) {
+  $rgb_nobracket: string.slice($rgb, 5, -2);
+  $listStr: string.split($rgb_nobracket, ",");
+  $listNum: (); // $listNum: [];
+  @each $numStr in $listStr {
+    // $listNum: list.append($listNum, to-number(str-trim($numStr)));
+    $numStr: str-trim($numStr);
+    $numStr: to-number($numStr);
+    $listNum: list.append($listNum, $numStr, "comma");
+  }
+
+  @return $listNum;
+}
+
+// DONT EDIT this file -------------- this file is copied from another project -- edit on that one 
+// DONT EDIT this file -------------- this file is copied from another project -- edit on that one 
+// DONT EDIT this file -------------- this file is copied from another project -- edit on that one 
+// DONT EDIT this file -------------- this file is copied from another project -- edit on that one 
+// DONT EDIT this file -------------- this file is copied from another project -- edit on that one 
+// DONT EDIT this file -------------- this file is copied from another project -- edit on that one 
+// DONT EDIT this file -------------- this file is copied from another project -- edit on that one 

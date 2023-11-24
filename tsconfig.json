@@ -1,13 +1,13 @@
 {
   "compilerOptions": {
     "target": "ES2020",
-    "useDefineForClassFields": true,
     "lib": [
-      "ES2020",
       "DOM",
-      "DOM.Iterable"
+      "DOM.Iterable",
+      "ES2020",
     ],
     "module": "ESNext",
+    "useDefineForClassFields": true,
     "skipLibCheck": true,
     /* Bundler mode */
     "moduleResolution": "bundler",
@@ -16,71 +16,99 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
+    // "jsx": "preserve", //  jsx was set to preserve (next.js implements its own optimized jsx transform)
+    // "incremental": true,
     /* Linting */
     "strict": true,
+    "noImplicitAny": true,
+    "noFallthroughCasesInSwitch": true,
     // "noUnusedLocals": true,
     // "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitAny": true,
     //
-    "plugins": [
-      {
-        "name": "typescript-plugin-css-modules"
-      },
-      // {
-      //   "name": "babel-plugin-root-import",
-      //   "options": {
-      //     // "rootPathSuffix": "./",
-      //     "rootPathPrefix": "~/"
-      //   }
-      // }
-    ],
+    // "esModuleInterop": false,
+    // "allowSyntheticDefaultImports": false,
     //
     "experimentalDecorators": true,
     // "emitDecoratorMetadata": true, // <see [ResolveCircularDependenyWhenPlainToClass.spec.ts][ReferenceError: Cannot access 'Photo' before initialization][https://github.com/typestack/class-transformer/issues/1622][https://stackoverflow.com/questions/56870661/angular-7-2-1-es6-class-referenceerror-cannot-access-x-before-initializatio]>
     //
-    // 
-    // []
-    // {
-    //   "type" : "module",
-    //   "imports": {
-    //     "#root/*.js": "./*.js"
-    //   }
-    // }
-    // <>
-    // https://stackoverflow.com/questions/75806206/how-to-import-javascript-files-in-nodejs-using-file-paths-from-project-root-in
-    // 
-    // []
-    //     "compilerOptions": {
-    //         "baseUrl": ".",
-    //         "paths": {
-    //             "#utils/*": ["./utils/*"],
-    // <>
-    // https://stackoverflow.com/questions/68268894/how-to-get-node-subpath-imports-intellisense-working
-    // doesnt work that well with type infer & .module.css 
-    // 
-    // []
-    // [Here is the Plugin (tested and with a clear README)](https://github.com/michaelzoidl/babel-root-import)
-    // <>
-    // https://stackoverflow.com/questions/29755065/es6-import-from-root
-    // ~~~~// doesnt even work 
-    // "baseUrl": "src",
-    // "baseUrl": ".",
-    // "paths": {
-    //   "#src/*": [
-    //     "./src/*"
-    //   ]
-    // }
+    "sourceMap": true,
+    //
+    // "rootDir": ".",
+    "outDir": "dist",
+    //
+    // >" Error 
+    // The inferred type of 'counterSlice' cannot be named without a reference to '.pnpm/immer@9.0.21/node_modules/immer/dist/internal.js'. This is likely not portable. A type annotation is necessary.ts(2742)
+    // https://stackoverflow.com/questions/54525342/error-ts2742-the-inferred-type-of-username-cannot-be-named-without-a-referenc
+    // "composite": true,
+    // "declaration": true,
+    // "declarationMap": true,
+    //
+    "plugins": [
+      // {
+      //   "name": "next"
+      // },
+      {
+        "name": "typescript-plugin-css-modules"
+      },
+    ],
   },
   "include": [
-    "src",
+    "src", // ... said glob is weird no_knowlres // File specification cannot end in a recursive directory wildcard ('**'): '/src/**'.ts
+    "test",
+    // "**/*.ts",
+    // "**/*.tsx",
     // "./Globals.d.ts"
+    // "next-env.d.ts",
+    // ".next/types/**/*.ts",
+  ],
+  "exclude": [
+    "node_modules"
   ],
   "references": [
     {
       "path": "./tsconfig.node.json"
     }
   ],
-  // 
-  "declarationMap": true
 }
+// 
+// ;[import from root (unsolved)]; "plugins": [
+// ;[import from root (unsolved)];   {
+// ;[import from root (unsolved)];     "name": "babel-plugin-root-import",
+// ;[import from root (unsolved)];     "options": {
+// ;[import from root (unsolved)];       // "rootPathSuffix": "./",
+// ;[import from root (unsolved)];       "rootPathPrefix": "~/"
+// ;[import from root (unsolved)];     }
+// ;[import from root (unsolved)];   }
+// ;[import from root (unsolved)]; ],
+// ;[import from root (unsolved)]; 
+// ;[import from root (unsolved)]; []
+// ;[import from root (unsolved)]; {
+// ;[import from root (unsolved)];   "type" : "module",
+// ;[import from root (unsolved)];   "imports": {
+// ;[import from root (unsolved)];     "#root/*.js": "./*.js"
+// ;[import from root (unsolved)];   }
+// ;[import from root (unsolved)]; }
+// ;[import from root (unsolved)]; <>
+// ;[import from root (unsolved)]; https://stackoverflow.com/questions/75806206/how-to-import-javascript-files-in-nodejs-using-file-paths-from-project-root-in
+// ;[import from root (unsolved)]; 
+// ;[import from root (unsolved)]; []
+// ;[import from root (unsolved)];     "compilerOptions": {
+// ;[import from root (unsolved)];         "baseUrl": ".",
+// ;[import from root (unsolved)];         "paths": {
+// ;[import from root (unsolved)];             "#utils/*": ["./utils/*"],
+// ;[import from root (unsolved)]; <>
+// ;[import from root (unsolved)]; https://stackoverflow.com/questions/68268894/how-to-get-node-subpath-imports-intellisense-working
+// ;[import from root (unsolved)]; doesnt work that well with type infer & .module.css 
+// ;[import from root (unsolved)]; 
+// ;[import from root (unsolved)]; []
+// ;[import from root (unsolved)]; [Here is the Plugin (tested and with a clear README)](https://github.com/michaelzoidl/babel-root-import)
+// ;[import from root (unsolved)]; <>
+// ;[import from root (unsolved)]; https://stackoverflow.com/questions/29755065/es6-import-from-root
+// ;[import from root (unsolved)]; ~~~~// doesnt even work 
+// ;[import from root (unsolved)]; "baseUrl": "src",
+// ;[import from root (unsolved)]; "baseUrl": ".",
+// ;[import from root (unsolved)]; "paths": {
+// ;[import from root (unsolved)];   "#src/*": [
+// ;[import from root (unsolved)];     "./src/*"
+// ;[import from root (unsolved)];   ]
+// ;[import from root (unsolved)]; }

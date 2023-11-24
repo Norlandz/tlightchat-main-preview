@@ -12,7 +12,7 @@ class SocketioClientUtil {
                  
                     
      
-  static onExclusive(socketioClient: socketIoClient.Socket, event: string, listener: (...args: any[]) => void) {
+  static onOnlyOnce(socketioClient: socketIoClient.Socket, event: string, listener: (...args: any[]) => void) {
     const arr_registeredEvent = this.mpp_RegisteredEvent.get(socketioClient);
     if (arr_registeredEvent === undefined) {
       this.mpp_RegisteredEvent.set(socketioClient, new Set<string>().add(event));

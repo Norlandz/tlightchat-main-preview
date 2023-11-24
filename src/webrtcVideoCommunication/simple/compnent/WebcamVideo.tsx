@@ -1,14 +1,17 @@
 import React from 'react';
 import styles from '../../../index.module.css';
 
-export const WebcamVideo: React.FC<{ webcamVideoStream: MediaStream }> = ({ webcamVideoStream }) => {
+export const WebcamVideo: React.FC<{ webcamVideoStream: MediaStream | null }> = ({ webcamVideoStream }) => {
                                                                                                                           
                                                                                                                                                
 
   const eltVideo_rref = React.useRef<HTMLVideoElement>(null);
 
-                              
-  React.useEffect(() => { eltVideo_rref.current!.srcObject = webcamVideoStream; }, []);                   
+  React.useEffect(() => {
+    if (eltVideo_rref.current === null) return;
+    eltVideo_rref.current.srcObject = webcamVideoStream;
+  }, [webcamVideoStream]);
+
   return (
                                                  
                                     

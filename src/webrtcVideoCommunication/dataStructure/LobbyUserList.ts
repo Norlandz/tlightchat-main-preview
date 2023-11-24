@@ -1,5 +1,6 @@
 import { Transform, Type, plainToInstance } from 'class-transformer';
-import { SignalserverWebsocketClientId, SignalserverWebsocketMsg, WebrtcConnectionPointId, WebrtcConnectionPointLocation } from '../messageSchema/WebSocketMessage';
+import { SignalserverWebsocketMsg } from '../messageSchema/WebSocketMessage';
+import { SignalserverWebsocketClientId, WebrtcConnectionAnchorId, WebrtcConnectionAnchorLocation } from './WebrtcConnectionAnchor';
 import 'reflect-metadata';
 
 import { NoSuchItemException } from '../../exception/NoSuchItemException';
@@ -7,11 +8,10 @@ import { NoSuchItemException } from '../../exception/NoSuchItemException';
                                                                  
                                                                                          
 export enum LobbyUserStatus {
-                       
-                         
-  available = 'available',
+  online = 'online',
   occupied = 'occupied',             
-  closed = 'closed',
+  offline = 'offline',
+                       
                                  
                        
 }
@@ -24,43 +24,43 @@ export enum LobbyUserStatus {
 
                                                                                                    
 export class LobbyUserInfo {
-  @Type(() => WebrtcConnectionPointLocation)
-  public readonly webrtcConnectionPointLocation_self: WebrtcConnectionPointLocation;
+  @Type(() => WebrtcConnectionAnchorLocation)
+  public readonly webrtcConnectionAnchorLocation_self: WebrtcConnectionAnchorLocation;
 
-  constructor(webrtcConnectionPointLocation_self: WebrtcConnectionPointLocation) {
-    this.webrtcConnectionPointLocation_self = webrtcConnectionPointLocation_self;
+  constructor(webrtcConnectionAnchorLocation_self: WebrtcConnectionAnchorLocation) {
+    this.webrtcConnectionAnchorLocation_self = webrtcConnectionAnchorLocation_self;
   }
 
-  @Type(() => WebrtcConnectionPointLocation)
-  private _webrtcConnectionPointLocation_peer: WebrtcConnectionPointLocation | null = null;                  
-                       
-               
-  public get webrtcConnectionPointLocation_peer(): WebrtcConnectionPointLocation | null { return this._webrtcConnectionPointLocation_peer; }                   
-  public set webrtcConnectionPointLocation_peer(value: WebrtcConnectionPointLocation) { if (value === null) throw new TypeError(); if (this._webrtcConnectionPointLocation_peer !== null) throw new Error('Immutable Value Once Set'); this._webrtcConnectionPointLocation_peer = value; }                   
+                                                
+                                                                                                                  
+                          
+                  
+                                                                                                                                                                     
+                                                                                                                                                                                                                                                                                                                    
 
-  public lobbyUserStatus = LobbyUserStatus.available;
+  public lobbyUserStatus = LobbyUserStatus.offline;
 }
 
 export class LobbyUserList {
      
                                                                
      
-                                                                                                   
+                                                                                                    
   @Transform(
     (tinfo) => {
                                                                                                                     
                             
                                             
                                                                                               
-      const value = tinfo.value as Map<SignalserverWebsocketClientId, Map<WebrtcConnectionPointId, LobbyUserInfo>>;
+      const value = tinfo.value as Map<SignalserverWebsocketClientId, Map<WebrtcConnectionAnchorId, LobbyUserInfo>>;
       if (value === null || value === undefined) throw new TypeError();
       return new Map(
-        Object.entries(value).map(([signalserverWebsocketClientId, mpp_webrtcConnectionPointId]) => {
+        Object.entries(value).map(([signalserverWebsocketClientId, mpp_webrtcConnectionAnchorId]) => {
           return [
             signalserverWebsocketClientId,
             new Map(
-              Object.entries(mpp_webrtcConnectionPointId as ArrayLike<unknown>).map(([webrtcConnectionPointId, lobbyUserInfo]) => {
-                return [webrtcConnectionPointId, plainToInstance(LobbyUserInfo, lobbyUserInfo as unknown)];
+              Object.entries(mpp_webrtcConnectionAnchorId as ArrayLike<unknown>).map(([webrtcConnectionAnchorId, lobbyUserInfo]) => {
+                return [webrtcConnectionAnchorId, plainToInstance(LobbyUserInfo, lobbyUserInfo as unknown)];
               })
             ),
           ];
@@ -69,43 +69,47 @@ export class LobbyUserList {
     },
     { toClassOnly: true }
   )
-  private readonly _mpp_signalserverWebsocketClientId = new Map<SignalserverWebsocketClientId, Map<WebrtcConnectionPointId, LobbyUserInfo>>();
-  public get mpp_signalserverWebsocketClientId(): ReadonlyMap<SignalserverWebsocketClientId, ReadonlyMap<WebrtcConnectionPointId, LobbyUserInfo>> {
+  private readonly _mpp_signalserverWebsocketClientId = new Map<SignalserverWebsocketClientId, Map<WebrtcConnectionAnchorId, LobbyUserInfo>>();
+  public get mpp_signalserverWebsocketClientId(): ReadonlyMap<SignalserverWebsocketClientId, ReadonlyMap<WebrtcConnectionAnchorId, LobbyUserInfo>> {
     return this._mpp_signalserverWebsocketClientId;
   }
 
   add_signalserverWebsocketClientId(signalserverWebsocketClientId_self: SignalserverWebsocketClientId) {
-    this._mpp_signalserverWebsocketClientId.set(signalserverWebsocketClientId_self, new Map<WebrtcConnectionPointId, LobbyUserInfo>());
+    this._mpp_signalserverWebsocketClientId.set(signalserverWebsocketClientId_self, new Map<WebrtcConnectionAnchorId, LobbyUserInfo>());
   }
   remove_signalserverWebsocketClientId(signalserverWebsocketClientId_self: SignalserverWebsocketClientId) {
     this._mpp_signalserverWebsocketClientId.delete(signalserverWebsocketClientId_self);
   }
 
-  add_webrtcConnectionPointId(webrtcConnectionPointLocation: WebrtcConnectionPointLocation) {
-    const mpp_webrtcConnectionPointId = this._mpp_signalserverWebsocketClientId.get(webrtcConnectionPointLocation.signalserverWebsocketClientId);
-    if (mpp_webrtcConnectionPointId === undefined) throw new TypeError();
-    if (mpp_webrtcConnectionPointId.has(webrtcConnectionPointLocation.webrtcConnectionPointId)) throw new TypeError();
-    const lobbyUserInfo = new LobbyUserInfo(webrtcConnectionPointLocation);
-    mpp_webrtcConnectionPointId.set(webrtcConnectionPointLocation.webrtcConnectionPointId, lobbyUserInfo);              
+  add_webrtcConnectionAnchorId(webrtcConnectionAnchorLocation: WebrtcConnectionAnchorLocation) {
+    const mpp_webrtcConnectionAnchorId = this._mpp_signalserverWebsocketClientId.get(webrtcConnectionAnchorLocation.signalserverWebsocketClientId);
+    if (mpp_webrtcConnectionAnchorId === undefined) throw new TypeError();
+    if (mpp_webrtcConnectionAnchorId.has(webrtcConnectionAnchorLocation.webrtcConnectionAnchorId)) throw new TypeError();
+    const lobbyUserInfo = new LobbyUserInfo(webrtcConnectionAnchorLocation);
+    mpp_webrtcConnectionAnchorId.set(webrtcConnectionAnchorLocation.webrtcConnectionAnchorId, lobbyUserInfo);              
   }
 
-  remove_webrtcConnectionPointId(webrtcConnectionPointLocation: WebrtcConnectionPointLocation) {
-    const mpp_webrtcConnectionPointId = this._mpp_signalserverWebsocketClientId.get(webrtcConnectionPointLocation.signalserverWebsocketClientId);
-    if (mpp_webrtcConnectionPointId === undefined) throw new TypeError();
-    if (!mpp_webrtcConnectionPointId.delete(webrtcConnectionPointLocation.webrtcConnectionPointId)) throw new TypeError();
+  remove_webrtcConnectionAnchorId(webrtcConnectionAnchorLocation: WebrtcConnectionAnchorLocation) {
+    const mpp_webrtcConnectionAnchorId = this._mpp_signalserverWebsocketClientId.get(webrtcConnectionAnchorLocation.signalserverWebsocketClientId);
+    if (mpp_webrtcConnectionAnchorId === undefined) throw new TypeError();
+    if (!mpp_webrtcConnectionAnchorId.delete(webrtcConnectionAnchorLocation.webrtcConnectionAnchorId)) throw new TypeError();
   }
 
      
     
-                                         
+                                          
              
                                                                                                       
      
-  public get_lobbyUserInfo(webrtcConnectionPointLocation: WebrtcConnectionPointLocation) {
+  public get_lobbyUserInfo(webrtcConnectionAnchorLocation: WebrtcConnectionAnchorLocation) {
                                                           
-    const lobbyUserInfo = this._mpp_signalserverWebsocketClientId.get(webrtcConnectionPointLocation.signalserverWebsocketClientId)!.get(webrtcConnectionPointLocation.webrtcConnectionPointId)!;
+    const lobbyUserInfo = this._mpp_signalserverWebsocketClientId.get(webrtcConnectionAnchorLocation.signalserverWebsocketClientId)!.get(webrtcConnectionAnchorLocation.webrtcConnectionAnchorId)!;
     if (lobbyUserInfo === null || lobbyUserInfo === undefined) throw new NoSuchItemException();
     return lobbyUserInfo;
-                                                                                                                                                                                   
+  }
+
+                                                                                                                                                                        
+  public get_lobbyUserInfo_NoAggresiveThrow(webrtcConnectionAnchorLocation: WebrtcConnectionAnchorLocation) {
+    return this._mpp_signalserverWebsocketClientId.get(webrtcConnectionAnchorLocation.signalserverWebsocketClientId)?.get(webrtcConnectionAnchorLocation.webrtcConnectionAnchorId);
   }
 }

@@ -1,28 +1,17 @@
                                                    
-import express from 'express';
                                         
+                                                                                                                                                                                                                                        
+import express from 'express';
 import cors from 'cors';
-import * as socketIo from 'socket.io';
+import * as Socketio from 'socket.io';
 import { instrument } from '@socket.io/admin-ui';
 import http from 'http';
-import * as ClassTransformer from 'class-transformer';
 import 'reflect-metadata';
-                                                                                                                                                                                                                                        
-
-                                       
-                               
-
-import {
-  SignalserverWebsocketMsgType,
-  SignalserverWebsocketMsg,
-  WebrtcConnectionPointLocation,
-  WebrtcConnectionPointId,
-  SignalserverWebsocketClientId,
-  WebrtcConnectionEventType,
-  WebrtcConnectionEvent,
-} from './webrtcVideoCommunication/messageSchema/WebSocketMessage';
-import moment from 'moment';
+import { SignalserverWebsocketMsgType, SignalserverWebsocketMsg, WebrtcConnectionEventType, WebrtcConnectionEvent } from './webrtcVideoCommunication/messageSchema/WebSocketMessage';
+import { WebrtcConnectionAnchorLocation, WebrtcConnectionAnchorId, SignalserverWebsocketClientId } from './webrtcVideoCommunication/dataStructure/WebrtcConnectionAnchor';
 import { LobbyUserList, LobbyUserStatus } from './webrtcVideoCommunication/dataStructure/LobbyUserList';
+import dayjs from 'dayjs';
+import { instanceToPlain, plainToInstance } from 'class-transformer';
 
 console.log('>---<');
 
@@ -39,7 +28,7 @@ const server = http.createServer(app);
                                                                                                                                                                 
                                          
                                                                         
-const io = new socketIo.Server(server, {
+const io = new Socketio.Server(server, {
   cors: {
     origin: ['http://localhost:5173', 'http://localhost:5174', 'https://admin.socket.io'],
     credentials: true,
@@ -65,22 +54,43 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static('public'));
 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+               
 
-                                                                                                                           
-                                                                                                                                   
+     
+                           
+                                          
+                                    
+       
+     
+                                                                
+                                                                   
+    
+                                                                             
+   
+   
+function sockeioErrorHandlerWrapper(listener: ((...args: any[]) => Promise<void>) | ((...args: any[]) => void)): (...args: any[]) => Promise<void> {
+                                                                                                                                  
+  return async (...args: any[]) => {
+    try {
+      await listener(...args as unknown[]);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+}
+
+               
 const lobbyUserList = new LobbyUserList();
                    
-const mpp_reactSocketioSessionId_vs_socketIoServerSide = new Map<SignalserverWebsocketClientId, socketIo.Socket>();
-                                                        
+const mpp_reactSocketioSessionId_vs_socketIoServerSide = new Map<SignalserverWebsocketClientId, Socketio.Socket>();
 
 let count_Connections = 0;
 io.on('connection', webSocketOnConnection);
-function webSocketOnConnection(socket: socketIo.Socket) {
+function webSocketOnConnection(socket: Socketio.Socket) {
   count_Connections++;
-                                                              
-                                   
-                                             
+                                                                       
+                                                                           
+                                                                       
 
                                                                       
 
@@ -103,157 +113,184 @@ function webSocketOnConnection(socket: socketIo.Socket) {
                                                                                
                                                                         
   const signalserverWebsocketClientId_self_existingPriorReconnect = socket.handshake.auth.signalserverWebsocketClientId_self as SignalserverWebsocketClientId | undefined;
-  const signalserverWebsocketClientId_self = signalserverWebsocketClientId_self_existingPriorReconnect || (`${moment().format('MMDDHHmmssSSS')}_${count_Connections}` as SignalserverWebsocketClientId);
-  console.log(`io.on('connection', `, socket.id, signalserverWebsocketClientId_self);
-  console.log('io.sockets.sockets.size', io.sockets.sockets.size);                                                                                                                             
-
-  if (signalserverWebsocketClientId_self_existingPriorReconnect === undefined) {
-    socket.emit(SignalserverWebsocketMsgType.signalserverWebsocketClientId_self, signalserverWebsocketClientId_self);
-    mpp_reactSocketioSessionId_vs_socketIoServerSide.set(signalserverWebsocketClientId_self, socket);
-  }
-
-  function get_socketPeerId(signalserverWebsocketClientId: SignalserverWebsocketClientId) {
-    const socket_peer = mpp_reactSocketioSessionId_vs_socketIoServerSide.get(signalserverWebsocketClientId);
-    if (socket_peer === null || socket_peer === undefined) throw new TypeError();
-    return socket_peer.id;
-  }
-
-                                          
-                                                                                                                       
-  lobbyUserList.add_signalserverWebsocketClientId(signalserverWebsocketClientId_self);
-
-                                                                                                            
-  socket.on(WebrtcConnectionEventType.connectionCreatedSent, (webrtcConnectionEvent_jsobj: WebrtcConnectionEvent) => {
-                                                                                                                                     
-    const webrtcConnectionEvent = webrtcConnectionEvent_jsobj;
-                                                                                       
-    if (webrtcConnectionEvent.msg.msgFrom.signalserverWebsocketClientId !== signalserverWebsocketClientId_self) throw new TypeError();
-                                                                                                                                         
-                                                                                            
-                                                                                                                                                                                                                                                        
-                                                                                                                            
-    lobbyUserList.add_webrtcConnectionPointId(webrtcConnectionEvent.msg.msgFrom);
-    lobbyUserList.get_lobbyUserInfo(webrtcConnectionEvent.msg.msgFrom).lobbyUserStatus = LobbyUserStatus.available;
-
-                                                                                                                                                                       
-    io.emit(SignalserverWebsocketMsgType.lobbyUserList, ClassTransformer.instanceToPlain(lobbyUserList));
-                                                                                                                          
-                                                                                         
-                                                                     
-  });
-
-                  
-                                                                                                                                                                                                               
-                                  
-                                                                                                                                                                      
-
-  socket.on(WebrtcConnectionEventType.offerSent, (webrtcConnectionEvent_jsobj: WebrtcConnectionEvent) => {
-    const webrtcConnectionEvent = ClassTransformer.plainToInstance(WebrtcConnectionEvent, webrtcConnectionEvent_jsobj as unknown);
-    socket.to(get_socketPeerId(webrtcConnectionEvent.msg.msgTo!.signalserverWebsocketClientId)).emit(webrtcConnectionEvent.eventType, webrtcConnectionEvent);
-                                                                                                       
-                                                                                                                      
-    io.emit(SignalserverWebsocketMsgType.lobbyUserList, ClassTransformer.instanceToPlain(lobbyUserList));
-  });
-
-  socket.on(WebrtcConnectionEventType.answerSent, (webrtcConnectionEvent_jsobj: WebrtcConnectionEvent) => {
-    const webrtcConnectionEvent = ClassTransformer.plainToInstance(WebrtcConnectionEvent, webrtcConnectionEvent_jsobj as unknown);
-                                                      
-    socket.to(get_socketPeerId(webrtcConnectionEvent.msg.msgTo!.signalserverWebsocketClientId)).emit(webrtcConnectionEvent.eventType, webrtcConnectionEvent);
-
-                                                                           
-                                  
-                          
-                                                                                                           
-                                                                                                                                                                                                                       
-                                                                                                         
-                                                                                  
-                                  
-                                                                                                         
-    lobbyUserList.get_lobbyUserInfo(webrtcConnectionEvent.msg.msgFrom).lobbyUserStatus = LobbyUserStatus.occupied;
-    lobbyUserList.get_lobbyUserInfo(webrtcConnectionEvent.msg.msgTo!).lobbyUserStatus = LobbyUserStatus.occupied;
-    io.emit(SignalserverWebsocketMsgType.lobbyUserList, ClassTransformer.instanceToPlain(lobbyUserList));
-  });
-
-  socket.on(SignalserverWebsocketMsgType.iceCandidate, (signalserverWebsocketMsg: SignalserverWebsocketMsg) => {
-    socket.to(get_socketPeerId(signalserverWebsocketMsg.msgTo!.signalserverWebsocketClientId)).emit(SignalserverWebsocketMsgType.iceCandidate, signalserverWebsocketMsg);
-  });
+  const signalserverWebsocketClientId_self = signalserverWebsocketClientId_self_existingPriorReconnect || (`${dayjs().format('MMDDHHmmssSSS')}_${count_Connections}` as SignalserverWebsocketClientId);
 
         
-  socket.on(WebrtcConnectionEventType.closeSent, (webrtcConnectionEvent_jsobj: WebrtcConnectionEvent) => {
-    const webrtcConnectionEvent = ClassTransformer.plainToInstance(WebrtcConnectionEvent, webrtcConnectionEvent_jsobj as unknown);
-    if (webrtcConnectionEvent.msg.msgFrom.signalserverWebsocketClientId !== signalserverWebsocketClientId_self) throw new TypeError();
+  {
+    console.log(`io.on('connection', `, socket.id, signalserverWebsocketClientId_self);
+    console.log('io.sockets.sockets.size', io.sockets.sockets.size);                                                                                                                             
 
-                                                                                                                                                               
-    io.emit(webrtcConnectionEvent.eventType, webrtcConnectionEvent);
-
-                                                                                      
-                                                                                                        
-                                         
-                                                                                                                                
-    lobbyUserList.remove_webrtcConnectionPointId(webrtcConnectionEvent.msg.msgFrom);
-    if (webrtcConnectionEvent.msg.msgTo !== null) {
-                                                                                                                                  
-      lobbyUserList.remove_webrtcConnectionPointId(webrtcConnectionEvent.msg.msgTo);
+                                                                                                                                                                                                        
+    if (signalserverWebsocketClientId_self_existingPriorReconnect === undefined) {
+      socket.emit(SignalserverWebsocketMsgType.signalserverWebsocketClientId_self, signalserverWebsocketClientId_self);
+      mpp_reactSocketioSessionId_vs_socketIoServerSide.set(signalserverWebsocketClientId_self, socket);
     }
 
-    io.emit(SignalserverWebsocketMsgType.lobbyUserList, ClassTransformer.instanceToPlain(lobbyUserList));
-  });
+                                            
+    lobbyUserList.add_signalserverWebsocketClientId(signalserverWebsocketClientId_self);
+    io.emit(SignalserverWebsocketMsgType.lobbyUserList, instanceToPlain(lobbyUserList));
+  }
 
         
-  socket.on(WebrtcConnectionEventType.cancelSent, (webrtcConnectionEvent_jsobj: WebrtcConnectionEvent) => {
-    const webrtcConnectionEvent = ClassTransformer.plainToInstance(WebrtcConnectionEvent, webrtcConnectionEvent_jsobj as unknown);
-    if (webrtcConnectionEvent.msg.msgFrom.signalserverWebsocketClientId !== signalserverWebsocketClientId_self) throw new TypeError();
-
-    socket.to(get_socketPeerId(webrtcConnectionEvent.msg.msgTo!.signalserverWebsocketClientId)).emit(webrtcConnectionEvent.eventType, webrtcConnectionEvent);
-
-                                                                                                                                                      
                                                                                                             
-  });
+  socket.on(
+    SignalserverWebsocketMsgType.webrtcConnectionAnchor_Online,
+    sockeioErrorHandlerWrapper((signalserverWebsocketMsg_jsobj: SignalserverWebsocketMsg) => {
+                                                                                          
+      const signalserverWebsocketMsg = plainToInstance(SignalserverWebsocketMsg, signalserverWebsocketMsg_jsobj as unknown);
+      if (signalserverWebsocketMsg.msgTo !== null) throw new TypeError();
+      lobbyUserList.add_webrtcConnectionAnchorId(signalserverWebsocketMsg.msgFrom);
+      lobbyUserList.get_lobbyUserInfo(signalserverWebsocketMsg.msgFrom).lobbyUserStatus = LobbyUserStatus.online;
+      io.emit(SignalserverWebsocketMsgType.lobbyUserList, instanceToPlain(lobbyUserList));
+    })
+  );
+  socket.on(
+    SignalserverWebsocketMsgType.webrtcConnectionAnchor_Offline,
+    sockeioErrorHandlerWrapper((signalserverWebsocketMsg_jsobj: SignalserverWebsocketMsg) => {
+      const signalserverWebsocketMsg = plainToInstance(SignalserverWebsocketMsg, signalserverWebsocketMsg_jsobj as unknown);
+      if (signalserverWebsocketMsg.msgTo !== null) throw new TypeError();
+                                                                                         
+                                                                                                          
+                                           
+                                                           
+      lobbyUserList.remove_webrtcConnectionAnchorId(signalserverWebsocketMsg.msgFrom);
+      io.emit(SignalserverWebsocketMsgType.lobbyUserList, instanceToPlain(lobbyUserList));
+    })
+  );
+
+                  
+                                                                                                                                                                                                                  
+    
+                                     
+                                                                                                                                                                         
+
+  function socketEmit_PeerLoc_serverSideRedelegate_helper(signalserverWebsocketMsg_jsobj: any) {
+    const signalserverWebsocketMsg = plainToInstance(SignalserverWebsocketMsg, signalserverWebsocketMsg_jsobj as unknown);
+    if (signalserverWebsocketMsg.msgTo == null) throw new TypeError();
+    if (!(signalserverWebsocketMsg.msgTo instanceof WebrtcConnectionAnchorLocation)) throw new TypeError();
+    if (signalserverWebsocketMsg.webrtcConnectionEvent == null) throw new TypeError();
+
+    function get_socketPeerId(signalserverWebsocketClientId: SignalserverWebsocketClientId) {
+      const socket_peer = mpp_reactSocketioSessionId_vs_socketIoServerSide.get(signalserverWebsocketClientId);
+      if (socket_peer === null || socket_peer === undefined) throw new TypeError();
+      return socket_peer.id;
+    }
+                                                                                         
+                                                                                                 
+                                                                                                                                
+        
+                                                                                               
+                                                                                                       
+                                                                                                                                
+        
+                                                                                                         
+                                                                                                                 
+                                                                                                                                
+        
+    socket.to(get_socketPeerId(signalserverWebsocketMsg.msgTo.signalserverWebsocketClientId)).emit(signalserverWebsocketMsg.webrtcConnectionEvent.eventType, signalserverWebsocketMsg);
+                                                                                                                                                                                                           
+                                                                                                                                                                                                
+    return signalserverWebsocketMsg;
+  }
+
+  socket.on(
+    WebrtcConnectionEventType.offerPlainSignal_Sent,
+    sockeioErrorHandlerWrapper((signalserverWebsocketMsg_jsobj: SignalserverWebsocketMsg) => {
+      const signalserverWebsocketMsg = socketEmit_PeerLoc_serverSideRedelegate_helper(signalserverWebsocketMsg_jsobj);
+                                                                                                                            
+                                                                                             
+    })
+  );
+
+  socket.on(
+    WebrtcConnectionEventType.offerPlainSignal_Accepted,
+    sockeioErrorHandlerWrapper((signalserverWebsocketMsg_jsobj: SignalserverWebsocketMsg) => {
+      const signalserverWebsocketMsg = socketEmit_PeerLoc_serverSideRedelegate_helper(signalserverWebsocketMsg_jsobj);
+                                                                             
+                                    
+                            
+                                                                                                             
+                                                                                                                                                                                                                         
+                                                                                                           
+                                                                                    
+                                    
+      if (!(signalserverWebsocketMsg.msgTo instanceof WebrtcConnectionAnchorLocation)) throw new TypeError();                                  
+      lobbyUserList.get_lobbyUserInfo(signalserverWebsocketMsg.msgFrom).lobbyUserStatus = LobbyUserStatus.occupied;
+      lobbyUserList.get_lobbyUserInfo(signalserverWebsocketMsg.msgTo).lobbyUserStatus = LobbyUserStatus.occupied;
+      io.emit(SignalserverWebsocketMsgType.lobbyUserList, instanceToPlain(lobbyUserList));
+    })
+  );
+
+  socket.on(
+    WebrtcConnectionEventType.offerDescription_Sent,
+    sockeioErrorHandlerWrapper((signalserverWebsocketMsg_jsobj: SignalserverWebsocketMsg) => {
+      const signalserverWebsocketMsg = socketEmit_PeerLoc_serverSideRedelegate_helper(signalserverWebsocketMsg_jsobj);
+    })
+  );
+  socket.on(
+    WebrtcConnectionEventType.offerDescription_Accepted_answerDescription_Sent,
+    sockeioErrorHandlerWrapper((signalserverWebsocketMsg_jsobj: SignalserverWebsocketMsg) => {
+      const signalserverWebsocketMsg = socketEmit_PeerLoc_serverSideRedelegate_helper(signalserverWebsocketMsg_jsobj);
+    })
+  );
+  socket.on(
+    WebrtcConnectionEventType.iceCandidate_Sent,
+    sockeioErrorHandlerWrapper((signalserverWebsocketMsg_jsobj: SignalserverWebsocketMsg) => {
+      const signalserverWebsocketMsg = socketEmit_PeerLoc_serverSideRedelegate_helper(signalserverWebsocketMsg_jsobj);
+    })
+  );
 
         
-  socket.on(WebrtcConnectionEventType.declineSent, (webrtcConnectionEvent_jsobj: WebrtcConnectionEvent) => {
-    const webrtcConnectionEvent = ClassTransformer.plainToInstance(WebrtcConnectionEvent, webrtcConnectionEvent_jsobj as unknown);
-    if (webrtcConnectionEvent.msg.msgFrom.signalserverWebsocketClientId !== signalserverWebsocketClientId_self) throw new TypeError();
+  socket.on(
+    WebrtcConnectionEventType.webrtcConnection_Closed,
+    sockeioErrorHandlerWrapper((signalserverWebsocketMsg_jsobj: SignalserverWebsocketMsg) => {
+      const signalserverWebsocketMsg = socketEmit_PeerLoc_serverSideRedelegate_helper(signalserverWebsocketMsg_jsobj);
+      if (!(signalserverWebsocketMsg.msgTo instanceof WebrtcConnectionAnchorLocation)) throw new TypeError();                                  
+      lobbyUserList.get_lobbyUserInfo(signalserverWebsocketMsg.msgFrom).lobbyUserStatus = LobbyUserStatus.online;
+      lobbyUserList.get_lobbyUserInfo(signalserverWebsocketMsg.msgTo).lobbyUserStatus = LobbyUserStatus.online;
+      io.emit(SignalserverWebsocketMsgType.lobbyUserList, instanceToPlain(lobbyUserList));
+    })
+  );
 
-    socket.to(get_socketPeerId(webrtcConnectionEvent.msg.msgTo!.signalserverWebsocketClientId)).emit(webrtcConnectionEvent.eventType, webrtcConnectionEvent);
+        
+  socket.on(
+    WebrtcConnectionEventType.offerPlainSignal_Cancelled,
+    sockeioErrorHandlerWrapper((signalserverWebsocketMsg_jsobj: SignalserverWebsocketMsg) => {
+      const signalserverWebsocketMsg = socketEmit_PeerLoc_serverSideRedelegate_helper(signalserverWebsocketMsg_jsobj);
+                                                                                                                                                       
+                                                                                                              
+    })
+  );
 
-                                                                                                                                                      
-                                                                                                            
-  });
+        
+  socket.on(
+    WebrtcConnectionEventType.offerPlainSignal_Declined,
+    sockeioErrorHandlerWrapper((signalserverWebsocketMsg_jsobj: SignalserverWebsocketMsg) => {
+      const signalserverWebsocketMsg = socketEmit_PeerLoc_serverSideRedelegate_helper(signalserverWebsocketMsg_jsobj);
+                                                                                                                                                       
+                                                                                                              
+    })
+  );
 
         
                                                                                                                                                                                   
                                                                                                                                                                         
-  socket.on('disconnect', (reason) => {
-    console.log(`socket.on('disconnect', `, signalserverWebsocketClientId_self, reason);
+  socket.on(
+    'disconnect',
+    sockeioErrorHandlerWrapper((reason) => {
+      console.log(`socket.on('disconnect', `, signalserverWebsocketClientId_self, reason);
 
-                                                                                                                           
+                                                                                                                             
 
-                                                      
-    lobbyUserList.remove_signalserverWebsocketClientId(signalserverWebsocketClientId_self);
-    io.emit(SignalserverWebsocketMsgType.lobbyUserList, ClassTransformer.instanceToPlain(lobbyUserList));
-  });
+                                                        
+      lobbyUserList.remove_signalserverWebsocketClientId(signalserverWebsocketClientId_self);
+      io.emit(SignalserverWebsocketMsgType.lobbyUserList, instanceToPlain(lobbyUserList));
+    })
+  );
 
         
   socket.on(SignalserverWebsocketMsgType.heartbeat, (count_heartbeat: number) => {});
   socket.on(SignalserverWebsocketMsgType.testMessage, (data) => console.log(data));
-
-                                             
-
-        
-  socket.on(WebrtcConnectionEventType.offerSentPlain, (webrtcConnectionEvent_jsobj: WebrtcConnectionEvent) => {
-    const webrtcConnectionEvent = ClassTransformer.plainToInstance(WebrtcConnectionEvent, webrtcConnectionEvent_jsobj as unknown);
-    if (webrtcConnectionEvent.msg.msgFrom.signalserverWebsocketClientId !== signalserverWebsocketClientId_self) throw new TypeError();
-    socket.to(get_socketPeerId(webrtcConnectionEvent.msg.msgTo!.signalserverWebsocketClientId)).emit(webrtcConnectionEvent.eventType, webrtcConnectionEvent);
-  });
-
-  socket.on(WebrtcConnectionEventType.oneTimeSessionMailbox, (eventSessionMailboxId: string, webrtcConnectionEvent_jsobj: WebrtcConnectionEvent) => {
-    const webrtcConnectionEvent = ClassTransformer.plainToInstance(WebrtcConnectionEvent, webrtcConnectionEvent_jsobj as unknown);
-    if (webrtcConnectionEvent.msg.msgFrom.signalserverWebsocketClientId !== signalserverWebsocketClientId_self) throw new TypeError();
-    console.log(eventSessionMailboxId)
-    if (eventSessionMailboxId == null) throw new TypeError();
-    socket.to(get_socketPeerId(webrtcConnectionEvent.msg.msgTo!.signalserverWebsocketClientId)).emit(eventSessionMailboxId, webrtcConnectionEvent);
-  });
 }
 
                
@@ -277,3 +314,5 @@ router.get('/test/users/:username', (req, res, next) => { res.send(req.params.us
 server.listen(3000, () => {
   console.log('App started on port 3000');
 });
+
+                                                                                                             

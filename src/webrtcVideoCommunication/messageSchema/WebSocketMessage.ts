@@ -1,114 +1,163 @@
 import { Type } from 'class-transformer';
-import { v4 as uuidv4 } from 'uuid';
 import 'reflect-metadata';
+import { SignalserverWebsocketClientId, WebrtcConnectionAnchorLocation } from '../dataStructure/WebrtcConnectionAnchor';
+                                                                                        
+import { v4 as uuidv4 } from 'uuid';
 
 export enum SignalserverWebsocketMsgType {
-                   
-                     
-                 
   signalserverWebsocketClientId_self = 'signalserverWebsocketClientId_self',
-                                                                                 
-                                                                                 
-                                                                                                 
+  webrtcConnectionAnchor_Online = 'webrtcConnectionAnchor_Online',
+  webrtcConnectionAnchor_Offline = 'webrtcConnectionAnchor_Offline',
   lobbyUserList = 'lobbyUserList',
-                                                                                                
-                                             
-  iceCandidate = 'iceCandidate',
-                                           
+    
+  webrtcConnectionEvent_Category = 'webrtcConnectionEvent_Category',
+    
   heartbeat = 'heartbeat',
   testMessage = 'testMessage',
 }
 
-   
-                                                        
-                                                                           
-   
-   
-                                            
-                                                                                                
-                                                                                                                                   
-   
-declare const webrtcConnectionPointIdSymbol: unique symbol;
-export type WebrtcConnectionPointId = string & { [webrtcConnectionPointIdSymbol]: never };
-declare const signalserverWebsocketClientIdSymbol: unique symbol;
-export type SignalserverWebsocketClientId = string & { [signalserverWebsocketClientIdSymbol]: never };
-
-export class WebrtcConnectionPointLocation {
-  constructor(
-    public readonly signalserverWebsocketClientId: SignalserverWebsocketClientId,
-    public readonly webrtcConnectionPointId: WebrtcConnectionPointId   
-  ) {}
+export enum SignalserverWebsocketMsgReceiverType {
+  webrtcConnectionAnchorLocation = 'webrtcConnectionAnchorLocation',
+  allWebrtcConnectionAnchorLocation = 'allWebrtcConnectionAnchorLocation',
+                                   
+                                                 
 }
 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
+                                                               
+export enum WebrtcConnectionEventType {
+  offerPlainSignal_Sent = 'offerPlainSignal_Sent',                                                                                                                 
+  offerPlainSignal_Accepted = 'offerPlainSignal_Accepted',
+                                       
+  offerDescription_Sent = 'offerDescription_Sent',
+  offerDescription_Accepted_answerDescription_Sent = 'offerDescription_Accepted_answerDescription_Sent',
+  iceCandidate_Sent = 'iceCandidate_Sent',
+  webrtcConnection_Closed = 'webrtcConnection_Closed',
+  offerPlainSignal_Cancelled = 'offerPlainSignal_Cancelled',
+  offerPlainSignal_Declined = 'offerPlainSignal_Declined',
+}
+
+declare const eventSessionMailboxIdSymbol: unique symbol;
+export type EventSessionMailboxId = string & { [eventSessionMailboxIdSymbol]: never };
+
+export class SignalserverClientEventSessionMailbox {
+  constructor(
+       
+                                                   
+      
+                                          
+                                             
+                             
+      
+                                                                          
+                                                                                                    
+       
+    public readonly signalserverWebsocketClientId: SignalserverWebsocketClientId,
+    public readonly eventSessionMailboxId: EventSessionMailboxId,
+       
+                                                                                
+                                           
+                                                                     
+       
+    public readonly eventSessionMailboxLifetimelength: number
+  ) {}
+
+  private readonly __typeDiscriminatorForClassTransformer = 'SignalserverClientEventSessionMailbox';
+
+                                                                                                                                                                                   
+}
+
+                                                                                                          
+                                                                                   
+                                                                                    
 export class SignalserverWebsocketMsg {
-                                                      
+  readonly uuid = uuidv4();
+  @Type(() => Date)
+  readonly timeStamp = new Date();
+
+  public readonly msgType: SignalserverWebsocketMsgType;
   public readonly msgData: unknown;
+  @Type(() => WebrtcConnectionEvent)
+  public readonly webrtcConnectionEvent: WebrtcConnectionEvent | undefined;
 
-  @Type(() => WebrtcConnectionPointLocation)
-  public readonly msgFrom: WebrtcConnectionPointLocation;                                                              
-  @Type(() => WebrtcConnectionPointLocation)                                                        
-  public readonly msgTo: WebrtcConnectionPointLocation | null;
+  @Type(() => WebrtcConnectionAnchorLocation)
+  public readonly msgFrom: WebrtcConnectionAnchorLocation;                                                                      
+                                                           
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
+                                                                                             
+                                                           
+  @Type(() => Object, {
+    discriminator: {
+      property: '__typeDiscriminatorForClassTransformer',
+      subTypes: [
+        { value: WebrtcConnectionAnchorLocation, name: 'WebrtcConnectionAnchorLocation' },
+        { value: SignalserverClientEventSessionMailbox, name: 'SignalserverClientEventSessionMailbox' },
+      ],
+    },
+         
+                                                                                                                                                                                                                 
+         
+                                                     
+                                                                               
+    keepDiscriminatorProperty: true,
+  })
+  public readonly msgTo: WebrtcConnectionAnchorLocation | null | SignalserverClientEventSessionMailbox;
+  public readonly msgReceiverType: SignalserverWebsocketMsgReceiverType | null;
 
-  constructor(msgData: unknown, msgFrom: WebrtcConnectionPointLocation, msgTo: WebrtcConnectionPointLocation | null) {
+  constructor(
+    msgType: SignalserverWebsocketMsgType,
+    msgData: unknown,
+    webrtcConnectionEvent: WebrtcConnectionEvent | undefined,
+    msgFrom: WebrtcConnectionAnchorLocation,
+    msgTo: WebrtcConnectionAnchorLocation | null,
+    msgReceiverType: SignalserverWebsocketMsgReceiverType | null
+  ) {
+    if (msgReceiverType === SignalserverWebsocketMsgReceiverType.webrtcConnectionAnchorLocation) {
+      if (!(msgTo instanceof WebrtcConnectionAnchorLocation)) throw new TypeError();
+    } else if (msgReceiverType === SignalserverWebsocketMsgReceiverType.allWebrtcConnectionAnchorLocation) {
+      if (!(msgTo === null)) throw new TypeError();
+                                                                                            
+                                                        
+                                                                                                   
+                                                                                                
+    } else {
+      if (msgType === undefined && msgData === undefined && webrtcConnectionEvent === undefined && msgFrom === undefined && msgTo === undefined && msgReceiverType === undefined) {
+                                                                                               
+      } else {
+        console.error(msgReceiverType);
+        console.error(msgTo);
+        throw new TypeError();
+      }
+    }
+
+    this.msgType = msgType;
     this.msgData = msgData;
+    this.webrtcConnectionEvent = webrtcConnectionEvent;
     this.msgFrom = msgFrom;
     this.msgTo = msgTo;
+    this.msgReceiverType = msgReceiverType;
+  }
+}
+
+export class WebrtcConnectionEvent {
+                             
+
+  readonly eventType: WebrtcConnectionEventType;
+  readonly uuid = uuidv4();
+  @Type(() => Date)
+  readonly timeStamp = new Date();
+  @Type(() => WebrtcConnectionAnchorLocation)
+  readonly creator: WebrtcConnectionAnchorLocation | null;
+
+  constructor(eventType: WebrtcConnectionEventType, creator: WebrtcConnectionAnchorLocation | null) {
+    this.eventType = eventType;
+    this.creator = creator;
   }
 }
 
                
 
-export enum WebrtcConnectionEventType {
-  connectionCreatedSent = 'connectionCreatedSent',
-  offerSent = 'offerSent',
-                                     
-  answerSent = 'answerSent',
-                                       
-  closeSent = 'closeSent',
-                                     
-  cancelSent = 'cancelSent',
-                                       
-  declineSent = 'declineSent',
-  offerSentPlain = 'offerSentPlain',
-  offerAcceptedPlain = 'offerAcceptedPlain',
-  oneTimeSessionMailbox = "oneTimeSessionMailbox"
-}
-
-export class WebrtcConnectionEvent {
-                             
-     
-                                                 
-    
-                                        
-                                           
-                           
-    
-                                                                        
-                                                                                                  
-     
-  readonly eventSessionMailboxId: string | undefined;
-                                                                                                                                                                                   
-  
-     
-                                                                              
-                                         
-                                                                   
-     
-  readonly eventSessionMailboxLifetimelength: number | undefined;
-
-  readonly uuid = uuidv4();
-  @Type(() => Date)
-  readonly timeStamp = new Date();
-  readonly eventType: WebrtcConnectionEventType;
-  @Type(() => SignalserverWebsocketMsg)
-  readonly msg: SignalserverWebsocketMsg;
-
-  constructor(eventType: WebrtcConnectionEventType, msg: SignalserverWebsocketMsg, eventSessionMailboxId?: string, eventSessionMailboxLifetimelength?: number) {
-    this.eventType = eventType;
-    this.msg = msg;
-
-    this.eventSessionMailboxId = eventSessionMailboxId;
-    this.eventSessionMailboxLifetimelength = eventSessionMailboxLifetimelength;
-  }
+                                                     
+export interface RTCSessionDescriptionInit_plain extends RTCSessionDescriptionInit {
+  sdp: string | undefined;
+  type: RTCSdpType;
 }

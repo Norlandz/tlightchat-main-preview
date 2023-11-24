@@ -1,3 +1,33 @@
+# dependencies
+node_modules
+/.pnp
+.pnp.js
+
+# production
+/build
+/dist
+
+# testing
+/coverage
+
+# local env files
+.env*.local
+
+# secret
+*.pem
+
+# TypeScript cache
+*.tsbuildinfo
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Optional stylelint cache
+.stylelintcache
+
 # Logs
 logs
 *.log
@@ -6,11 +36,6 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
-
-node_modules
-dist
-dist-ssr
-*.local
 
 # Editor directories and files
 # .vscode/*
@@ -23,5 +48,20 @@ dist-ssr
 *.sln
 *.sw?
 
-#
+# next.js
+/.next/
+/out/
+next-env.d.ts
+
+# vercel
+.vercel
+
+# misc
+*.local
+
+# https://github.com/github/gitignore/blob/main/Node.gitignore
+
+
+# ############
 CommentNt.txt
+_saveUsing

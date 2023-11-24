@@ -1,0 +1,48 @@
+pre {
+  margin: 0;
+}
+
+.css_MediaStreamLocalSelfRcomp, .css_WebrtcConnectionAnchorRcomp {
+  height: 100px;
+  border: 1px solid rgba(200, 200, 200, 0.5);
+  position: relative;
+  overflow: scroll;
+  resize: both;
+}
+
+.css_WebcamVideo {
+  height: 80%;
+}
+
+.css_VideoConnectionLinkageDraftCurrSelected {
+  border: 2px solid rgba(0, 255, 0, 0.5);
+}
+
+.css_webrtcConnectionAnchor_peer_connected {
+  border: 2px solid rgba(200, 0, 255, 0.5);
+}
+
+.css_VideoConnectionLinkageDraftCurrSelected.css_webrtcConnectionAnchor_peer_connected {
+  border: 2px solid rgba(0, 255, 0, 0.5);
+  outline: 2px inset rgba(200, 0, 255, 0.5);
+}
+
+.css_LobbyUserListSelf {
+  border: 2px solid rgba(255, 153, 0, 0.5);
+}
+
+.css_VideoConnectionLinkageDraftControlPanel {
+  border: 2px solid rgb(30, 0, 255);
+  position: fixed;
+  bottom: 10px;
+}
+
+.scrollAfterEnd::before {
+  height: 1600px;
+  content: "";
+  display: block;
+}
+
+.css_test {
+  background-color: red;
+}/*# sourceMappingURL=index.module.css.map */
