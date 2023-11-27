@@ -4,9 +4,24 @@ import App from './App';
                        
 import io, { Socket } from 'socket.io-client';
 import { SignalserverWebsocketMsgType } from './webrtcVideoCommunication/messageSchema/WebSocketMessage';
-import { SignalserverWebsocketClientId } from './webrtcVideoCommunication/dataStructure/WebrtcConnectionAnchor';
+import { SignalserverWebsocketClientId } from './webrtcVideoCommunication/messageSchema/WebrtcConnectionAnchorLocation';
 import { SocketioClientUtil } from './util/socketio/SocketioUtil';
 import { WaitTooLongException } from './exception/WaitTooLongException';
+import { enableMapSet } from 'immer';
+
+
+  
+                                            
+     
+                                                                                                                                                                                                                                                                                                     
+     
+                                                                                          
+     
+                                                                                                       
+     
+                                                      
+                                                                                
+enableMapSet();
 
                     
                                                                                                                

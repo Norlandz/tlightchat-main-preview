@@ -1,31 +1,33 @@
 import * as React from 'react';
 import * as ReactRedux from 'react-redux';
 import { SignalserverWebsocketMsgType } from '../messageSchema/WebSocketMessage';
-import { WebrtcConnectionAnchorLocation } from '../dataStructure/WebrtcConnectionAnchor';
+import { WebrtcConnectionAnchorLocation } from '../messageSchema/WebrtcConnectionAnchorLocation';
 import { WebrtcConnectionAnchor } from '../dataStructure/WebrtcConnectionAnchor';
 import { initRun, signalserverWebsocketClientId_self_sessionReactApp } from '../../main';
 import {
-  RootState,
-  sliceLobbyUserList, sliceVideoConnectionLinkageDraftCurrSelected
-} from '../reactContext/WebrtcConnectionAnchorIdContext';
+  RootState, 
+} from '../redux/ReduxStore';
+import { slice_lobbyUserList } from '../redux/slice_lobbyUserList';
 import styles from '../../index.module.css';
 import { LobbyUserList } from '../dataStructure/LobbyUserList';
 import { plainToInstance } from 'class-transformer';
+import { slice_webrtcConnectionAnchorLocation_peer } from '../redux/slice_videoConnectionLinkageDraftCurrSelected';
 
                
 
 export const LobbyUserListPanel: React.FC = () => {
                                                   
-  const lobbyUserList_rst = ReactRedux.useSelector((state: RootState) => state.reducerLobbyUserList);
-  const mppWebrtcConnectionAnchor_rst = ReactRedux.useSelector((state: RootState) => state.reducerMppWebrtcConnectionAnchor);
-  const videoConnectionLinkageDraftCurrSelected_rst = ReactRedux.useSelector((state: RootState) => state.reducerVideoConnectionLinkageDraftCurrSelected);
+  const lobbyUserList_rst = ReactRedux.useSelector((state: RootState) => state.reducer_lobbyUserList);
+  const mppWebrtcConnectionAnchor_rst = ReactRedux.useSelector((state: RootState) => state.reducer_mppWebrtcConnectionAnchor);
+  const webrtcConnectionAnchorLocation_self_currSel_rst = ReactRedux.useSelector((state: RootState) => state.reducer_videoConnectionLinkageDraftCurrSelected.reducer_webrtcConnectionAnchorLocation_self);
+  const webrtcConnectionAnchorLocation_peer_currSel_rst = ReactRedux.useSelector((state: RootState) => state.reducer_videoConnectionLinkageDraftCurrSelected.reducer_webrtcConnectionAnchorLocation_peer);
 
   const dispatch = ReactRedux.useDispatch();
 
   React.useEffect(() => {
     const socketio_listener = (lobbyUserList_jsobj: LobbyUserList) => {
       const lobbyUserList = plainToInstance(LobbyUserList, lobbyUserList_jsobj as unknown);
-      dispatch(sliceLobbyUserList.actions.overwriteList(lobbyUserList));
+      dispatch(slice_lobbyUserList.actions.overwriteList(lobbyUserList));
     };
     initRun.socket.on(SignalserverWebsocketMsgType.lobbyUserList, socketio_listener);
     return () => {
@@ -34,8 +36,8 @@ export const LobbyUserListPanel: React.FC = () => {
   }, [dispatch]);                              
 
   let webrtcConnectionAnchor_self: WebrtcConnectionAnchor | undefined;
-  if (videoConnectionLinkageDraftCurrSelected_rst.webrtcConnectionAnchorLocation_self) {
-    webrtcConnectionAnchor_self = mppWebrtcConnectionAnchor_rst.get(videoConnectionLinkageDraftCurrSelected_rst.webrtcConnectionAnchorLocation_self.webrtcConnectionAnchorId);
+  if (webrtcConnectionAnchorLocation_self_currSel_rst) {
+    webrtcConnectionAnchor_self = mppWebrtcConnectionAnchor_rst.get(webrtcConnectionAnchorLocation_self_currSel_rst.webrtcConnectionAnchorId);
   }
 
   return (
@@ -64,7 +66,7 @@ export const LobbyUserListPanel: React.FC = () => {
                       className={
                                                                        
                                           
-                        (videoConnectionLinkageDraftCurrSelected_rst.webrtcConnectionAnchorLocation_peer?.equals(webrtcConnectionAnchorLocation_peer) ? styles.css_VideoConnectionLinkageDraftCurrSelected : '')
+                        (webrtcConnectionAnchorLocation_peer_currSel_rst?.equals(webrtcConnectionAnchorLocation_peer) ? styles.css_VideoConnectionLinkageDraftCurrSelected : '')
                         + ' ' +
                         (webrtcConnectionAnchor_self?.webrtcConnectionAnchorLocation_peer ? styles.css_webrtcConnectionAnchor_peer_connected : '')}
                     >
@@ -73,7 +75,7 @@ export const LobbyUserListPanel: React.FC = () => {
                       <button
                         disabled={signalserverWebsocketClientId_peer === signalserverWebsocketClientId_self_sessionReactApp}
                         onClick={async function select_webrtcConnectionAnchorLocation_peer() {
-                          dispatch(sliceVideoConnectionLinkageDraftCurrSelected.actions.select_webrtcConnectionAnchorLocation_peer(webrtcConnectionAnchorLocation_peer));
+                          dispatch(slice_webrtcConnectionAnchorLocation_peer.actions.select_webrtcConnectionAnchorLocation_peer(webrtcConnectionAnchorLocation_peer));
                         }}
                       >
                         select_webrtcConnectionAnchorLocation

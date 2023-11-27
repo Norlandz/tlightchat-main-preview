@@ -3,10 +3,10 @@ import * as ReactRedux from 'react-redux';
 import { WebcamVideo } from '../simple/compnent/WebcamVideo';
 import { initRun } from '../../main';
 import {
-  sliceMppMediaStreamLocalSelf,
-  RootState, sliceVideoConnectionLinkageDraftCurrSelected
-} from '../reactContext/WebrtcConnectionAnchorIdContext';
+  RootState} from '../redux/ReduxStore';
+import { slice_mppMediaStreamLocalSelf } from '../redux/slice_mppMediaStreamLocalSelf';
 import styles from '../../index.module.css';
+import { slice_mediaStreamLocalSelf } from '../redux/slice_videoConnectionLinkageDraftCurrSelected';
 
                
 const MediaStreamLocalSelfRcomp: React.FC<{ mediaStreadLocalSelf: MediaStream; }> = ({ mediaStreadLocalSelf }) => {
@@ -14,25 +14,25 @@ const MediaStreamLocalSelfRcomp: React.FC<{ mediaStreadLocalSelf: MediaStream; }
 
                                    
   React.useEffect(() => {
-    dispatch(sliceVideoConnectionLinkageDraftCurrSelected.actions.select_mediaStreadLocalSelf(mediaStreadLocalSelf));
+    dispatch(slice_mediaStreamLocalSelf.actions.select_mediaStreadLocalSelf(mediaStreadLocalSelf));
   }, []);                                
 
 
         
-  const videoConnectionLinkageDraftCurrSelected_rst = ReactRedux.useSelector((state: RootState) => state.reducerVideoConnectionLinkageDraftCurrSelected);
+  const mediaStreamLocalSelf_currSel_rst = ReactRedux.useSelector((state: RootState) => state.reducer_videoConnectionLinkageDraftCurrSelected.reducer_mediaStreamLocalSelf);
 
   return (
     <li
                         
       className={styles.css_MediaStreamLocalSelfRcomp +
         ' ' +
-        (videoConnectionLinkageDraftCurrSelected_rst.mediaStreamLocalSelf === mediaStreadLocalSelf ? styles.css_VideoConnectionLinkageDraftCurrSelected : '')
+        (mediaStreamLocalSelf_currSel_rst === mediaStreadLocalSelf ? styles.css_VideoConnectionLinkageDraftCurrSelected : '')
                                                         
       }
     >
       <button
         onClick={function select_mediaStreadLocalSelf() {
-          dispatch(sliceVideoConnectionLinkageDraftCurrSelected.actions.select_mediaStreadLocalSelf(mediaStreadLocalSelf));
+          dispatch(slice_mediaStreamLocalSelf.actions.select_mediaStreadLocalSelf(mediaStreadLocalSelf));
         }}
       >
         select_mediaStreadLocalSelf
@@ -44,12 +44,12 @@ const MediaStreamLocalSelfRcomp: React.FC<{ mediaStreadLocalSelf: MediaStream; }
 };
 
 export const MediaStreamLocalSelfGridPanel: React.FC = () => {
-  const mppMediaStreamLocalSelf_rst = ReactRedux.useSelector((state: RootState) => state.reducerMppMediaStreamLocalSelf);
+  const mppMediaStreamLocalSelf_rst = ReactRedux.useSelector((state: RootState) => state.reducer_mppMediaStreamLocalSelf);
   const dispatch = ReactRedux.useDispatch();
 
   const add_mediaStreamLocalSelfRcomp = async () => {
     const mediaStream = await initRun.getLocalMediaStream();        
-    dispatch(sliceMppMediaStreamLocalSelf.actions.addToMpp(mediaStream));
+    dispatch(slice_mppMediaStreamLocalSelf.actions.addToMpp(mediaStream));
   };
 
                                    

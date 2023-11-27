@@ -45,4 +45,12 @@ pre {
 
 .css_test {
   background-color: red;
+}
+
+.css_buttonDisabled_byXstate {
+  border-right: 5px solid rgba(200, 0, 0, 0.5);
+}
+
+.css_buttonDisabled_byManualCode {
+  /*  */
 }/*# sourceMappingURL=index.module.css.map */

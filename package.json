@@ -28,6 +28,7 @@
     "socket.io": "^4.7.2",
     "socket.io-client": "^4.7.2",
     "uuid": "^9.0.1",
+    "winston": "^3.11.0",
     "ws": "^8.14.2",
     "xstate": "^4.38.3"
   },

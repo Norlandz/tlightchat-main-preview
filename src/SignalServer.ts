@@ -8,7 +8,7 @@ import { instrument } from '@socket.io/admin-ui';
 import http from 'http';
 import 'reflect-metadata';
 import { SignalserverWebsocketMsgType, SignalserverWebsocketMsg, WebrtcConnectionEventType, WebrtcConnectionEvent } from './webrtcVideoCommunication/messageSchema/WebSocketMessage';
-import { WebrtcConnectionAnchorLocation, WebrtcConnectionAnchorId, SignalserverWebsocketClientId } from './webrtcVideoCommunication/dataStructure/WebrtcConnectionAnchor';
+import { WebrtcConnectionAnchorLocation, WebrtcConnectionAnchorId, SignalserverWebsocketClientId } from './webrtcVideoCommunication/messageSchema/WebrtcConnectionAnchorLocation';
 import { LobbyUserList, LobbyUserStatus } from './webrtcVideoCommunication/dataStructure/LobbyUserList';
 import dayjs from 'dayjs';
 import { instanceToPlain, plainToInstance } from 'class-transformer';
@@ -224,12 +224,14 @@ function webSocketOnConnection(socket: Socketio.Socket) {
   socket.on(
     WebrtcConnectionEventType.offerDescription_Sent,
     sockeioErrorHandlerWrapper((signalserverWebsocketMsg_jsobj: SignalserverWebsocketMsg) => {
+                                                                                                           
       const signalserverWebsocketMsg = socketEmit_PeerLoc_serverSideRedelegate_helper(signalserverWebsocketMsg_jsobj);
     })
   );
   socket.on(
     WebrtcConnectionEventType.offerDescription_Accepted_answerDescription_Sent,
     sockeioErrorHandlerWrapper((signalserverWebsocketMsg_jsobj: SignalserverWebsocketMsg) => {
+                                                                                                                                      
       const signalserverWebsocketMsg = socketEmit_PeerLoc_serverSideRedelegate_helper(signalserverWebsocketMsg_jsobj);
     })
   );

@@ -1,7 +1,7 @@
 import { signalserverWebsocketClientId_self_sessionReactApp, signalserverWebsocketClientId_self_sessionReactApp_errMsg } from './main';
 import AppSemantic from './webrtcVideoCommunication/AppSemantic';
 import { Provider } from 'react-redux';
-import { store } from './webrtcVideoCommunication/reactContext/WebrtcConnectionAnchorIdContext';
+import { store } from './webrtcVideoCommunication/redux/ReduxStore';
 
 export default function App() {
   return (

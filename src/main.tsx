@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import { InitRun } from './InitRun';
-
+import { enableMapSet } from 'immer';
 
 const initRun = new InitRun();
 await initRun.run_withTimeout(1000);

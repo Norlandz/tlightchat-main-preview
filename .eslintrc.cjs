@@ -63,6 +63,7 @@ module.exports = {
     '@typescript-eslint/no-floating-promises': 'error',
     '@typescript-eslint/await-thenable': 'error',
     'no-inner-declarations': 'off',
+    'no-constant-condition': 'warn',
 
     // https://github.com/vercel/next.js/discussions/24254
     // https://nextjs.org/docs/pages/building-your-application/configuring/eslint#additional-configurations

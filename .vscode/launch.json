@@ -24,6 +24,7 @@
       "runtimeArgs": [],
       "program": "${file}",
       "args": [],
+      "outputCapture": "std", // for winston logger
       "skipFiles": [
         "<node_internals>/**",
         "**/node_modules/**",

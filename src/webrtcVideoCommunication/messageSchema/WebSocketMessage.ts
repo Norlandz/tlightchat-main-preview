@@ -1,6 +1,6 @@
 import { Type } from 'class-transformer';
 import 'reflect-metadata';
-import { SignalserverWebsocketClientId, WebrtcConnectionAnchorLocation } from '../dataStructure/WebrtcConnectionAnchor';
+import { SignalserverWebsocketClientId, WebrtcConnectionAnchorLocation } from './WebrtcConnectionAnchorLocation';
                                                                                         
 import { v4 as uuidv4 } from 'uuid';
 
@@ -85,22 +85,24 @@ export class SignalserverWebsocketMsg {
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
                                                                                              
                                                            
-  @Type(() => Object, {
-    discriminator: {
-      property: '__typeDiscriminatorForClassTransformer',
-      subTypes: [
-        { value: WebrtcConnectionAnchorLocation, name: 'WebrtcConnectionAnchorLocation' },
-        { value: SignalserverClientEventSessionMailbox, name: 'SignalserverClientEventSessionMailbox' },
-      ],
-    },
+                          
+                       
+                                                            
+                    
+                                                                                             
+                                                                                                           
+           
          
-                                                                                                                                                                                                                 
-         
-                                                     
-                                                                               
-    keepDiscriminatorProperty: true,
-  })
-  public readonly msgTo: WebrtcConnectionAnchorLocation | null | SignalserverClientEventSessionMailbox;
+            
+                                                                                                                                                                                                                    
+            
+                                                        
+                                                                                  
+                                       
+       
+                                                                                                          
+  @Type(() => WebrtcConnectionAnchorLocation)
+  public readonly msgTo: WebrtcConnectionAnchorLocation | null;
   public readonly msgReceiverType: SignalserverWebsocketMsgReceiverType | null;
 
   constructor(

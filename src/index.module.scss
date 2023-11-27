@@ -1,6 +1,6 @@
-@use "sass:list";
-@use "sass:map";
-@use "./_scssLibNt/scssGeneralUtil";
+// @use "sass:list";
+// @use "sass:map";
+// @use "./_scssLibNt/scssGeneralUtil";
 
 // html {
 //   position: relative;
@@ -116,3 +116,12 @@ pre {
 .css_test {
   background-color: red;
 }
+
+.css_buttonDisabled_byXstate {
+  border-right: 5px solid rgb(200, 0, 0, 0.5);
+}
+.css_buttonDisabled_byManualCode {
+  /*  */
+  // border-left: 1px solid rgb(200, 0, 0, 0.5);
+}
+

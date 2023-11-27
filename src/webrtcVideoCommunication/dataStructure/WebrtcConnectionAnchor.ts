@@ -7,8 +7,14 @@ import { AlreadyConnectedWithAPeerException } from '../exception/AlreadyConnecte
                                                                                             
                                              
 import { v4 as uuidv4 } from 'uuid';
-                                                                                 
+                                                                                
 import io, { Socket } from 'socket.io-client';
+                                                                                 
+import { EventData, SCXML, State } from 'xstate';
+                                                                                                                               
+import { WebrtcConnectionService } from '../service/WebrtcConnectionService';
+import { WebrtcConnectionAnchorLocation, SignalserverWebsocketClientId, WebrtcConnectionAnchorId } from '../messageSchema/WebrtcConnectionAnchorLocation';
+import { MppWebrtcConnectionAnchor } from './MppWebrtcConnectionAnchor';
 
                             
                                                                                                    
@@ -93,6 +99,9 @@ export class WebrtcConnectionAnchor {
                                                
   }
 
+             
+  public readonly webrtcConnectionService = new WebrtcConnectionService(this);
+
                                                                                              
 
              
@@ -105,55 +114,6 @@ export class WebrtcConnectionAnchor {
 
              
 
-  toString(): string {
-    return JSON.stringify(this);
-  }
-}
-
-export class MppWebrtcConnectionAnchor extends Map<WebrtcConnectionAnchorId, WebrtcConnectionAnchor> {
-  uuid = uuidv4();          
-  constructor(mppWebrtcConnectionAnchor?: MppWebrtcConnectionAnchor) {
-    super(mppWebrtcConnectionAnchor);
-  }
-}
-
-export class MppMediaStream extends Map<MediaStreamId, MediaStream> {
-  constructor(mppMediaStream?: MppMediaStream) {
-    super(mppMediaStream);
-  }
-}
-
-               
-
-   
-                                                        
-                                                                           
-   
-   
-                                             
-                                                                                                
-                                                                                                                                   
-   
-declare const webrtcConnectionAnchorIdSymbol: unique symbol;
-export type WebrtcConnectionAnchorId = string & { [webrtcConnectionAnchorIdSymbol]: never };
-declare const signalserverWebsocketClientIdSymbol: unique symbol;
-export type SignalserverWebsocketClientId = string & { [signalserverWebsocketClientIdSymbol]: never };
-declare const mediaStreamIdSymbol: unique symbol;
-export type MediaStreamId = string & { [mediaStreamIdSymbol]: never };
-
-export class WebrtcConnectionAnchorLocation {
-  constructor(
-    public readonly signalserverWebsocketClientId: SignalserverWebsocketClientId,
-    public readonly webrtcConnectionAnchorId: WebrtcConnectionAnchorId   
-  ) {}
-
-                    
-  readonly __typeDiscriminatorForClassTransformer = 'WebrtcConnectionAnchorLocation';
-                                                                                                          
-
-  equals(other: WebrtcConnectionAnchorLocation): boolean {
-    return this.signalserverWebsocketClientId === other.signalserverWebsocketClientId && this.webrtcConnectionAnchorId === other.webrtcConnectionAnchorId;
-  }
   toString(): string {
     return JSON.stringify(this);
   }

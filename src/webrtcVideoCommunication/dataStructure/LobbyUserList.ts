@@ -1,6 +1,6 @@
 import { Transform, Type, plainToInstance } from 'class-transformer';
 import { SignalserverWebsocketMsg } from '../messageSchema/WebSocketMessage';
-import { SignalserverWebsocketClientId, WebrtcConnectionAnchorId, WebrtcConnectionAnchorLocation } from './WebrtcConnectionAnchor';
+import { SignalserverWebsocketClientId, WebrtcConnectionAnchorId, WebrtcConnectionAnchorLocation } from '../messageSchema/WebrtcConnectionAnchorLocation';
 import 'reflect-metadata';
 
 import { NoSuchItemException } from '../../exception/NoSuchItemException';

@@ -36,6 +36,7 @@
     // "rootDir": ".",
     "outDir": "dist",
     //
+    "allowJs": false, // try for speed 
     // >" Error 
     // The inferred type of 'counterSlice' cannot be named without a reference to '.pnpm/immer@9.0.21/node_modules/immer/dist/internal.js'. This is likely not portable. A type annotation is necessary.ts(2742)
     // https://stackoverflow.com/questions/54525342/error-ts2742-the-inferred-type-of-username-cannot-be-named-without-a-referenc
@@ -55,6 +56,10 @@
   "include": [
     "src", // ... said glob is weird no_knowlres // File specification cannot end in a recursive directory wildcard ('**'): '/src/**'.ts
     "test",
+    // ;not_working; "/src/**/*.@(ts|tsx|js|jsx|scss|css|cts|mts|cjs|mjs)",
+    // ;not_working; "/test/**/*.@(ts|tsx|js|jsx|scss|css|cts|mts|cjs|mjs)",
+    // ;not_working; "./src/**/*.{ts,tsx,js,jsx,scss,css,cts,mts,cjs,mjs}",
+    // ;not_working; "./test/**/*.{ts,tsx,js,jsx,scss,css,cts,mts,cjs,mjs}",
     // "**/*.ts",
     // "**/*.tsx",
     // "./Globals.d.ts"
@@ -62,7 +67,11 @@
     // ".next/types/**/*.ts",
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "**/node_modules/*",
+    "/node_modules/**/*",
+    ".git",
+    "/.git/**/*",
   ],
   "references": [
     {
