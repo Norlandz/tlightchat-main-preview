@@ -4,7 +4,7 @@ import { get_webrtcConnectionAnchor_self_helper } from '../dataStructure/WebrtcC
 import { WebrtcConnectionAnchorLocation } from '../messageSchema/WebrtcConnectionAnchorLocation';
 import { RootState } from '../redux/ReduxStore';
 import styles from '../../index.module.css';
-import { slice_webrtcConnectionAnchorLocation_peer } from '../redux/slice_videoConnectionLinkageDraftCurrSelected';
+import { slice_webrtcConnectionAnchorLocation_peer_currSel } from '../redux/slice_videoConnectionLinkageDraftCurrSelected';
 
                
                                                                                                                                                       
@@ -22,7 +22,7 @@ export const OfferSentReceivedListPanel: React.FC = () => {
                                                                                                                  
   return (
     <div>
-      <div>
+      <div id={styles.cssId_offerSendList}>
         offer sent:
         <ul>
           {Array.from(webrtcConnectionAnchor_self.offerSentList.mpp_OfferSentReceived, ([signalserverWebsocketClientId_peer_msgTo, mpp_webrtcConnectionAnchorId_peer]) => {
@@ -52,7 +52,7 @@ export const OfferSentReceivedListPanel: React.FC = () => {
                         <code>{webrtcConnectionAnchorId_peer}</code> <code>{webrtcConnectionAnchor_self.webrtcConnectionAnchorLocation_peer ? 'connected *<' : ''}</code>{' '}
                         <button
                           onClick={async function select_webrtcConnectionAnchorLocation_peer() {
-                            dispatch(slice_webrtcConnectionAnchorLocation_peer.actions.select_webrtcConnectionAnchorLocation_peer(webrtcConnectionAnchorLocation_peer_acceptor));
+                            dispatch(slice_webrtcConnectionAnchorLocation_peer_currSel.actions.select_webrtcConnectionAnchorLocation_peer(webrtcConnectionAnchorLocation_peer_acceptor));
                           }}
                         >
                           select_webrtcConnectionAnchorLocation_peer
@@ -76,7 +76,7 @@ export const OfferSentReceivedListPanel: React.FC = () => {
         </ul>
       </div>
 
-      <div>
+      <div id={styles.cssId_offerReceivedList}>
         offer received:
         {                                                                        }
         <ul>
@@ -105,7 +105,7 @@ export const OfferSentReceivedListPanel: React.FC = () => {
                         <code>{webrtcConnectionAnchorId_peer}</code> <code>{webrtcConnectionAnchor_self.webrtcConnectionAnchorLocation_peer ? 'connected *<' : ''}</code>{' '}
                         <button
                           onClick={async function select_webrtcConnectionAnchorLocation_peer() {
-                            dispatch(slice_webrtcConnectionAnchorLocation_peer.actions.select_webrtcConnectionAnchorLocation_peer(webrtcConnectionAnchorLocation_peer_initiator));
+                            dispatch(slice_webrtcConnectionAnchorLocation_peer_currSel.actions.select_webrtcConnectionAnchorLocation_peer(webrtcConnectionAnchorLocation_peer_initiator));
                           }}
                         >
                           select_webrtcConnectionAnchorLocation_peer
@@ -121,7 +121,7 @@ export const OfferSentReceivedListPanel: React.FC = () => {
         </ul>
       </div>
       
-      <div>
+      <div id={styles.cssId_offerConnectedList}>
         offer connected:
         <ul>
           {Array.from(webrtcConnectionAnchor_self.offerConnectedList.mpp_OfferSentReceived, ([signalserverWebsocketClientId_peer_msgFrom, mpp_webrtcConnectionAnchorId_peer]) => {
@@ -149,7 +149,7 @@ export const OfferSentReceivedListPanel: React.FC = () => {
                         <code>{webrtcConnectionAnchorId_peer}</code> <code>{webrtcConnectionAnchor_self.webrtcConnectionAnchorLocation_peer ? 'connected *<' : ''}</code>{' '}
                         <button
                           onClick={async function select_webrtcConnectionAnchorLocation_peer() {
-                            dispatch(slice_webrtcConnectionAnchorLocation_peer.actions.select_webrtcConnectionAnchorLocation_peer(webrtcConnectionAnchorLocation_peer_initiator));
+                            dispatch(slice_webrtcConnectionAnchorLocation_peer_currSel.actions.select_webrtcConnectionAnchorLocation_peer(webrtcConnectionAnchorLocation_peer_initiator));
                           }}
                         >
                           select_webrtcConnectionAnchorLocation_peer

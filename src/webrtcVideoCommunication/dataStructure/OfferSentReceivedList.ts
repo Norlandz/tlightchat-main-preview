@@ -169,13 +169,23 @@ class OfferSentReceivedList {
       if (signalserverWebsocketClientId_peer !== msgToFrom.signalserverWebsocketClientId) {
         this._mpp_OfferSentReceived.delete(signalserverWebsocketClientId_peer);                                                                             
       } else {
-        for (const [webrtcConnectionAnchorId_peer, gp_event_OfferSentReceived] of mpp_webrtcConnectionAnchorId_peer) {
+        for (const [webrtcConnectionAnchorId_peer, signalserverWebsocketMsg] of mpp_webrtcConnectionAnchorId_peer) {
           if (webrtcConnectionAnchorId_peer !== msgToFrom.webrtcConnectionAnchorId) {
             mpp_webrtcConnectionAnchorId_peer.delete(webrtcConnectionAnchorId_peer);
           }
         }
       }
     }
+  }
+
+  toList(): WebrtcConnectionAnchorLocation[] {
+    const list: WebrtcConnectionAnchorLocation[] = [];
+    for (const [signalserverWebsocketClientId_peer, mpp_webrtcConnectionAnchorId_peer] of this._mpp_OfferSentReceived) {
+      for (const [webrtcConnectionAnchorId_peer, signalserverWebsocketMsg] of mpp_webrtcConnectionAnchorId_peer) {
+        list.push(new WebrtcConnectionAnchorLocation(signalserverWebsocketClientId_peer, webrtcConnectionAnchorId_peer));
+      }
+    }
+    return list;
   }
 
   clear() {
@@ -185,7 +195,7 @@ class OfferSentReceivedList {
   get_OfferSentReceived(msgToFrom: WebrtcConnectionAnchorLocation) {
     const mpp_webrtcConnectionAnchorId_peer = this._mpp_OfferSentReceived.get(msgToFrom.signalserverWebsocketClientId);
     if (mpp_webrtcConnectionAnchorId_peer === undefined) throw new TypeError();
-    const signalserverWebsocketMsg_fromPeer = mpp_webrtcConnectionAnchorId_peer.get(msgToFrom.webrtcConnectionAnchorId)
+    const signalserverWebsocketMsg_fromPeer = mpp_webrtcConnectionAnchorId_peer.get(msgToFrom.webrtcConnectionAnchorId);
     if (signalserverWebsocketMsg_fromPeer === undefined) throw new TypeError();
     return signalserverWebsocketMsg_fromPeer;
   }

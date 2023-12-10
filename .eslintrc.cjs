@@ -25,11 +25,12 @@
 //   },
 // };
 
+/** @type {import('eslint').Linter.Config} */ // https://github.com/typescript-eslint/typescript-eslint/issues/2153
 module.exports = {
   root: true,
   env: { browser: true, es2020: true },
-  extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended', 'plugin:react-hooks/recommended'], // , 'next/core-web-vitals', 'plugin:@next/next/recommended'],
-  ignorePatterns: ['dist', '.eslintrc.cjs', 'vite.config.ts', '**/node_modules/**', 'Globals.d.ts'], // , 'next.config.js'
+  extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended', 'plugin:react-hooks/recommended'], // , 'next/core-web-vitals', 'plugin:@next/next/recommended' , 'react-app', 'react-app/jest'
+  ignorePatterns: ['dist', '.eslintrc.cjs', '**/node_modules/**/*', '/coverage', 'config/jest/*.cjs'], // 'vite.config.ts', 'next.config.js', 'jest.config.ts', 'jest.setup.ts', 'Globals.d.ts'
   parser: '@typescript-eslint/parser',
   parserOptions: {
     project: ['./tsconfig.json'], // 'H:/Using/TLightChat/tlightchat-main/tsconfig.json',

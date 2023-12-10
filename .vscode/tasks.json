@@ -1,0 +1,18 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    // ;basic[ts compile to js];{
+    // ;basic[ts compile to js];  "type": "typescript",
+    // ;basic[ts compile to js];  "tsconfig": "tsconfig.json",
+    // ;basic[ts compile to js];  // "problemMatcher": [
+    // ;basic[ts compile to js];  //   "$tsc"
+    // ;basic[ts compile to js];  // ],
+    // ;basic[ts compile to js];  "option": "watch",
+    // ;basic[ts compile to js];  "problemMatcher": [
+    // ;basic[ts compile to js];    "$tsc-watch"
+    // ;basic[ts compile to js];  ],
+    // ;basic[ts compile to js];  "group": "build",
+    // ;basic[ts compile to js];  "label": "tsc -p tsconfig.json --watch"
+    // ;basic[ts compile to js];}
+  ]
+}

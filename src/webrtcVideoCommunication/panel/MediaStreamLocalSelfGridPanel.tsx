@@ -1,12 +1,12 @@
 import * as React from 'react';
 import * as ReactRedux from 'react-redux';
 import { WebcamVideo } from '../simple/compnent/WebcamVideo';
-import { initRun } from '../../main';
+import { initRun, rtcConfig } from '../../InitRun';
 import {
   RootState} from '../redux/ReduxStore';
 import { slice_mppMediaStreamLocalSelf } from '../redux/slice_mppMediaStreamLocalSelf';
 import styles from '../../index.module.css';
-import { slice_mediaStreamLocalSelf } from '../redux/slice_videoConnectionLinkageDraftCurrSelected';
+import { slice_mediaStreamLocalSelf_currSel } from '../redux/slice_videoConnectionLinkageDraftCurrSelected';
 
                
 const MediaStreamLocalSelfRcomp: React.FC<{ mediaStreadLocalSelf: MediaStream; }> = ({ mediaStreadLocalSelf }) => {
@@ -14,7 +14,7 @@ const MediaStreamLocalSelfRcomp: React.FC<{ mediaStreadLocalSelf: MediaStream; }
 
                                    
   React.useEffect(() => {
-    dispatch(slice_mediaStreamLocalSelf.actions.select_mediaStreadLocalSelf(mediaStreadLocalSelf));
+    dispatch(slice_mediaStreamLocalSelf_currSel.actions.select_mediaStreadLocalSelf(mediaStreadLocalSelf));
   }, []);                                
 
 
@@ -32,7 +32,7 @@ const MediaStreamLocalSelfRcomp: React.FC<{ mediaStreadLocalSelf: MediaStream; }
     >
       <button
         onClick={function select_mediaStreadLocalSelf() {
-          dispatch(slice_mediaStreamLocalSelf.actions.select_mediaStreadLocalSelf(mediaStreadLocalSelf));
+          dispatch(slice_mediaStreamLocalSelf_currSel.actions.select_mediaStreadLocalSelf(mediaStreadLocalSelf));
         }}
       >
         select_mediaStreadLocalSelf

@@ -69,16 +69,17 @@ pre {
 // ############
 
 .css_MediaStreamLocalSelfRcomp, .css_WebrtcConnectionAnchorRcomp {
-  height: 100px; // @jsx
+  height: 70px; // @jsx
   // height: 400px; // @jsx
   border: 1px solid rgb(200, 200, 200, 0.5);
   position: relative;
-  overflow: scroll;
+  // overflow: scroll;
+  overflow: auto;
   resize: both;
 }
 
 .css_WebcamVideo { 
-  height: 80%;
+  height: 60%;
   // height: 10%;
 }
 
@@ -99,10 +100,27 @@ pre {
   border: 2px solid rgb(255, 153, 0, 0.5);
 }
 
-.css_VideoConnectionLinkageDraftControlPanel {
-  border: 2px solid rgb(30, 0, 255);
+#cssId_lobbyUserList {
+  border: 1px solid rgb(128, 128, 128, 0.5);
+}
+#cssId_offerSendList {
+  border: 1px solid rgb(128, 128, 128, 0.5);
+}
+#cssId_offerReceivedList {
+  border: 1px solid rgb(128, 128, 128, 0.5);
+}
+#cssId_offerConnectedList {
+  border: 1px solid rgb(128, 128, 128, 0.5);
+}
+
+#cssId_VideoConnectionLinkageDraftControlPanel {
+  border: 2px solid rgb(30, 0, 255, 0.5);
   position: fixed;
   bottom: 10px;
+}
+
+#cssId_webrtcConnectionAnchor_customName {
+  border: 1px solid rgb(128, 128, 128, 0.5);
 }
 
 
@@ -121,7 +139,6 @@ pre {
   border-right: 5px solid rgb(200, 0, 0, 0.5);
 }
 .css_buttonDisabled_byManualCode {
-  /*  */
-  // border-left: 1px solid rgb(200, 0, 0, 0.5);
+  border-left: 5px solid rgb(200, 0, 0, 0.5);
 }
 

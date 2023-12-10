@@ -1,6 +1,14 @@
 import { MppWebrtcConnectionAnchor } from '../dataStructure/MppWebrtcConnectionAnchor';
 import { WebrtcConnectionAnchor } from '../dataStructure/WebrtcConnectionAnchor';
-import * as Redux from '@reduxjs/toolkit';
+                                                                        
+
+                                                                                                              
+                                                                                    
+                                                                                         
+import { PayloadAction, Draft } from '@reduxjs/toolkit';                                            
+import * as toolkitRaw from '@reduxjs/toolkit';
+const { createSlice } = ((toolkitRaw as any).default ?? toolkitRaw) as typeof toolkitRaw;
+                                                          
 
                
    
@@ -18,7 +26,7 @@ import * as Redux from '@reduxjs/toolkit';
                                                     
    
 
-export const slice_mppWebrtcConnectionAnchor = Redux.createSlice({
+export const slice_mppWebrtcConnectionAnchor = createSlice({
   name: 'slice_mppWebrtcConnectionAnchor',
            
           
@@ -63,24 +71,30 @@ export const slice_mppWebrtcConnectionAnchor = Redux.createSlice({
                                             
                                                              
                                                                                                                                                                                                                                                                                                                                                                                           
-    addToMpp: (mppWebrtcConnectionAnchor, action: Redux.PayloadAction<WebrtcConnectionAnchor>) => {
+    addToMpp: (mppWebrtcConnectionAnchor, action: PayloadAction<WebrtcConnectionAnchor>) => {
                                                         
                                                                                                                                                        
-      mppWebrtcConnectionAnchor.set(action.payload.webrtcConnectionAnchorLocation_self.webrtcConnectionAnchorId, action.payload as unknown as Redux.Draft<WebrtcConnectionAnchor>);
+                                                                                                                                                                                
+      mppWebrtcConnectionAnchor.set(action.payload.webrtcConnectionAnchorLocation_self.webrtcConnectionAnchorId, action.payload);
+                                           
+                                                                                                           
+      return MppWebrtcConnectionAnchor.init(mppWebrtcConnectionAnchor as unknown as MppWebrtcConnectionAnchor);
+                                                                                                                                                     
     },
                                                                                      
     forceRefreshMpp: (mppWebrtcConnectionAnchor) => {
+      console.log('forceRefreshMpp');
                   
-      return new MppWebrtcConnectionAnchor(mppWebrtcConnectionAnchor as unknown as MppWebrtcConnectionAnchor);
+                                                                                                                 
+      return MppWebrtcConnectionAnchor.init(mppWebrtcConnectionAnchor as unknown as MppWebrtcConnectionAnchor);
                                                                                                                                                                     
     },
-    overwriteMpp: (mppWebrtcConnectionAnchor, action: Redux.PayloadAction<MppWebrtcConnectionAnchor>) => {
-                                                        
-      return action.payload;
-    },
+                                                                                                       
+                                                           
+                               
+         
   },
 });
-
 
                                 
                                                                                                                                                                                                                                                                                                                                                                                                    
@@ -92,3 +106,15 @@ export const slice_mppWebrtcConnectionAnchor = Redux.createSlice({
                                                                                                                                                                            
                                                                                                                                  
 
+                                                               
+                                             
+                      
+                
+                                                                                                
+         
+                                                        
+         
+                                                                                                       
+         
+       
+      

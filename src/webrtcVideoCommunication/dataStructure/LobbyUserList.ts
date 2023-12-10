@@ -39,6 +39,7 @@ export class LobbyUserInfo {
                                                                                                                                                                                                                                                                                                                     
 
   public lobbyUserStatus = LobbyUserStatus.offline;
+  public customName: string | null = null;                                                 
 }
 
 export class LobbyUserList {
@@ -102,10 +103,20 @@ export class LobbyUserList {
                                                                                                       
      
   public get_lobbyUserInfo(webrtcConnectionAnchorLocation: WebrtcConnectionAnchorLocation) {
-                                                          
-    const lobbyUserInfo = this._mpp_signalserverWebsocketClientId.get(webrtcConnectionAnchorLocation.signalserverWebsocketClientId)!.get(webrtcConnectionAnchorLocation.webrtcConnectionAnchorId)!;
-    if (lobbyUserInfo === null || lobbyUserInfo === undefined) throw new NoSuchItemException();
+    const mpp_webrtcConnectionAnchorId = this._mpp_signalserverWebsocketClientId.get(webrtcConnectionAnchorLocation.signalserverWebsocketClientId);
+    if (mpp_webrtcConnectionAnchorId == null) throw new NoSuchItemException();
+    const lobbyUserInfo = mpp_webrtcConnectionAnchorId.get(webrtcConnectionAnchorLocation.webrtcConnectionAnchorId)!;
+    if (lobbyUserInfo == null) throw new NoSuchItemException();
     return lobbyUserInfo;
+                                                          
+                        
+                                                                                                   
+                                                                                                              
+                                                                       
+                                                       
+                                                                
+                     
+        
   }
 
                                                                                                                                                                         

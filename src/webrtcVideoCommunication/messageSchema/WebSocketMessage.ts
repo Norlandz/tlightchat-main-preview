@@ -14,12 +14,14 @@ export enum SignalserverWebsocketMsgType {
     
   heartbeat = 'heartbeat',
   testMessage = 'testMessage',
+    
+  waitForOtherIns_FinishTestCheck_ThenLeave = 'waitForOtherIns_FinishTestCheck_ThenLeave',
 }
 
 export enum SignalserverWebsocketMsgReceiverType {
   webrtcConnectionAnchorLocation = 'webrtcConnectionAnchorLocation',
   allWebrtcConnectionAnchorLocation = 'allWebrtcConnectionAnchorLocation',
-                                   
+  signalserver = 'signalserver',                                                                                                                             
                                                  
 }
 
@@ -31,9 +33,9 @@ export enum WebrtcConnectionEventType {
   offerDescription_Sent = 'offerDescription_Sent',
   offerDescription_Accepted_answerDescription_Sent = 'offerDescription_Accepted_answerDescription_Sent',
   iceCandidate_Sent = 'iceCandidate_Sent',
-  webrtcConnection_Closed = 'webrtcConnection_Closed',
   offerPlainSignal_Cancelled = 'offerPlainSignal_Cancelled',
   offerPlainSignal_Declined = 'offerPlainSignal_Declined',
+  webrtcConnection_Closed = 'webrtcConnection_Closed',
 }
 
 declare const eventSessionMailboxIdSymbol: unique symbol;
@@ -111,16 +113,18 @@ export class SignalserverWebsocketMsg {
     webrtcConnectionEvent: WebrtcConnectionEvent | undefined,
     msgFrom: WebrtcConnectionAnchorLocation,
     msgTo: WebrtcConnectionAnchorLocation | null,
-    msgReceiverType: SignalserverWebsocketMsgReceiverType | null
+    msgReceiverType: SignalserverWebsocketMsgReceiverType
   ) {
     if (msgReceiverType === SignalserverWebsocketMsgReceiverType.webrtcConnectionAnchorLocation) {
       if (!(msgTo instanceof WebrtcConnectionAnchorLocation)) throw new TypeError();
     } else if (msgReceiverType === SignalserverWebsocketMsgReceiverType.allWebrtcConnectionAnchorLocation) {
       if (!(msgTo === null)) throw new TypeError();
                                                                                             
-                                                        
+                                                          
                                                                                                    
                                                                                                 
+    } else if (msgReceiverType === SignalserverWebsocketMsgReceiverType.signalserver) {
+      if (!(msgTo === null)) throw new TypeError();
     } else {
       if (msgType === undefined && msgData === undefined && webrtcConnectionEvent === undefined && msgFrom === undefined && msgTo === undefined && msgReceiverType === undefined) {
                                                                                                

@@ -25,8 +25,8 @@
     // "noUnusedLocals": true,
     // "noUnusedParameters": true,
     //
-    // "esModuleInterop": false,
-    // "allowSyntheticDefaultImports": false,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true, // Jest needs this...
     //
     "experimentalDecorators": true,
     // "emitDecoratorMetadata": true, // <see [ResolveCircularDependenyWhenPlainToClass.spec.ts][ReferenceError: Cannot access 'Photo' before initialization][https://github.com/typestack/class-transformer/issues/1622][https://stackoverflow.com/questions/56870661/angular-7-2-1-es6-class-referenceerror-cannot-access-x-before-initializatio]>
@@ -36,7 +36,9 @@
     // "rootDir": ".",
     "outDir": "dist",
     //
-    "allowJs": false, // try for speed 
+    "allowJs": true, // false, // try for intellisense speed 
+    //
+    "noErrorTruncation": true, // https://stackoverflow.com/questions/53113031/how-to-see-a-fully-expanded-typescript-type-without-n-more-and
     // >" Error 
     // The inferred type of 'counterSlice' cannot be named without a reference to '.pnpm/immer@9.0.21/node_modules/immer/dist/internal.js'. This is likely not portable. A type annotation is necessary.ts(2742)
     // https://stackoverflow.com/questions/54525342/error-ts2742-the-inferred-type-of-username-cannot-be-named-without-a-referenc
@@ -54,25 +56,40 @@
     ],
   },
   "include": [
-    "src", // ... said glob is weird no_knowlres // File specification cannot end in a recursive directory wildcard ('**'): '/src/**'.ts
-    "test",
+    "src/**/*",
+    "test/**/*",
+    "Globals.d.ts",
+    // npx jest doesnt need these, dk why; but seems vscode ext ui need? no ;not_working;
+    "vite.config.ts",
+    // "jest.config.ts",
+    "jest.config.js",
+    // "jest.setupFiles.ts",
+    // "jest.setupFilesAfterEnv.ts",
+    "babel.config.js",
+    "config/**/*",
+    "__mocks__",
+    // ;working; "./src/**/*", 
+    // ;not_working; "/h:/Using/TLightChat/tlightchat-main/src/**/*", 
+    // ;not_working; "/h/Using/TLightChat/tlightchat-main/src/**/*", 
+    // ;not_working; "/Using/TLightChat/tlightchat-main/src/**/*", 
+    // ... said glob is weird no_knowlres // File specification cannot end in a recursive directory wildcard ('**'): '/src/**'.ts
+    // ;not_working; "/src/**/*", 
     // ;not_working; "/src/**/*.@(ts|tsx|js|jsx|scss|css|cts|mts|cjs|mjs)",
     // ;not_working; "/test/**/*.@(ts|tsx|js|jsx|scss|css|cts|mts|cjs|mjs)",
     // ;not_working; "./src/**/*.{ts,tsx,js,jsx,scss,css,cts,mts,cjs,mjs}",
     // ;not_working; "./test/**/*.{ts,tsx,js,jsx,scss,css,cts,mts,cjs,mjs}",
     // "**/*.ts",
     // "**/*.tsx",
-    // "./Globals.d.ts"
     // "next-env.d.ts",
     // ".next/types/**/*.ts",
   ],
-  "exclude": [
-    "node_modules",
-    "**/node_modules/*",
-    "/node_modules/**/*",
-    ".git",
-    "/.git/**/*",
-  ],
+  // "exclude": [
+  //   "node_modules",
+  //   "**/node_modules/**/*",
+  //   ".git/**/*",
+  //   "coverage/**/*",
+  //   ".next/**/*",
+  // ],
   "references": [
     {
       "path": "./tsconfig.node.json"

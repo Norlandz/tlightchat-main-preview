@@ -1,7 +1,9 @@
 import { createMachine, interpret, assign, sendParent, pure, SingleOrArray, EventObject, AnyEventObject } from 'xstate';
 import { Typegen0 } from './WebrtcConnectionStateMachine_stage_ProcessSendReceiveOffer.typegen';
 import { WebrtcConnectionStateMachineEvent } from './WebrtcConnectionStateMachine';
-import { WebrtcConnectionStateMachineEventName } from './WebrtcConnectionStateMachineEventName';
+import { WebrtcConnectionStateMachineEventTypeName } from './WebrtcConnectionStateMachineEventName';
+import { SignalserverWebsocketMsg } from '../messageSchema/WebSocketMessage';
+import { WebrtcConnectionAnchorLocation } from '../messageSchema/WebrtcConnectionAnchorLocation';
 
 export type WebrtcConnectionStateMachineContext_stage_ProcessSendReceiveOffer = {
                                                                                                                                                                                   
@@ -29,7 +31,7 @@ export type WebrtcConnectionStateMachineTypestate_stage_ProcessSendReceiveOffer 
                                                                                                                                                                                                                                                                                                                                                                                
                         
                                                                                             
-      
+     
                                                                
                                                                                                  
                                                                                       
@@ -40,8 +42,17 @@ export type WebrtcConnectionStateMachineTypestate_stage_ProcessSendReceiveOffer 
                                                                    
 const send_EventBackTo_ParentActorXst = pure<WebrtcConnectionStateMachineContext_stage_ProcessSendReceiveOffer, WebrtcConnectionStateMachineEvent>(
   (context: WebrtcConnectionStateMachineContext_stage_ProcessSendReceiveOffer, event: WebrtcConnectionStateMachineEvent) => {
-    console.log('G2','send_EventBackTo_ParentActorXst', event);
-    return sendParent({ type: event.type, msg: event.msg });                                                        
+    console.log('G2', 'send_EventBackTo_ParentActorXst', event);
+    return sendParent({
+      type: event.type,
+                   
+      signalserverWebsocketMsg: event.signalserverWebsocketMsg as SignalserverWebsocketMsg,
+                   
+      webrtcConnectionAnchorLocation_peer: event.webrtcConnectionAnchorLocation_peer as WebrtcConnectionAnchorLocation,
+                   
+      offerNegotiationSessionId: event.offerNegotiationSessionId as string,
+    });
+                                                           
   }
 );
 
@@ -63,7 +74,8 @@ export const webrtcConnectionStateMachine_stage_ProcessSendReceiveOffer = create
                          
   initial: 'stage_process_send_receive__offer_Sent',
                                                                                                                                                                
-  strict: true,
+                  
+  predictableActionArguments: true,
   states: {
     stage_process_send_receive__offer_Sent: {
       on: {
@@ -139,7 +151,7 @@ export const webrtcConnectionStateMachine_stage_ProcessSendReceiveOffer = create
       type: 'final',                           
       entry: [
         (context, event, _meta) => {
-          console.log('G2','final stage__OfferNegotiationSessionCompleted', event);
+          console.log('G2', 'final stage__OfferNegotiationSessionCompleted', event);
                                                                     
                                             
         },

@@ -1,21 +1,56 @@
 {
   "version": "0.2.0",
   "configurations": [
-    // {
-    //   "type": "node"
-    //   "request": "launch",
-    //   "name": "Launch Program",
-    //   "program": "${workspaceFolder}/app.js",
-    //   "skipFiles": [
-    //     "<node_internals>/**"
-    //   ],
-    // },
-    // {
-    //   "type": "chrome",
-    //   "request": "launch",
-    //   "name": "Open index.html",
-    //   "file": "h:\\Using\\tldraw-contribute\\tldraw\\apps\\examples\\src\\index.html"
-    // },
+    // ;basic run js; {
+    // ;basic run js;   "type": "node"
+    // ;basic run js;   "request": "launch",
+    // ;basic run js;   "name": "Launch Program",
+    // ;basic run js;   "program": "${workspaceFolder}/app.js",
+    // ;basic run js;   "skipFiles": [ "<node_internals>/**" ],
+    // ;basic run html; },
+    // ;basic run html; {
+    // ;basic run html;   "type": "chrome",
+    // ;basic run html;   "request": "launch",
+    // ;basic run html;   "name": "Open index.html",
+    // ;basic run html;   "file": "h:\\Using\\tldraw-contribute\\tldraw\\apps\\examples\\src\\index.html"
+    // ;basic run html; },
+    // ;basic run js compiled from ts;    {
+    // ;basic run js compiled from ts;      "type": "node",
+    // ;basic run js compiled from ts;      "request": "launch",
+    // ;basic run js compiled from ts;      "name": "Run js compiled from ts",
+    // ;basic run js compiled from ts;      // "program": "${workspaceFolder}\\src\\Print.ts",
+    // ;basic run js compiled from ts;      "program": "${file}",
+    // ;basic run js compiled from ts;      "outFiles": [
+    // ;basic run js compiled from ts;        "${workspaceFolder}/**/*.js"
+    // ;basic run js compiled from ts;      ],
+    // ;basic run js compiled from ts;      "skipFiles": [ "<node_internals>/**" ],
+    // ;basic run js compiled from ts;      // "outputCapture": "std"
+    // ;basic run js compiled from ts;    },
+    // ;run ts directly;    {
+    // ;run ts directly;      "type": "node",
+    // ;run ts directly;      "request": "launch",
+    // ;run ts directly;      "name": "Run ts file one click with ts-node/esm",
+    // ;run ts directly;      "cwd": "${workspaceFolder}",
+    // ;run ts directly;      "runtimeArgs": [
+    // ;run ts directly;        "--loader",
+    // ;run ts directly;        "ts-node/esm"
+    // ;run ts directly;        //     "tsx" // works too
+    // ;run ts directly;      ],
+    // ;run ts directly;      "program": "${file}",
+    // ;run ts directly;      "skipFiles": [ "<node_internals>/**", "node_modules/**" ]
+    // ;run ts directly;    },
+    // ;run ts directly;    {
+    // ;run ts directly;      "type": "node",
+    // ;run ts directly;      "request": "launch",
+    // ;run ts directly;      "name": "Run ts file one click with tsx",
+    // ;run ts directly;      "runtimeExecutable": "npx",
+    // ;run ts directly;      "runtimeArgs": [
+    // ;run ts directly;        "tsx"
+    // ;run ts directly;      ],
+    // ;run ts directly;      "program": "${file}",
+    // ;run ts directly;      "args": [],
+    // ;run ts directly;      "skipFiles": [ "<node_internals>/**", "node_modules/**" ]
+    // ;run ts directly;    }
     {
       "type": "node",
       "request": "launch",
@@ -35,6 +70,7 @@
       "request": "launch",
       "name": "Debug Vite",
       "url": "http://localhost:5173",
+      // "url": "http://localhost:5174",
       // "name": "Debug Nextjs client",
       // "url": "http://localhost:3000",
       // https://stackoverflow.com/questions/66147328/is-there-a-way-to-debug-code-in-vscode-initiated-with-vite
@@ -68,5 +104,37 @@
         "**/node_modules/**"
       ],
     },
+    // ;not_helpful [console log still just plain tx]; {
+    // ;not_helpful [console log still just plain tx];   "type": "node",
+    // ;not_helpful [console log still just plain tx];   "name": "Debug Jest",
+    // ;not_helpful [console log still just plain tx];   "request": "launch",
+    // ;not_helpful [console log still just plain tx];   // "runtimeExecutable": "pnpm",
+    // ;not_helpful [console log still just plain tx];   // "runtimeArgs": [
+    // ;not_helpful [console log still just plain tx];   //   "tt1"
+    // ;not_helpful [console log still just plain tx];   // ],
+    // ;not_helpful [console log still just plain tx];   "runtimeExecutable": "npx",
+    // ;not_helpful [console log still just plain tx];   // "runtimeExecutable": "",
+    // ;not_helpful [console log still just plain tx];   "runtimeArgs": [],
+    // ;not_helpful [console log still just plain tx];   "program": "jest",
+    // ;not_helpful [console log still just plain tx];   // "program": "H:/Using/TLightChat/tlightchat-main/node_modules/jest/bin/jest.js",
+    // ;not_helpful [console log still just plain tx];   "args": [
+    // ;not_helpful [console log still just plain tx];     // --runTestsByPath ./test/App.test.tsx --watch -t="print App, check online"
+    // ;not_helpful [console log still just plain tx];     "--runTestsByPath",
+    // ;not_helpful [console log still just plain tx];     // "${file}",
+    // ;not_helpful [console log still just plain tx];     "./test/App.test.tsx",
+    // ;not_helpful [console log still just plain tx];     // "--watch",
+    // ;not_helpful [console log still just plain tx];     // ;not_working; "-t",
+    // ;not_helpful [console log still just plain tx];     // ;not_working; // "\"print App, check online\""
+    // ;not_helpful [console log still just plain tx];     // ;not_working; "\"asdf\""
+    // ;not_helpful [console log still just plain tx];     // ;not_working; "-t=\"asdf\""
+    // ;not_helpful [console log still just plain tx];     "-t=asdf"
+    // ;not_helpful [console log still just plain tx];   ],
+    // ;not_helpful [console log still just plain tx];   "outputCapture": "std", // need
+    // ;not_helpful [console log still just plain tx];   // ;not_needed?; "console": "internalConsole",
+    // ;not_helpful [console log still just plain tx];   "skipFiles": [
+    // ;not_helpful [console log still just plain tx];     "<node_internals>/**",
+    // ;not_helpful [console log still just plain tx];     "**/node_modules/**"
+    // ;not_helpful [console log still just plain tx];   ],
+    // ;not_helpful [console log still just plain tx]; },
   ]
 }
