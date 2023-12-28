@@ -7,7 +7,7 @@ import { RenderResult, act, findAllByRole, findByText, queryByAttribute, render,
 import userEvent, { UserEvent } from '@testing-library/user-event';
 
 import App from '../src/App';
-import { InitRun, initRun } from '../src/InitRun';
+import { InitRun, initRun } from '../src/session/AppSession';
 import { store } from '../src/webrtcVideoCommunication/redux/ReduxStore';
 import { slice_webrtcConnectionAnchorLocation_peer_currSel, videoConnectionLinkageDraftCurrSelected_ref } from '../src/webrtcVideoCommunication/redux/slice_videoConnectionLinkageDraftCurrSelected';
 
@@ -16,7 +16,7 @@ import util from 'util';
 import { PrintUtil } from '../src/util/print/PrintUtil';
 const { printHtmlHltAnsi } = PrintUtil;
 
-import styles from '../src/index.module.css';
+import styles from '../src/scss/index.module.css';
 import { WebrtcButtonName } from '../src/webrtcVideoCommunication/service/WebrtcButtonNameType';
 import { slice_mppWebrtcConnectionAnchor } from '../src/webrtcVideoCommunication/redux/slice_mppWebrtcConnectionAnchor';
 import { WebrtcConnectionAnchor } from '../src/webrtcVideoCommunication/dataStructure/WebrtcConnectionAnchor';
@@ -358,7 +358,7 @@ class ComponentRefCommon {
                                                                                                           
                                                                        
       try {
-        const serverAckMsg = (await initRun.socketioClient_forWebrtcConnection.socket
+        const serverAckMsg = (await initRun.socketioClientSession_forWebrtcConnection.socket
           .timeout(timeout_waitForOtherIns_FinishTestCheck_ThenLeave)
           .emitWithAck(eventType, signalserverWebsocketMsg)) as string;
         console.log(serverAckMsg);
@@ -408,7 +408,7 @@ describe('Simple overall test', () => {
   afterEach(async () => {
                                            
     await act(async () => {
-      initRun.socketioClient_forWebrtcConnection.socket.close();
+      initRun.socketioClientSession_forWebrtcConnection.socket.close();
                                                                                               
                                                                       
     });

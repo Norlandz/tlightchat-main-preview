@@ -3,6 +3,10 @@ import { PrintUtil } from '../../src/util/print/PrintUtil';
 
 export function exec_reactTestingLibrary_config() {
   configure({
+                                                                   
+                                                                                               
+                                                                                            
+                                                                        
     getElementError: (message, container) => {
       let error: Error;
       if (container.outerHTML == null) {

@@ -1,9 +1,9 @@
 import { SignalserverWebsocketMsgType, SignalserverWebsocketMsg, WebrtcConnectionEventType, SignalserverWebsocketMsgReceiverType } from '../messageSchema/WebSocketMessage';
 import { WebrtcConnectionAnchorLocation } from '../messageSchema/WebrtcConnectionAnchorLocation';
-import { initRun } from '../../InitRun';
 import { slice_mppWebrtcConnectionAnchor } from '../redux/slice_mppWebrtcConnectionAnchor';
 import { NoSuchItemException } from '../../exception/NoSuchItemException';
 import { WebrtcConnectionService_lv1Abstract_WebrtcLowlevel } from './WebrtcConnectionService_lv1Abstract_WebrtcLowlevel';
+import { SocketioClientUtil } from '../../util/socketio/SocketioUtil';
 
 export class WebrtcConnectionService_lv2Abstract_OfferPlainSignal extends WebrtcConnectionService_lv1Abstract_WebrtcLowlevel {
             
@@ -11,7 +11,7 @@ export class WebrtcConnectionService_lv2Abstract_OfferPlainSignal extends Webrtc
                                                                                        
     const eventType = SignalserverWebsocketMsgType.webrtcConnectionAnchor_Online;
     const msgData = {
-      customName: this.webrtcConnectionAnchor_self.customName_self,                                   
+      customName: this.webrtcConnectionAnchor_self.connectionAnchorName_self,                                   
     };
          
                                                                                                                                                                        
@@ -23,7 +23,14 @@ export class WebrtcConnectionService_lv2Abstract_OfferPlainSignal extends Webrtc
     const msgReceiverType = SignalserverWebsocketMsgReceiverType.allWebrtcConnectionAnchorLocation;
     const webrtcConnectionEvent = undefined;
     const signalserverWebsocketMsg = new SignalserverWebsocketMsg(SignalserverWebsocketMsgType.webrtcConnectionEvent_Category, msgData, webrtcConnectionEvent, this.webrtcConnectionAnchor_self.webrtcConnectionAnchorLocation_self, msgTo, msgReceiverType);                   
-    initRun.socketioClient_forWebrtcConnection.socket.emit(eventType, signalserverWebsocketMsg, WebrtcConnectionService_lv1Abstract_WebrtcLowlevel.ackCallback);
+                                                                                                                                                                       
+    void SocketioClientUtil.emitWithAckError(
+      this.socketioClientSession_forWebrtcConnection.socket,
+      undefined,
+      eventType,
+      WebrtcConnectionService_lv1Abstract_WebrtcLowlevel.ackCallback,
+      signalserverWebsocketMsg
+    );
   }
 
   protected doAndSend__webrtcConnectionAnchor_Offline() {
@@ -33,7 +40,14 @@ export class WebrtcConnectionService_lv2Abstract_OfferPlainSignal extends Webrtc
     const msgReceiverType = SignalserverWebsocketMsgReceiverType.allWebrtcConnectionAnchorLocation;
     const webrtcConnectionEvent = undefined;
     const signalserverWebsocketMsg = new SignalserverWebsocketMsg(SignalserverWebsocketMsgType.webrtcConnectionEvent_Category, msgData, webrtcConnectionEvent, this.webrtcConnectionAnchor_self.webrtcConnectionAnchorLocation_self, msgTo, msgReceiverType);                   
-    initRun.socketioClient_forWebrtcConnection.socket.emit(eventType, signalserverWebsocketMsg, WebrtcConnectionService_lv1Abstract_WebrtcLowlevel.ackCallback);
+                                                                                                                                                                       
+    void SocketioClientUtil.emitWithAckError(
+      this.socketioClientSession_forWebrtcConnection.socket,
+      undefined,
+      eventType,
+      WebrtcConnectionService_lv1Abstract_WebrtcLowlevel.ackCallback,
+      signalserverWebsocketMsg
+    );
   }
              
             
@@ -78,7 +92,7 @@ export class WebrtcConnectionService_lv2Abstract_OfferPlainSignal extends Webrtc
     const webrtcConnectionEventType = WebrtcConnectionEventType.offerDescription_Accepted_answerDescription_Sent;
                                                                                                                
     const callback_appLogic_insideListener = async (signalserverWebsocketMsg: SignalserverWebsocketMsg) => {
-      const emt = initRun.socketioClient_forWebrtcConnection.get_emt_WebrtcConnectionAnchor(this.webrtcConnectionAnchor_self.webrtcConnectionAnchorLocation_self.webrtcConnectionAnchorId);
+      const emt = this.socketioClientSession_forWebrtcConnection.get_emt_WebrtcConnectionAnchor(this.webrtcConnectionAnchor_self.webrtcConnectionAnchorLocation_self.webrtcConnectionAnchorId);
       emt.remove_Listener_ofGivenEventType_allDepth(webrtcConnectionEventType);
 
       await this.receive__offerDescription_Accepted_answerDescription_Sent(pc, signalserverWebsocketMsg);
@@ -102,7 +116,7 @@ export class WebrtcConnectionService_lv2Abstract_OfferPlainSignal extends Webrtc
                                                                                                                
     const callback_appLogic_insideListener = async (signalserverWebsocketMsg: SignalserverWebsocketMsg) => {
                                                                                                                                                                                 
-      const emt = initRun.socketioClient_forWebrtcConnection.get_emt_WebrtcConnectionAnchor(this.webrtcConnectionAnchor_self.webrtcConnectionAnchorLocation_self.webrtcConnectionAnchorId);
+      const emt = this.socketioClientSession_forWebrtcConnection.get_emt_WebrtcConnectionAnchor(this.webrtcConnectionAnchor_self.webrtcConnectionAnchorLocation_self.webrtcConnectionAnchorId);
       emt.remove_Listener_ofGivenEventType_allDepth(webrtcConnectionEventType);
 
       await this.receive__offerDescription_Sent__sendAnswerDescription(signalserverWebsocketMsg);

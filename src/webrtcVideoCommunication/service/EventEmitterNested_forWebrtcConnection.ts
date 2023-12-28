@@ -2,11 +2,13 @@ import { EventEmitter } from 'events';
                                                                                  
                                                                                                                       
 
-import { Socket, io } from 'socket.io-client';
+import * as socketIoClient from 'socket.io-client';
 import { SignalserverWebsocketClientId, WebrtcConnectionAnchorId, WebrtcConnectionAnchorLocation } from '../messageSchema/WebrtcConnectionAnchorLocation';
 import { SignalserverWebsocketMsg, SignalserverWebsocketMsgType, WebrtcConnectionEventType } from '../messageSchema/WebSocketMessage';
 import { SocketioClientUtil } from '../../util/socketio/SocketioUtil';
 import { plainToInstance } from 'class-transformer';
+import { UserAuth0Id, UserWeb } from '../../user/UserWeb';
+import * as auth0React from '@auth0/auth0-react';
 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
 
@@ -117,7 +119,7 @@ export class EventEmitterNested_forWebrtcConnection extends EventEmitterNested<E
       ].includes(eventType_NestedListener)
     ) {
       if (sessionIdWithPeer == null) throw new TypeError();
-      console.log(this.mpp_emt);
+                                   
       const eventEmitterNested_forWebrtcConnection = this.mpp_emt.get(sessionIdWithPeer);
       if (eventEmitterNested_forWebrtcConnection == null) throw new TypeError();
       eventEmitterNested_forWebrtcConnection.addListener_ori(eventType_NestedListener, listener);
@@ -264,7 +266,7 @@ export class EventEmitterNested_forWebrtcConnection extends EventEmitterNested<E
   }
 }
 
-export class SocketioClient_forWebrtcConnection {
+export class SocketioClientSession_forWebrtcConnection {
                          
 
   private readonly mpp_emt_WebrtcConnectionAnchorMsgReceiver = new Map<WebrtcConnectionAnchorId, EventEmitterNested_forWebrtcConnection>();
@@ -292,7 +294,25 @@ export class SocketioClient_forWebrtcConnection {
                                      
                                              
                                                      
-  readonly socket: Socket = io('http://localhost:3000');
+  readonly socket: socketIoClient.Socket;
+
+  constructor() {
+                                                                             
+                                                                                           
+                                 
+                                                        
+                                                                                              
+                                                                                                         
+                                                     
+                              
+    this.socket = socketIoClient.io('http://localhost:3000', {
+                    
+                            
+                                 
+                                    
+      reconnectionAttempts: 8,
+    });
+  }
 
           
                                                                                                   
@@ -305,21 +325,45 @@ export class SocketioClient_forWebrtcConnection {
     return this._signalserverWebsocketClientId_self_sessionReactApp;
   }
 
-  async init() {
-    SocketioClientUtil.onOnlyOnce(this.socket, 'connect', () => {
-      console.log('socketio connected with socket.id :: ' + this.socket.id);
-    });
+  async init(userAuth0: auth0React.User | undefined) {
+    if (this.status_running) throw new TypeError();
+    this.status_running = true;
+                                                                    
+                                                                               
+          
+      
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
+                                                                                                                                              
+                                                                                                                                                                       
+                                                                                                                                                                                                                                                                                                                                                                        
+                                                                                                                                     
+                                                                               
+                                                                                                                                                                                                  
+                                                                                                                             
+                                    
+                                                     
+                  
+                                                            
+                 
+               
 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
-    this._signalserverWebsocketClientId_self_sessionReactApp = await new Promise<SignalserverWebsocketClientId>((resolve, reject) => {
-      SocketioClientUtil.onOnlyOnce(this.socket, SignalserverWebsocketMsgType.signalserverWebsocketClientId_self, (signalserverWebsocketClientId_self: SignalserverWebsocketClientId) => {
-        console.log('socketio assigned signalserverWebsocketClientId_self :: ' + signalserverWebsocketClientId_self);
-        this.socket.auth = {
-          signalserverWebsocketClientId_self,
-        };
-        resolve(signalserverWebsocketClientId_self);
-      });
-    });
+                            
+            
+                                    
+                                                       
+                                                                                               
+                        
+                                                                                                            
+        
+                                              
+                                                                                                                                                      
+    const data = (await SocketioClientUtil.emitWithAckError(this.socket, 1000, SignalserverWebsocketMsgType.signalserverWebsocketClientId_self, undefined, userAuth0)) as {
+      signalserverWebsocketClientId_self: SignalserverWebsocketClientId;
+      userWeb: Record<string, any>;
+    };
+
+    this._signalserverWebsocketClientId_self_sessionReactApp = data.signalserverWebsocketClientId_self;
+    const userWeb = plainToInstance(UserWeb, data.userWeb);
 
     const listen_dispatch_webrtcConnectionEvent = () => {
                                                              
@@ -342,12 +386,25 @@ export class SocketioClient_forWebrtcConnection {
     const socketIo_heartbeat = () => {
                                      
       let count_heartbeat = 0;
-      const scheduler_heartbeat = setInterval(() => {
+      this.scheduler_heartbeat = setInterval(() => {
         count_heartbeat++;
         this.socket.volatile.emit(SignalserverWebsocketMsgType.heartbeat, count_heartbeat);
       }, 2000);
-                         
     };
     socketIo_heartbeat();
+
+    return userWeb;
+  }
+
+  private status_running = false;
+  private scheduler_heartbeat: NodeJS.Timeout | null = null;
+
+  async terminate() {
+    if (!this.status_running) throw new TypeError();
+    this.socket.disconnect();
+    if (this.scheduler_heartbeat == null) throw new TypeError();
+    clearInterval(this.scheduler_heartbeat);
+    this.status_running = false;
+                                                
   }
 }

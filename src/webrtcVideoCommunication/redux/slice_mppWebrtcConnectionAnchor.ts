@@ -65,6 +65,10 @@ export const slice_mppWebrtcConnectionAnchor = createSlice({
                                                                                
                         
   initialState: new MppWebrtcConnectionAnchor(),
+                           
+                                              
+                                              
+          
   reducers: {
                                                                                                               
                                    
@@ -72,14 +76,22 @@ export const slice_mppWebrtcConnectionAnchor = createSlice({
                                                              
                                                                                                                                                                                                                                                                                                                                                                                           
     addToMpp: (mppWebrtcConnectionAnchor, action: PayloadAction<WebrtcConnectionAnchor>) => {
-                                                        
-                                                                                                                                                       
-                                                                                                                                                                                
-      mppWebrtcConnectionAnchor.set(action.payload.webrtcConnectionAnchorLocation_self.webrtcConnectionAnchorId, action.payload);
-                                           
-                                                                                                           
-      return MppWebrtcConnectionAnchor.init(mppWebrtcConnectionAnchor as unknown as MppWebrtcConnectionAnchor);
-                                                                                                                                                     
+                                                           
+                                                                                                                                                          
+                                                                                                                                                                                   
+                                                                                                                                    
+                                              
+                                                                                                              
+                                                                                                                  
+                                                                                                                                                        
+
+                                                                                                
+                                                                                                 
+                                                                                                                                        
+                        
+      const mppWebrtcConnectionAnchor_new = MppWebrtcConnectionAnchor.init(mppWebrtcConnectionAnchor as unknown as MppWebrtcConnectionAnchor);
+      mppWebrtcConnectionAnchor_new.set(action.payload.webrtcConnectionAnchorLocation_self.webrtcConnectionAnchorId, action.payload);
+      return mppWebrtcConnectionAnchor_new;
     },
                                                                                      
     forceRefreshMpp: (mppWebrtcConnectionAnchor) => {
@@ -93,6 +105,13 @@ export const slice_mppWebrtcConnectionAnchor = createSlice({
                                                            
                                
          
+                                                      
+                                                                                                                                                                                                
+                                                                                                                                             
+                                                                                           
+                               
+                                                
+        
   },
 });
 

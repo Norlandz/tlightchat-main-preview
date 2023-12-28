@@ -136,5 +136,21 @@
     // ;not_helpful [console log still just plain tx];     "**/node_modules/**"
     // ;not_helpful [console log still just plain tx];   ],
     // ;not_helpful [console log still just plain tx]; },
+    // ;not_helpful; {
+    // ;not_helpful;   "type": "node",
+    // ;not_helpful;   "name": "vscode-jest-tests",
+    // ;not_helpful;   "request": "launch",
+    // ;not_helpful;   "program": "${workspaceFolder}/node_modules/jest/bin/jest",
+    // ;not_helpful;   "args": [
+    // ;not_helpful;     "--runInBand"
+    // ;not_helpful;   ],
+    // ;not_helpful;   "env": {
+    // ;not_helpful;     "NODE_OPTIONS": "--experimental-vm-modules"
+    // ;not_helpful;   },
+    // ;not_helpful;   "cwd": "${workspaceFolder}",
+    // ;not_helpful;   "console": "integratedTerminal",
+    // ;not_helpful;   "internalConsoleOptions": "neverOpen",
+    // ;not_helpful;   // "disableOptimisticBPs": true
+    // ;not_helpful; },
   ]
 }

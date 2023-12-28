@@ -42,6 +42,7 @@ const config = {
     // "@testing-library/jest-dom/extend-expect",
     '<rootDir>/config/jest/jest.setupFilesAfterEnv.ts',
   ],
+  globalSetup: '<rootDir>/config/jest/jest.globalSetup.ts',
   // moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'mjs'],
   moduleNameMapper: {
     // '\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$': '<rootDir>/__mocks__/fileMock.js',
@@ -58,7 +59,20 @@ const config = {
   extensionsToTreatAsEsm: ['.ts', '.tsx'], // no .js .jsx
   // transformIgnorePatterns: ['node_modules'],
   // transformIgnorePatterns: [], // wait for 4min? not_helping anyways
-  // testPathIgnorePatterns: ['<rootDir>/test/Config.test.tsx'], // flag doesnt overwrite this ...
+  testPathIgnorePatterns: [
+    // // []
+    // // A regexp pattern string that is matched against all tests paths before executing the test. On Windows, you will need to use `/` as a path separator or escape `\` as `\\`.
+    // // <>
+    // // https://jestjs.io/docs/cli#--testpathpatternregex
+    // ~~~// still confusing regex ... 
+    // '<rootDir>/test/Config.test.tsx' // flag doesnt overwrite this ...
+    '/node_modules/',
+    '<rootDir>/_saveUsing/',
+    '<rootDir>/\\.git/',
+    '<rootDir>/\\.next/',
+    '<rootDir>/test/_introTryTest/',
+    // '<rootDir>/test/randomTest/', // idk why I cannot use empty string like "--testPathIgnorePatterns="... waste my time
+  ],
 };
 
 export default config;

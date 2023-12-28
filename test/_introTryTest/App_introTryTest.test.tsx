@@ -37,7 +37,7 @@ import '@testing-library/jest-dom';
 import { RenderResult, act, findAllByRole, findByText, prettyDOM, queryByAttribute, render, screen, waitFor } from '@testing-library/react';
                                                 
 import App from '../../src/App';
-import { InitRun, initRun } from '../../src/InitRun';
+import { InitRun, initRun } from '../../src/session/AppSession';
 import { store } from '../../src/webrtcVideoCommunication/redux/ReduxStore';
 import { videoConnectionLinkageDraftCurrSelected_ref } from '../../src/webrtcVideoCommunication/redux/slice_videoConnectionLinkageDraftCurrSelected';
 
@@ -47,7 +47,7 @@ import prettier from 'prettier';
 import { PrintUtil } from '../../src/util/print/PrintUtil';
 const { printHtmlHltAnsi } = PrintUtil;
 import userEvent from '@testing-library/user-event';
-import styles from '../src/index.module.css';
+import styles from '../src/scss/index.module.css';
 import { WebrtcButtonName } from '../../src/webrtcVideoCommunication/service/WebrtcButtonNameType';
 
                         
@@ -83,7 +83,7 @@ const spy_getLocalMediaStream = jest.spyOn(InitRun.prototype, 'getLocalMediaStre
 
 describe('Simple overall test - introTryTest', () => {
   afterEach(() => {
-    initRun.socketioClient_forWebrtcConnection.socket.close();
+    initRun.socketioClientSession_forWebrtcConnection.socket.close();
   });
 
                                                                                                                                                                                                                                                                                                                 

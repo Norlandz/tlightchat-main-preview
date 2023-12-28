@@ -4,10 +4,11 @@ import { SignalserverWebsocketClientId, WebrtcConnectionAnchorId, WebrtcConnecti
 import 'reflect-metadata';
 
 import { NoSuchItemException } from '../../exception/NoSuchItemException';
+import { UserWeb } from '../../user/UserWeb';
 
                                                                  
                                                                                          
-export enum LobbyUserStatus {
+export enum ConnectionAnchorOnlineStatus {
   online = 'online',
   occupied = 'occupied',             
   offline = 'offline',
@@ -23,7 +24,7 @@ export enum LobbyUserStatus {
                                      
 
                                                                                                    
-export class LobbyUserInfo {
+export class ConnectionAnchorOnlineInfo {
   @Type(() => WebrtcConnectionAnchorLocation)
   public readonly webrtcConnectionAnchorLocation_self: WebrtcConnectionAnchorLocation;
 
@@ -38,62 +39,114 @@ export class LobbyUserInfo {
                                                                                                                                                                      
                                                                                                                                                                                                                                                                                                                     
 
-  public lobbyUserStatus = LobbyUserStatus.offline;
-  public customName: string | null = null;                                                 
+  public connectionAnchorStatus = ConnectionAnchorOnlineStatus.offline;
+  public connectionAnchorName: string | null = null;                                                 
 }
 
-export class LobbyUserList {
-     
-                                                               
-     
-                                                                                                    
+export class SocketClientOnlineInfo {
+  @Type(() => UserWeb)
+  public readonly userWeb: UserWeb;
+  constructor(userWeb: UserWeb) {
+    this.userWeb = userWeb;
+  }
+
+        
+                                                                  
+        
+                                                                                                       
+                
+                   
+                                                                                                                       
+                               
+                                               
+                                                                                                 
+                                                                                                                       
+                                                                          
+                        
+                                                                                                         
+                     
+                                             
+                       
+                                                                                                                                        
+                                                                                                               
+                   
+                 
+               
+             
+           
+         
+                            
+      
+                                                                                                                                                  
+                                                                                                                                                       
+                                                      
+      
+
+                        
   @Transform(
     (tinfo) => {
-                                                                                                                    
-                            
-                                            
-                                                                                              
-      const value = tinfo.value as Map<SignalserverWebsocketClientId, Map<WebrtcConnectionAnchorId, LobbyUserInfo>>;
-      if (value === null || value === undefined) throw new TypeError();
-      return new Map(
-        Object.entries(value).map(([signalserverWebsocketClientId, mpp_webrtcConnectionAnchorId]) => {
-          return [
-            signalserverWebsocketClientId,
-            new Map(
-              Object.entries(mpp_webrtcConnectionAnchorId as ArrayLike<unknown>).map(([webrtcConnectionAnchorId, lobbyUserInfo]) => {
-                return [webrtcConnectionAnchorId, plainToInstance(LobbyUserInfo, lobbyUserInfo as unknown)];
-              })
-            ),
-          ];
-        })
-      );
+      const value = tinfo.value as Record<WebrtcConnectionAnchorId, ConnectionAnchorOnlineInfo> ?? (() => { throw new TypeError(); })();                   
+      return new Map(Object.entries(value).map(([webrtcConnectionAnchorId, lobbyUserInfo]) => [webrtcConnectionAnchorId, plainToInstance(ConnectionAnchorOnlineInfo, lobbyUserInfo)]));
     },
     { toClassOnly: true }
   )
-  private readonly _mpp_signalserverWebsocketClientId = new Map<SignalserverWebsocketClientId, Map<WebrtcConnectionAnchorId, LobbyUserInfo>>();
-  public get mpp_signalserverWebsocketClientId(): ReadonlyMap<SignalserverWebsocketClientId, ReadonlyMap<WebrtcConnectionAnchorId, LobbyUserInfo>> {
+  public readonly mpp_WebrtcConnectionAnchorOnlineInfo = new Map<WebrtcConnectionAnchorId, ConnectionAnchorOnlineInfo>();
+}
+
+                                                                                
+                                                                                                            
+  
+                      
+                               
+                
+  
+                                                   
+                                                             
+                                                      
+               
+                                                                                                                       
+                                                                                                                                             
+                                                                                                                              
+                                                                                   
+                                                                                                 
+                                                                                                                                            
+
+export class LobbyUserList {
+  @Transform(
+    (tinfo) => {
+                                                                                                                                                            
+                                                                                                                                    
+                                                                                                                                                                                                          
+      const value = tinfo.value as Record<SignalserverWebsocketClientId, SocketClientOnlineInfo> ?? (() => { throw new TypeError(); })();                   
+      return new Map(Object.entries(value).map(([signalserverWebsocketClientId, socketClientOnlineInfo]) => [signalserverWebsocketClientId, plainToInstance(SocketClientOnlineInfo, socketClientOnlineInfo)]));                   
+    },
+    { toClassOnly: true }
+  )
+  private readonly _mpp_signalserverWebsocketClientId = new Map<SignalserverWebsocketClientId, SocketClientOnlineInfo>();
+  public get mpp_signalserverWebsocketClientId(): ReadonlyMap<SignalserverWebsocketClientId, SocketClientOnlineInfo> {
     return this._mpp_signalserverWebsocketClientId;
   }
 
-  add_signalserverWebsocketClientId(signalserverWebsocketClientId_self: SignalserverWebsocketClientId) {
-    this._mpp_signalserverWebsocketClientId.set(signalserverWebsocketClientId_self, new Map<WebrtcConnectionAnchorId, LobbyUserInfo>());
+  add_signalserverWebsocketClientId(signalserverWebsocketClientId_self: SignalserverWebsocketClientId, user: UserWeb) {
+                                                                                                                                           
+    this._mpp_signalserverWebsocketClientId.set(signalserverWebsocketClientId_self, new SocketClientOnlineInfo(user));
   }
   remove_signalserverWebsocketClientId(signalserverWebsocketClientId_self: SignalserverWebsocketClientId) {
     this._mpp_signalserverWebsocketClientId.delete(signalserverWebsocketClientId_self);
   }
 
   add_webrtcConnectionAnchorId(webrtcConnectionAnchorLocation: WebrtcConnectionAnchorLocation) {
-    const mpp_webrtcConnectionAnchorId = this._mpp_signalserverWebsocketClientId.get(webrtcConnectionAnchorLocation.signalserverWebsocketClientId);
-    if (mpp_webrtcConnectionAnchorId === undefined) throw new TypeError();
-    if (mpp_webrtcConnectionAnchorId.has(webrtcConnectionAnchorLocation.webrtcConnectionAnchorId)) throw new TypeError();
-    const lobbyUserInfo = new LobbyUserInfo(webrtcConnectionAnchorLocation);
-    mpp_webrtcConnectionAnchorId.set(webrtcConnectionAnchorLocation.webrtcConnectionAnchorId, lobbyUserInfo);              
+    const socketClientOnlineInfo = this._mpp_signalserverWebsocketClientId.get(webrtcConnectionAnchorLocation.signalserverWebsocketClientId);
+    if (socketClientOnlineInfo === undefined) throw new TypeError();
+    if (socketClientOnlineInfo.mpp_WebrtcConnectionAnchorOnlineInfo.has(webrtcConnectionAnchorLocation.webrtcConnectionAnchorId)) throw new TypeError();
+    const lobbyUserInfo = new ConnectionAnchorOnlineInfo(webrtcConnectionAnchorLocation);
+    socketClientOnlineInfo.mpp_WebrtcConnectionAnchorOnlineInfo.set(webrtcConnectionAnchorLocation.webrtcConnectionAnchorId, lobbyUserInfo);              
   }
 
   remove_webrtcConnectionAnchorId(webrtcConnectionAnchorLocation: WebrtcConnectionAnchorLocation) {
-    const mpp_webrtcConnectionAnchorId = this._mpp_signalserverWebsocketClientId.get(webrtcConnectionAnchorLocation.signalserverWebsocketClientId);
-    if (mpp_webrtcConnectionAnchorId === undefined) throw new TypeError();
-    if (!mpp_webrtcConnectionAnchorId.delete(webrtcConnectionAnchorLocation.webrtcConnectionAnchorId)) throw new TypeError();
+    const socketClientOnlineInfo = this._mpp_signalserverWebsocketClientId.get(webrtcConnectionAnchorLocation.signalserverWebsocketClientId);
+    if (socketClientOnlineInfo === undefined) throw new TypeError();
+    if (!socketClientOnlineInfo.mpp_WebrtcConnectionAnchorOnlineInfo.delete(webrtcConnectionAnchorLocation.webrtcConnectionAnchorId)) throw new TypeError();
   }
 
      
@@ -103,9 +156,9 @@ export class LobbyUserList {
                                                                                                       
      
   public get_lobbyUserInfo(webrtcConnectionAnchorLocation: WebrtcConnectionAnchorLocation) {
-    const mpp_webrtcConnectionAnchorId = this._mpp_signalserverWebsocketClientId.get(webrtcConnectionAnchorLocation.signalserverWebsocketClientId);
-    if (mpp_webrtcConnectionAnchorId == null) throw new NoSuchItemException();
-    const lobbyUserInfo = mpp_webrtcConnectionAnchorId.get(webrtcConnectionAnchorLocation.webrtcConnectionAnchorId)!;
+    const socketClientOnlineInfo = this._mpp_signalserverWebsocketClientId.get(webrtcConnectionAnchorLocation.signalserverWebsocketClientId);
+    if (socketClientOnlineInfo == null) throw new NoSuchItemException();
+    const lobbyUserInfo = socketClientOnlineInfo.mpp_WebrtcConnectionAnchorOnlineInfo.get(webrtcConnectionAnchorLocation.webrtcConnectionAnchorId)!;
     if (lobbyUserInfo == null) throw new NoSuchItemException();
     return lobbyUserInfo;
                                                           
@@ -121,6 +174,8 @@ export class LobbyUserList {
 
                                                                                                                                                                         
   public get_lobbyUserInfo_NoAggresiveThrow(webrtcConnectionAnchorLocation: WebrtcConnectionAnchorLocation) {
-    return this._mpp_signalserverWebsocketClientId.get(webrtcConnectionAnchorLocation.signalserverWebsocketClientId)?.get(webrtcConnectionAnchorLocation.webrtcConnectionAnchorId);
+    return this._mpp_signalserverWebsocketClientId
+      .get(webrtcConnectionAnchorLocation.signalserverWebsocketClientId)
+      ?.mpp_WebrtcConnectionAnchorOnlineInfo.get(webrtcConnectionAnchorLocation.webrtcConnectionAnchorId);
   }
 }

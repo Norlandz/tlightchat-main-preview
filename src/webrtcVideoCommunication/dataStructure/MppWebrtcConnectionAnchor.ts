@@ -1,6 +1,8 @@
 import { v4 as uuidv4 } from 'uuid';
 import { WebrtcConnectionAnchorId, MediaStreamId } from '../messageSchema/WebrtcConnectionAnchorLocation';
 import { WebrtcConnectionAnchor } from './WebrtcConnectionAnchor';
+import { UserWebId } from '../../user/UserWeb';
+import { ChatMessageInfo } from '../messageSchema/ChatMessageInfo';
 
                                                                                                          
                                
@@ -35,10 +37,18 @@ export class MppWebrtcConnectionAnchor implements Iterable<[WebrtcConnectionAnch
           
         
 
+                                                 
+                    
+                                         
+      
+
   private readonly mpp_underlying = new Map<WebrtcConnectionAnchorId, WebrtcConnectionAnchor>();
 
   public get = this.mpp_underlying.get.bind(this.mpp_underlying);                     
   public set = this.mpp_underlying.set.bind(this.mpp_underlying);
+  public get size() {
+    return this.mpp_underlying.size;
+  }
   *[Symbol.iterator]() {
     yield* this.mpp_underlying;
   }
@@ -61,6 +71,9 @@ export class MppMediaStream implements Iterable<[MediaStreamId, MediaStream]> {
 
   public get = this.mpp_underlying.get.bind(this.mpp_underlying);
   public set = this.mpp_underlying.set.bind(this.mpp_underlying);
+  public get size() {
+    return this.mpp_underlying.size;
+  }
   *[Symbol.iterator]() {
     yield* this.mpp_underlying;
   }
@@ -68,6 +81,44 @@ export class MppMediaStream implements Iterable<[MediaStreamId, MediaStream]> {
   public static init(mppMediaStream: MppMediaStream) {
     const MM = new MppMediaStream();
     copyMap(mppMediaStream.mpp_underlying, MM.mpp_underlying);
+    return MM;
+  }
+}
+
+export class MppArrPeerChatMsg implements Iterable<[UserWebId, ArrPeerChatMsg]> {
+  private readonly mpp_underlying = new Map<UserWebId, ArrPeerChatMsg>();
+
+  public get = this.mpp_underlying.get.bind(this.mpp_underlying);
+  public set = this.mpp_underlying.set.bind(this.mpp_underlying);
+  public get size() {
+    return this.mpp_underlying.size;
+  }
+  *[Symbol.iterator]() {
+    yield* this.mpp_underlying;
+  }
+
+  public static init(mppPeerChatMsgs: MppArrPeerChatMsg) {
+    const MM = new MppArrPeerChatMsg();
+    copyMap(mppPeerChatMsgs.mpp_underlying, MM.mpp_underlying);
+    return MM;
+  }
+}
+
+export class ArrPeerChatMsg implements Iterable<[Date, ChatMessageInfo]> {
+  private readonly mpp_underlying = new Map<Date, ChatMessageInfo>();
+
+  public get = this.mpp_underlying.get.bind(this.mpp_underlying);
+  public set = this.mpp_underlying.set.bind(this.mpp_underlying);
+  public get size() {
+    return this.mpp_underlying.size;
+  }
+  *[Symbol.iterator]() {
+    yield* this.mpp_underlying;
+  }
+
+  public static init(arrPeerChatMsg: ArrPeerChatMsg) {
+    const MM = new ArrPeerChatMsg();
+    copyMap(arrPeerChatMsg.mpp_underlying, MM.mpp_underlying);
     return MM;
   }
 }

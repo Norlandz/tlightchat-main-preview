@@ -17,7 +17,7 @@ const { printHtmlHltAnsi } = PrintUtil;
 import preview from 'jest-preview';
 import React from 'react';
 
-import styles from '../../src/index.module.css';
+import styles from '../../src/scss/index.module.css';
 
 function getRandomInt(max: number) {
   return Math.floor(Math.random() * max);
@@ -98,7 +98,7 @@ describe('Test JestPreview', () => {
         {                     }
       </div>
     );
-                                               
+                                                    
       
                                                    
                  

@@ -16,6 +16,8 @@ export enum SignalserverWebsocketMsgType {
   testMessage = 'testMessage',
     
   waitForOtherIns_FinishTestCheck_ThenLeave = 'waitForOtherIns_FinishTestCheck_ThenLeave',
+    
+  chatMessage = 'chatMessage',
 }
 
 export enum SignalserverWebsocketMsgReceiverType {

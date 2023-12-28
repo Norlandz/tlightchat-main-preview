@@ -1,50 +1,14 @@
 import { SignalserverWebsocketMsg, WebrtcConnectionEventType } from '../messageSchema/WebSocketMessage';
 import { WebrtcConnectionAnchorLocation } from '../messageSchema/WebrtcConnectionAnchorLocation';
-import { initRun } from '../../InitRun';
-import * as React from 'react';
-import * as ReactRedux from 'react-redux';
-
-import { RootState } from '../redux/ReduxStore';
-import { videoConnectionLinkageDraftCurrSelected_ref } from '../redux/slice_videoConnectionLinkageDraftCurrSelected';
-import styles from '../../index.module.css';
-import { LobbyUserStatus } from '../dataStructure/LobbyUserList';
-import { WebcamGridPanelCssStyleContext } from '../simple/reactContextCss/WebcamGridPanelCssStyleContext';
 import {
-  EventData,
-  SCXML,
-  SingleOrArray,
-  State,
-  Event,
-  MarkAllImplementationsAsProvided,
-  ResolveTypegenMeta,
-  BaseActionObject,
-  interpret,
-  DefaultContext,
-  StateSchema,
-  EventObject,
-  Typestate,
-  TypegenDisabled,
-  Interpreter,
-  ActorRef,
-} from 'xstate';
-import {
-  WebrtcConnectionStateMachineContext,
-  WebrtcConnectionStateMachineEvent,
   WebrtcConnectionStateMachineEvent_AbstractBase,
   WebrtcConnectionStateMachineEvent_ReceiveCommon,
   WebrtcConnectionStateMachineEvent_ReceiveOfferSent,
   WebrtcConnectionStateMachineEvent_SendCommon,
   WebrtcConnectionStateMachineEvent_SendOfferSent,
-  WebrtcConnectionStateMachineService,
-  WebrtcConnectionStateMachineTypestate,
-  typeguardUnsafe__WebrtcConnectionStateMachineEvent_ReceiveCommon,
-  typeguardUnsafe__has_signalserverWebsocketMsg,
-  typeguardUnsafe__has_webrtcConnectionAnchorLocation_peer,
-  webrtcConnectionStateMachine,
-} from '../xstate/WebrtcConnectionStateMachine';
-import { WebrtcConnectionStateMachineEventTypeName } from '../xstate/WebrtcConnectionStateMachineEventName';
-import { isBuiltInEvent } from 'xstate/lib/utils';
-import XstateSendUtil, { onEvent_check_ReceivedEventIsProper } from '../../util/xstate/XstateSendUtil';
+} from './xstate/WebrtcConnectionStateMachine';
+import { WebrtcConnectionStateMachineEventTypeName } from './xstate/WebrtcConnectionStateMachineEventName';
+import XstateSendUtil from '../../util/xstate/XstateSendUtil';
 import { WebrtcConnectionAnchorLocationSpecial } from './WebrtcConnectionService_lv1Abstract_WebrtcLowlevel';
 import { WebrtcConnectionService_lv2Abstract_OfferPlainSignal } from './WebrtcConnectionService_lv2Abstract_OfferPlainSignal';
 import { StateMachineFactory_forWebrtcConnection } from './StateMachineFactory_forWebrtcConnection';
@@ -90,7 +54,7 @@ export class WebrtcConnectionService extends WebrtcConnectionService_lv2Abstract
                                                                                                                                            
                                                                                                                                                 
     this.doAndSend__webrtcConnectionAnchor_Offline();
-    const emt_root = initRun.socketioClient_forWebrtcConnection.get_emt_WebrtcConnectionAnchor(this.webrtcConnectionAnchor_self.webrtcConnectionAnchorLocation_self.webrtcConnectionAnchorId);
+    const emt_root = this.socketioClientSession_forWebrtcConnection.get_emt_WebrtcConnectionAnchor(this.webrtcConnectionAnchor_self.webrtcConnectionAnchorLocation_self.webrtcConnectionAnchorId);
     emt_root.remove_AllListeners_allDepth();                                                                                                                                                                      
   }
 
@@ -192,8 +156,8 @@ export class WebrtcConnectionService extends WebrtcConnectionService_lv2Abstract
                                                                
 
                                                                                       
-    const emt_root = initRun.socketioClient_forWebrtcConnection.get_emt_WebrtcConnectionAnchor(this.webrtcConnectionAnchor_self.webrtcConnectionAnchorLocation_self.webrtcConnectionAnchorId);
-    emt_root.remove_AllListeners_beyondIncludeDepth2nd();                                           
+    const emt_root = this.socketioClientSession_forWebrtcConnection.get_emt_WebrtcConnectionAnchor(this.webrtcConnectionAnchor_self.webrtcConnectionAnchorLocation_self.webrtcConnectionAnchorId);
+    emt_root.remove_AllListeners_beyondIncludeDepth2nd();                                          
     emt_root.create_nested(WebrtcConnectionAnchorLocation.toSessionIdWithPeer(this.webrtcConnectionAnchor_self.webrtcConnectionAnchorLocation_self, webrtcConnectionAnchorLocation_peer));
 
     this.listen__offerPlainSignal_Accepted(webrtcConnectionAnchorLocation_peer);                               
@@ -216,7 +180,7 @@ export class WebrtcConnectionService extends WebrtcConnectionService_lv2Abstract
     this.unlisten__offerPlainSignal_Accepted(webrtcConnectionAnchorLocation_peer);
     this.unlisten__offerPlainSignal_Declined(webrtcConnectionAnchorLocation_peer);
     this.send__offerPlainSignal_Cancelled(webrtcConnectionAnchorLocation_peer);
-    const emt_root = initRun.socketioClient_forWebrtcConnection.get_emt_WebrtcConnectionAnchor(this.webrtcConnectionAnchor_self.webrtcConnectionAnchorLocation_self.webrtcConnectionAnchorId);
+    const emt_root = this.socketioClientSession_forWebrtcConnection.get_emt_WebrtcConnectionAnchor(this.webrtcConnectionAnchor_self.webrtcConnectionAnchorLocation_self.webrtcConnectionAnchorId);
     const sessionId = WebrtcConnectionAnchorLocation.toSessionIdWithPeer(this.webrtcConnectionAnchor_self.webrtcConnectionAnchorLocation_self, webrtcConnectionAnchorLocation_peer);
     emt_root.remove_Listener_ofGivenSessionId(sessionId);                        
   }
@@ -224,7 +188,7 @@ export class WebrtcConnectionService extends WebrtcConnectionService_lv2Abstract
   public send_declineConnectionOffer(webrtcConnectionAnchorLocation_peer: WebrtcConnectionAnchorLocation) {
     this.unlisten__offerPlainSignal_Cancelled(webrtcConnectionAnchorLocation_peer);
     this.send__offerPlainSignal_Declined(webrtcConnectionAnchorLocation_peer);
-    const emt_root = initRun.socketioClient_forWebrtcConnection.get_emt_WebrtcConnectionAnchor(this.webrtcConnectionAnchor_self.webrtcConnectionAnchorLocation_self.webrtcConnectionAnchorId);
+    const emt_root = this.socketioClientSession_forWebrtcConnection.get_emt_WebrtcConnectionAnchor(this.webrtcConnectionAnchor_self.webrtcConnectionAnchorLocation_self.webrtcConnectionAnchorId);
     const sessionId = WebrtcConnectionAnchorLocation.toSessionIdWithPeer(this.webrtcConnectionAnchor_self.webrtcConnectionAnchorLocation_self, webrtcConnectionAnchorLocation_peer);
     emt_root.remove_Listener_ofGivenSessionId(sessionId);                        
   }
@@ -235,10 +199,10 @@ export class WebrtcConnectionService extends WebrtcConnectionService_lv2Abstract
                                                                                                                                              
     this.unlisten__webrtcConnection_Closed(webrtcConnectionAnchorLocation_peer);
     this.send__webrtcConnection_Closed(webrtcConnectionAnchorLocation_peer);
-    const emt_root = initRun.socketioClient_forWebrtcConnection.get_emt_WebrtcConnectionAnchor(this.webrtcConnectionAnchor_self.webrtcConnectionAnchorLocation_self.webrtcConnectionAnchorId);
+    const emt_root = this.socketioClientSession_forWebrtcConnection.get_emt_WebrtcConnectionAnchor(this.webrtcConnectionAnchor_self.webrtcConnectionAnchorLocation_self.webrtcConnectionAnchorId);
     const sessionId = WebrtcConnectionAnchorLocation.toSessionIdWithPeer(this.webrtcConnectionAnchor_self.webrtcConnectionAnchorLocation_self, webrtcConnectionAnchorLocation_peer);
     emt_root.remove_Listener_ofGivenSessionId(sessionId);                        
-                                                   
+                                                  
   }
              
 
@@ -248,7 +212,9 @@ export class WebrtcConnectionService extends WebrtcConnectionService_lv2Abstract
                 
                                                                    
                                                                              
-    const eventEmitterNested = initRun.socketioClient_forWebrtcConnection.get_emt_WebrtcConnectionAnchor(this.webrtcConnectionAnchor_self.webrtcConnectionAnchorLocation_self.webrtcConnectionAnchorId);
+    const eventEmitterNested = this.socketioClientSession_forWebrtcConnection.get_emt_WebrtcConnectionAnchor(
+      this.webrtcConnectionAnchor_self.webrtcConnectionAnchorLocation_self.webrtcConnectionAnchorId
+    );
     if (eventEmitterNested == null) throw new TypeError();
     eventEmitterNested.create_nested(WebrtcConnectionAnchorLocation.toSessionIdWithPeer(this.webrtcConnectionAnchor_self.webrtcConnectionAnchorLocation_self, signalserverWebsocketMsg.msgFrom));
 
@@ -266,7 +232,7 @@ export class WebrtcConnectionService extends WebrtcConnectionService_lv2Abstract
   public receive_cancelConnectionOffer(signalserverWebsocketMsg: SignalserverWebsocketMsg) {
     this.unlisten__offerPlainSignal_Cancelled(signalserverWebsocketMsg.msgFrom);
     this.receive__offerPlainSignal_Cancelled(signalserverWebsocketMsg.msgFrom);
-    const emt_root = initRun.socketioClient_forWebrtcConnection.get_emt_WebrtcConnectionAnchor(this.webrtcConnectionAnchor_self.webrtcConnectionAnchorLocation_self.webrtcConnectionAnchorId);
+    const emt_root = this.socketioClientSession_forWebrtcConnection.get_emt_WebrtcConnectionAnchor(this.webrtcConnectionAnchor_self.webrtcConnectionAnchorLocation_self.webrtcConnectionAnchorId);
     const sessionId = WebrtcConnectionAnchorLocation.toSessionIdWithPeer(this.webrtcConnectionAnchor_self.webrtcConnectionAnchorLocation_self, signalserverWebsocketMsg.msgFrom);
     emt_root.remove_Listener_ofGivenSessionId(sessionId);                        
   }
@@ -275,7 +241,7 @@ export class WebrtcConnectionService extends WebrtcConnectionService_lv2Abstract
     this.unlisten__offerPlainSignal_Accepted(signalserverWebsocketMsg.msgFrom);
     this.unlisten__offerPlainSignal_Declined(signalserverWebsocketMsg.msgFrom);
     this.receive__offerPlainSignal_Declined(signalserverWebsocketMsg.msgFrom);
-    const emt_root = initRun.socketioClient_forWebrtcConnection.get_emt_WebrtcConnectionAnchor(this.webrtcConnectionAnchor_self.webrtcConnectionAnchorLocation_self.webrtcConnectionAnchorId);
+    const emt_root = this.socketioClientSession_forWebrtcConnection.get_emt_WebrtcConnectionAnchor(this.webrtcConnectionAnchor_self.webrtcConnectionAnchorLocation_self.webrtcConnectionAnchorId);
     const sessionId = WebrtcConnectionAnchorLocation.toSessionIdWithPeer(this.webrtcConnectionAnchor_self.webrtcConnectionAnchorLocation_self, signalserverWebsocketMsg.msgFrom);
     emt_root.remove_Listener_ofGivenSessionId(sessionId);                        
   }
@@ -283,7 +249,7 @@ export class WebrtcConnectionService extends WebrtcConnectionService_lv2Abstract
   public receive_closeConnection(signalserverWebsocketMsg: SignalserverWebsocketMsg) {
     this.unlisten__webrtcConnection_Closed(signalserverWebsocketMsg.msgFrom);
     this.receive__webrtcConnection_Closed();
-    const emt_root = initRun.socketioClient_forWebrtcConnection.get_emt_WebrtcConnectionAnchor(this.webrtcConnectionAnchor_self.webrtcConnectionAnchorLocation_self.webrtcConnectionAnchorId);
+    const emt_root = this.socketioClientSession_forWebrtcConnection.get_emt_WebrtcConnectionAnchor(this.webrtcConnectionAnchor_self.webrtcConnectionAnchorLocation_self.webrtcConnectionAnchorId);
     const sessionId = WebrtcConnectionAnchorLocation.toSessionIdWithPeer(this.webrtcConnectionAnchor_self.webrtcConnectionAnchorLocation_self, signalserverWebsocketMsg.msgFrom);
     emt_root.remove_Listener_ofGivenSessionId(sessionId);                        
   }
@@ -349,25 +315,25 @@ export class WebrtcConnectionService extends WebrtcConnectionService_lv2Abstract
                                     
   private unlisten__offerPlainSignal_Accepted(webrtcConnectionAnchorLocation_peer: WebrtcConnectionAnchorLocation) {
     const eventType_ToDel = WebrtcConnectionEventType.offerPlainSignal_Accepted;
-    const emt = initRun.socketioClient_forWebrtcConnection.get_emt_WebrtcConnectionAnchor(this.webrtcConnectionAnchor_self.webrtcConnectionAnchorLocation_self.webrtcConnectionAnchorId);
+    const emt = this.socketioClientSession_forWebrtcConnection.get_emt_WebrtcConnectionAnchor(this.webrtcConnectionAnchor_self.webrtcConnectionAnchorLocation_self.webrtcConnectionAnchorId);
     const sessionId_Within = WebrtcConnectionAnchorLocation.toSessionIdWithPeer(this.webrtcConnectionAnchor_self.webrtcConnectionAnchorLocation_self, webrtcConnectionAnchorLocation_peer);
     emt.remove_Listener_ofGiven_EventType_inGiven_SessionId_onlyShallow(eventType_ToDel, sessionId_Within);
   }
   private unlisten__offerPlainSignal_Cancelled(webrtcConnectionAnchorLocation_peer: WebrtcConnectionAnchorLocation) {
     const eventType_ToDel = WebrtcConnectionEventType.offerPlainSignal_Cancelled;
-    const emt = initRun.socketioClient_forWebrtcConnection.get_emt_WebrtcConnectionAnchor(this.webrtcConnectionAnchor_self.webrtcConnectionAnchorLocation_self.webrtcConnectionAnchorId);
+    const emt = this.socketioClientSession_forWebrtcConnection.get_emt_WebrtcConnectionAnchor(this.webrtcConnectionAnchor_self.webrtcConnectionAnchorLocation_self.webrtcConnectionAnchorId);
     const sessionId_Within = WebrtcConnectionAnchorLocation.toSessionIdWithPeer(this.webrtcConnectionAnchor_self.webrtcConnectionAnchorLocation_self, webrtcConnectionAnchorLocation_peer);
     emt.remove_Listener_ofGiven_EventType_inGiven_SessionId_onlyShallow(eventType_ToDel, sessionId_Within);
   }
   private unlisten__offerPlainSignal_Declined(webrtcConnectionAnchorLocation_peer: WebrtcConnectionAnchorLocation) {
     const eventType_ToDel = WebrtcConnectionEventType.offerPlainSignal_Declined;
-    const emt = initRun.socketioClient_forWebrtcConnection.get_emt_WebrtcConnectionAnchor(this.webrtcConnectionAnchor_self.webrtcConnectionAnchorLocation_self.webrtcConnectionAnchorId);
+    const emt = this.socketioClientSession_forWebrtcConnection.get_emt_WebrtcConnectionAnchor(this.webrtcConnectionAnchor_self.webrtcConnectionAnchorLocation_self.webrtcConnectionAnchorId);
     const sessionId_Within = WebrtcConnectionAnchorLocation.toSessionIdWithPeer(this.webrtcConnectionAnchor_self.webrtcConnectionAnchorLocation_self, webrtcConnectionAnchorLocation_peer);
     emt.remove_Listener_ofGiven_EventType_inGiven_SessionId_onlyShallow(eventType_ToDel, sessionId_Within);
   }
   private unlisten__webrtcConnection_Closed(webrtcConnectionAnchorLocation_peer: WebrtcConnectionAnchorLocation) {
     const eventType_ToDel = WebrtcConnectionEventType.webrtcConnection_Closed;
-    const emt = initRun.socketioClient_forWebrtcConnection.get_emt_WebrtcConnectionAnchor(this.webrtcConnectionAnchor_self.webrtcConnectionAnchorLocation_self.webrtcConnectionAnchorId);
+    const emt = this.socketioClientSession_forWebrtcConnection.get_emt_WebrtcConnectionAnchor(this.webrtcConnectionAnchor_self.webrtcConnectionAnchorLocation_self.webrtcConnectionAnchorId);
     const sessionId_Within = WebrtcConnectionAnchorLocation.toSessionIdWithPeer(this.webrtcConnectionAnchor_self.webrtcConnectionAnchorLocation_self, webrtcConnectionAnchorLocation_peer);
     emt.remove_Listener_ofGiven_EventType_inGiven_SessionId_onlyShallow(eventType_ToDel, sessionId_Within);
   }
@@ -380,6 +346,11 @@ export class WebrtcConnectionService extends WebrtcConnectionService_lv2Abstract
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
   private readonly stateMachineFactory_forWebrtcConnection = new StateMachineFactory_forWebrtcConnection(this);
   private readonly actorXst_WebrtcConnection = this.stateMachineFactory_forWebrtcConnection.create_and_start();
+
+  public get_CurrXstate() {
+    return this.actorXst_WebrtcConnection.getSnapshot();
+  }
+
              
 
                                            

@@ -1,20 +1,16 @@
 import { OfferConnectedList, OfferReceivedList, OfferSentList } from './OfferSentReceivedList';
-import { SignalserverWebsocketMsg, SignalserverWebsocketMsgType, WebrtcConnectionEventType } from '../messageSchema/WebSocketMessage';
-import { NoSuchItemException } from '../../exception/NoSuchItemException';
-import { AlreadyConnectedWithAPeerException } from '../exception/AlreadyConnectedWithAPeerException';
                                                                                                                   
                                           
                                                                                             
                                              
 import { v4 as uuidv4 } from 'uuid';
                                                                                 
-import io, { Socket } from 'socket.io-client';
                                                                                  
-import { EventData, SCXML, State } from 'xstate';
                                                                                                                                
 import { WebrtcConnectionService } from '../service/WebrtcConnectionService';
 import { WebrtcConnectionAnchorLocation, SignalserverWebsocketClientId, WebrtcConnectionAnchorId } from '../messageSchema/WebrtcConnectionAnchorLocation';
 import { MppWebrtcConnectionAnchor } from './MppWebrtcConnectionAnchor';
+import { SocketioClientSession_forWebrtcConnection } from '../service/EventEmitterNested_forWebrtcConnection';
 
                             
                                                                                                    
@@ -38,8 +34,13 @@ export class WebrtcConnectionAnchor {
                                                                                                                                                
   public readonly webrtcConnectionAnchorLocation_self: WebrtcConnectionAnchorLocation;
 
-  constructor(signalserverWebsocketClientId_self_sessionReactApp: SignalserverWebsocketClientId) {
+  constructor(
+      
+    signalserverWebsocketClientId_self_sessionReactApp: SignalserverWebsocketClientId,
+    socketioClientSession_forWebrtcConnection: SocketioClientSession_forWebrtcConnection
+  ) {
     this.webrtcConnectionAnchorLocation_self = new WebrtcConnectionAnchorLocation(signalserverWebsocketClientId_self_sessionReactApp, uuidv4() as WebrtcConnectionAnchorId);
+    this.webrtcConnectionService = new WebrtcConnectionService(this, socketioClientSession_forWebrtcConnection);
                                            
   }
 
@@ -52,7 +53,7 @@ export class WebrtcConnectionAnchor {
   public rtcPeerConnection: RTCPeerConnection | null = null;
   public mediaStream_self: MediaStream | null = null;
   public mediaStream_peer: MediaStream | null = null;
-  public customName_self: string | null = null;
+  public connectionAnchorName_self: string | null = null;
 
                                                                         
                                                                                                                                               
@@ -71,7 +72,7 @@ export class WebrtcConnectionAnchor {
   readonly offerConnectedList = new OfferConnectedList();
 
              
-  public readonly webrtcConnectionService = new WebrtcConnectionService(this);
+  public readonly webrtcConnectionService: WebrtcConnectionService;
 
                                                                                              
 

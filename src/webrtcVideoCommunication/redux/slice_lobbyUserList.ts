@@ -10,7 +10,7 @@ const { createSlice, combineReducers } = ((toolkitRaw as any).default ?? toolkit
    
 
 export const slice_lobbyUserList = createSlice({
-  name: 'sliceLobbyUserList',
+  name: 'slice_LobbyUserList',
   initialState: new LobbyUserList(),
   reducers: {
     overwriteList: (lobbyUserList, action: PayloadAction<LobbyUserList>) => {

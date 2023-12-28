@@ -28,7 +28,8 @@ export class WebrtcConnectionAnchorLocation {
                                                                                                
                                                                                                           
                                                                                                           
-  equals(other: WebrtcConnectionAnchorLocation): boolean {
+  equals(other: WebrtcConnectionAnchorLocation | undefined | null): boolean {
+    if (other == null) return false;
     return this.signalserverWebsocketClientId === other.signalserverWebsocketClientId && this.webrtcConnectionAnchorId === other.webrtcConnectionAnchorId;
   }
 

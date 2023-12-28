@@ -11,9 +11,12 @@ export const slice_mppMediaStreamLocalSelf = createSlice({
   initialState: new MppMediaStream(),
   reducers: {
     addToMpp: (mppMediaStreamLocalSelf, action: PayloadAction<MediaStream>) => {
-      mppMediaStreamLocalSelf.set(action.payload.id as MediaStreamId, action.payload);
-                                        
-      return MppMediaStream.init(mppMediaStreamLocalSelf as unknown as MppMediaStream);
+                                                                                         
+                                           
+                                                                                          
+      const mppMediaStreamLocalSelf_new = MppMediaStream.init(mppMediaStreamLocalSelf as unknown as MppMediaStream);
+      mppMediaStreamLocalSelf_new.set(action.payload.id as MediaStreamId, action.payload);
+      return mppMediaStreamLocalSelf_new;
     },
                                                                                           
                                

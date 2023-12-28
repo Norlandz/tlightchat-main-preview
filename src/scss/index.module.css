@@ -1,0 +1,103 @@
+pre {
+  margin: 0;
+  font-size: 0.8em;
+}
+
+code {
+  font-size: 0.8em;
+}
+
+svg {
+  vertical-align: middle;
+}
+
+.css_borderSimple {
+  border: 1px solid rgba(200, 200, 200, 0.5);
+}
+
+.active {
+  color: red;
+}
+
+.css_MediaStreamLocalSelfRcomp,
+.css_WebrtcConnectionAnchorRcomp {
+  height: 70px;
+  border: 1px solid rgba(200, 200, 200, 0.5);
+  position: relative;
+  overflow: auto;
+  resize: both;
+  display: inline-block;
+}
+
+.css_WebcamVideo {
+  flex-shrink: 1;
+  height: 100%;
+  width: 100%;
+}
+
+.css_LobbyUserListSelf {
+  background-color: rgba(203, 203, 203, 0.5);
+}
+
+#cssId_lobbyUserList {
+  border: 1px solid rgba(203, 203, 203, 0.5);
+}
+
+#cssId_offerSendList {
+  border: 1px solid rgba(128, 128, 128, 0.5);
+}
+
+#cssId_offerReceivedList {
+  border: 1px solid rgba(128, 128, 128, 0.5);
+}
+
+#cssId_offerConnectedList {
+  border: 1px solid rgba(128, 128, 128, 0.5);
+}
+
+#cssId_VideoConnectionLinkageDraftControlPanel {
+  margin: 0.4rem;
+  padding: 0.2rem;
+  box-shadow: 0 0 2px 4px rgba(0, 64, 255, 0.5);
+  position: fixed;
+  bottom: 10px;
+}
+
+#cssId_connectionAnchorName_input {
+  /*  */
+}
+
+#cssId_add_mediaStreamLocalSelfRcomp_input {
+  /*  */
+}
+
+.scrollAfterEnd::before {
+  height: 1600px;
+  content: "";
+  display: block;
+}
+
+.css_test {
+  background-color: red;
+}
+
+.css_buttonDisabled_byXstate {
+  border-right: 5px solid rgba(200, 0, 0, 0.5);
+}
+
+.css_buttonDisabled_byManualCode {
+  border-left: 5px solid rgba(200, 0, 0, 0.5);
+}
+
+.css_GeneralShadowBox {
+  margin: 0.4rem;
+  padding: 0.2rem;
+  box-shadow: 0 0 2px 2px rgba(200, 200, 200, 0.5);
+  resize: both;
+  overflow: auto;
+  position: relative;
+}
+
+.MuiMarkdown {
+  /*  */
+}/*# sourceMappingURL=index.module.css.map */

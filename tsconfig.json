@@ -4,7 +4,7 @@
     "lib": [
       "DOM",
       "DOM.Iterable",
-      "ES2020",
+      "ES2022",
     ],
     "module": "ESNext",
     "useDefineForClassFields": true,
@@ -68,6 +68,8 @@
     "babel.config.js",
     "config/**/*",
     "__mocks__",
+    "env.d.ts",
+    // "node_modules/@prisma/client/**/*"
     // ;working; "./src/**/*", 
     // ;not_working; "/h:/Using/TLightChat/tlightchat-main/src/**/*", 
     // ;not_working; "/h/Using/TLightChat/tlightchat-main/src/**/*", 
@@ -83,19 +85,30 @@
     // "next-env.d.ts",
     // ".next/types/**/*.ts",
   ],
-  // "exclude": [
-  //   "node_modules",
-  //   "**/node_modules/**/*",
-  //   ".git/**/*",
-  //   "coverage/**/*",
-  //   ".next/**/*",
-  // ],
+  "exclude": [
+    "node_modules",
+    "**/node_modules/**/*",
+    // ".git/**/*",
+    // "coverage/**/*",
+    // ".next/**/*",
+    "*.del*",
+    // javascript - How to tell Vite to exclude a subset of files in a directory from build? - Stack Overflow
+    // https://stackoverflow.com/questions/75412767/how-to-tell-vite-to-exclude-a-subset-of-files-in-a-directory-from-build
+    // typescript - Running vite build using tsconfig.build.ts - Stack Overflow
+    // https://stackoverflow.com/questions/74359277/running-vite-build-using-tsconfig-build-ts
+    // javascript - Why does Vite create two TypeScript config files: tsconfig.json and tsconfig.node.json? - Stack Overflow
+    // https://stackoverflow.com/questions/72027949/why-does-vite-create-two-typescript-config-files-tsconfig-json-and-tsconfig-nod
+    "test/**/*", // @todo vite exclude folder from build
+    // "test/!(randomTest)/**/*", // @todo vite exclude folder from build // doesnt work for vite, but works for intellisense ... 
+    // "node_modules/@prisma/client/node_modules/**/*"
+  ],
   "references": [
     {
       "path": "./tsconfig.node.json"
     }
   ],
 }
+// vscode intellisense hang pb ... dk 5.2.2 5.3.3 
 // 
 // ;[import from root (unsolved)]; "plugins": [
 // ;[import from root (unsolved)];   {

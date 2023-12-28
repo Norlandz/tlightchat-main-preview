@@ -54,7 +54,7 @@ module.exports = {
     'no-unused-expressions': 'off',
     '@typescript-eslint/no-unused-expressions': 'error',
     '@typescript-eslint/no-explicit-any': 'warn',
-    '@typescript-eslint/no-unsafe-assignment': 'error',
+    '@typescript-eslint/no-unsafe-assignment': 'warn', // error -> then force type cast -- actually no much safer ...
     '@typescript-eslint/no-unsafe-argument': 'error',
     'prefer-const': 'warn',
     '@typescript-eslint/no-var-requires': 'warn',
@@ -65,6 +65,7 @@ module.exports = {
     '@typescript-eslint/await-thenable': 'error',
     'no-inner-declarations': 'off',
     'no-constant-condition': 'warn',
+    'no-useless-escape': 'warn',
 
     // https://github.com/vercel/next.js/discussions/24254
     // https://nextjs.org/docs/pages/building-your-application/configuring/eslint#additional-configurations

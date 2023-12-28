@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "UserWeb" ALTER COLUMN "userAuth0Id" SET DATA TYPE TEXT;

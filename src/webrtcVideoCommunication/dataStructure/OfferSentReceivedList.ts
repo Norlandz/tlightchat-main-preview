@@ -232,10 +232,11 @@ export class OfferReceivedList extends OfferSentReceivedList {
 export class OfferConnectedList extends OfferSentReceivedList {
      
                                 
+                                                                                                                                                                                             
                                                                             
                                                                                                                           
      
-  move_OfferConnected(signalserverWebsocketMsg: SignalserverWebsocketMsg, offerSentReceivedList: OfferSentReceivedList) {
+  moveToSelfWithUpdate_OfferConnected(signalserverWebsocketMsg: SignalserverWebsocketMsg, offerSentReceivedList: OfferSentReceivedList) {
                                                             
                                                                                                                 
                                                                                         
