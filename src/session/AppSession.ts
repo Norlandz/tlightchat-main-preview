@@ -45,7 +45,7 @@ export class DebugConfig {
   public readonly app_Jest = window.location.port === '';
 
                                                                                                                                                                                                                                                                                                                                                           
-  public readonly prefix_debug = !this.mode_dev ? '' : this.app_T1 ? '📜' : this.app_T2 ? '⚓' : '🍌';
+  public readonly prefix_debug = !this.mode_dev ? '' : this.app_T1 ? '📜' : this.app_T2 ? '⚓' : '🎲';
   public readonly suffix_debug = !this.mode_dev ? '' : this.app_T1 ? '1' : this.app_T2 ? '2' : '3';
   public connectionAnchorName_debugTest: string | undefined = undefined;
 

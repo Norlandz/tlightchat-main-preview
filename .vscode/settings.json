@@ -1,5 +1,8 @@
 {
   "typescript.tsdk": "node_modules\\typescript\\lib",
   "jestTestExplorer.pathToJest": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js",
-  "liveServer.settings.root": "/dist"
+  "liveServer.settings.root": "/dist",
+  "files.associations": {
+    ".env.local": "properties"
+  },
 }

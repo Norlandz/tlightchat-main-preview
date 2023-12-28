@@ -10,7 +10,7 @@ import SendIcon from '@mui/icons-material/Send';
 import ChatOutlinedIcon from '@mui/icons-material/ChatOutlined';
 import ChatIcon from '@mui/icons-material/Chat';
 
-import { ChatMessageInfo } from '../messageSchema/ChatMessageInfo';
+import { ChatMessageInfo, ChatMsgType } from '../messageSchema/ChatMessageInfo';
 import { UserWeb } from '../../user/UserWeb';
 import { useHotkeys } from 'react-hotkeys-hook';
 import dayjs from 'dayjs';
@@ -18,8 +18,8 @@ import Draggable from 'react-draggable';
 import { MuiMarkdown, getOverrides } from 'mui-markdown';
 import { slice_mppArrPeerChatMsg } from '../redux/slice_mppPeerChatMsgs';
 import { ArrPeerChatMsg } from '../dataStructure/MppWebrtcConnectionAnchor';
+                                                
 import styles from '../../scss/index.module.css';
-import { ChatMsgType } from '@prisma/client';
 import { SocketioClientUtil } from '../../util/socketio/SocketioUtil';
 
 export const TextChatGridPanel: React.FC<{

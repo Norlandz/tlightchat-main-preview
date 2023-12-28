@@ -2,7 +2,7 @@
                                         
                                         
                                       
-import './dotenvPreImport';                                       
+import './dotenvPreImport';                                                                                    
 
                                                    
                                         
@@ -33,9 +33,9 @@ import util from 'util';
 import { WebrtcConnectionAnchor } from './webrtcVideoCommunication/dataStructure/WebrtcConnectionAnchor';
 import { arrayRemove } from './util/general/ArrayUtil';
 import { UserAuth0Id, UserWeb, UserWebId } from './user/UserWeb';
-import { ChatMessageInfo } from './webrtcVideoCommunication/messageSchema/ChatMessageInfo';
-                                                    
-import { default as prismaClientNs } from '@prisma/client';
+import { ChatMessageInfo, ChatMsgType } from './webrtcVideoCommunication/messageSchema/ChatMessageInfo';
+import * as prismaClientNs from '@prisma/client';
+                                                              
 
 import { z } from 'zod';
 import * as socketioClient from 'socket.io-client';
@@ -43,8 +43,37 @@ import { AckData } from './util/socketio/SocketioUtil';
 import * as auth0React from '@auth0/auth0-react';
 import { v4 as uuidv4 } from 'uuid';
 
+                                                
+                                              
+                       
+     
+                                                                                                                                                                                                                                                                                          
+   
+                                                                                     
+     
+                                                                                          
+                                                                                
+                                                         
+                                              
+                                                                                   
+             
+                                                                                                                                                                                                                                                                                                                                             
+           
+                                                                                                                                                        
+           
+                                                                                                                                                                                                                                                                                                                                                                                             
+             
+                                                                                          
+                                                                                      
+                                                                                                                                
 console.log('>---<');
 
+                                         
+                                                       
+                                                 
+                                                       
+                                                         
+                                                       
 const prisma = new prismaClientNs.PrismaClient();
 const app = express();
 const server = http.createServer(app);
@@ -83,7 +112,7 @@ const ARR_VITE_DOMAIN = JSON.parse(
                                      
 z.array(z.string().url()).parse(ARR_VITE_DOMAIN);
 console.log('ARR_VITE_DOMAIN', ARR_VITE_DOMAIN);
-                                                                         
+if (process.env.configGuard_dotenvFlow_Overwrite !== 'configGuard_dotenvFlow_Overwrite .env.local') throw new TypeError();
 const io = new socketioServer.Server(server, {
   cors: {
                                                                                                                       
@@ -149,7 +178,8 @@ const schema_ChatMessageInfo_dto = z
   .object({
     uuid: z.string().uuid(),
     creationTime: z.string().datetime(),
-    msgType: z.nativeEnum(prismaClientNs.ChatMsgType),
+                                                         
+    msgType: z.nativeEnum(ChatMsgType),
     msgData: z.string(),
                            
     msgFromId: z.string(),

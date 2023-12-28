@@ -102,8 +102,9 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  // provider = "postgresql"
+  provider = "sqlite"
+  url = env("DATABASE_URL")
 }
 
 // pnpm i -D prisma
@@ -133,21 +134,43 @@ model UserWeb {
   arr_chatMessageInfo_SentToSelf   ChatMessageInfo[] @relation("arr_chatMessageInfo_SentToSelf")
   seq_debug                        Int?
 
-  @@index([email])
+  // @@index([email])
 }
 
 model ChatMessageInfo {
-  uuid         String      @id @default(uuid())
-  creationTime DateTime    @default(now())
-  msgType      ChatMsgType @default(text)
+  uuid         String   @id @default(uuid())
+  creationTime DateTime @default(now())
+  // msgType      ChatMsgType @default(text)
+  msgType      String   @default("text")
   msgData      String
-  msgFrom      UserWeb     @relation("arr_chatMessageInfo_SentFromSelf", fields: [msgFromId], references: [userWebId])
+  msgFrom      UserWeb  @relation("arr_chatMessageInfo_SentFromSelf", fields: [msgFromId], references: [userWebId])
   msgFromId    String
-  msgTo        UserWeb     @relation("arr_chatMessageInfo_SentToSelf", fields: [msgToId], references: [userWebId])
+  msgTo        UserWeb  @relation("arr_chatMessageInfo_SentToSelf", fields: [msgToId], references: [userWebId])
   msgToId      String
   seq_debug    Int?
 }
 
-enum ChatMsgType {
-  text
-}
+// reactjs - Error validating: You defined the enum but the current connector does not support enums - Stack Overflow
+// https://stackoverflow.com/questions/72947980/error-validating-you-defined-the-enum-but-the-current-connector-does-not-suppor
+// 
+// typescript - How do handle enum values in jest test with prisma? Group[] not assignable to Group - Stack Overflow
+// https://stackoverflow.com/questions/69208189/how-do-handle-enum-values-in-jest-test-with-prisma-group-not-assignable-to-gr
+// 
+// Support `enum` in SQLite (via polyfill) · Issue #2219 · prisma/prisma
+// https://github.com/prisma/prisma/issues/2219
+// 
+// why sqlite remove enum - Google 搜索
+// https://www.google.ca/search?q=why+sqlite+remove+enum&newwindow=1&sca_esv=594138259&sxsrf=AM9HkKk2DnxjPWuSkkTCs9V21GW-l252SA%3A1703737759082&ei=n_mMZdXTBJ-Y5OMPjae--A4&ved=0ahUKEwiVn67fpbGDAxUfDHkGHY2TD-8Q4dUDCBA&uact=5&oq=why+sqlite+remove+enum&gs_lp=Egxnd3Mtd2l6LXNlcnAiFndoeSBzcWxpdGUgcmVtb3ZlIGVudW0yBRAhGKABSMIdUABYmxxwAHgBkAEAmAFhoAGCDaoBAjIyuAEDyAEA-AEBwgIEECMYJ8ICCxAuGIAEGMcBGNEDwgIFEAAYgATCAgUQLhiABMICChAAGIAEGIoFGEPCAggQLhiABBjUAsICDhAuGIAEGMcBGK8BGI4FwgIIEAAYgAQYywHCAggQLhiABBjLAcICBhAAGB4YD8ICBBAAGB7CAgcQABiABBgMwgIGEAAYCBgewgIIEAAYgAQYogTCAgcQIRigARgK4gMEGAAgQYgGAQ&sclient=gws-wiz-serp
+// 
+// create a table of constant to miminc enum? - Google 搜索
+// https://www.google.ca/search?q=create+a+table+of+constant+to+miminc+enum%3F
+// 
+// java - JPA / Hibernate - persist enums as table of constants - Stack Overflow
+// https://stackoverflow.com/questions/34718942/jpa-hibernate-persist-enums-as-table-of-constants
+// 
+// c# - having table for fixed data or Enum? - Stack Overflow
+// https://stackoverflow.com/questions/38366748/having-table-for-fixed-data-or-enum
+// 
+// enum ChatMsgType {
+//   text
+// }

@@ -1,8 +1,8 @@
 import { v4 as uuidv4 } from 'uuid';
 import { Type } from 'class-transformer';
 import 'reflect-metadata';
-                                                    
-import { default as prismaClientNs } from '@prisma/client';
+import * as prismaClientNs from '@prisma/client';
+                                                              
 
 
 declare const UserWebIdSymbol: unique symbol;

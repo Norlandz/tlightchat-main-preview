@@ -30,10 +30,12 @@
     "// // tt2": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js --runTestsByPath ./test/_introTryTest/App_introTryTest.test.tsx -t=\"click and send offer\"",
     "// // // tt1": "npx jest --runTestsByPath ./test/App.test.tsx -t=\"print App, check online\" --watch",
     "//-------": "",
-    "build": "tsc && vite build",
+    "vite:build": "tsc && vite build",
     "// lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "// preview": "vite preview",
-    "//--------": ""
+    "//--------": "",
+    "start_server_start_client": "concurrently \"pnpm sigs\" \"pnpm dev\"",
+    "start_server_build_client": "concurrently \"pnpm sigs\" \"pnpm vite:build\""
   },
   "dependencies": {
     "@auth0/auth0-react": "^2.2.4",
@@ -71,6 +73,7 @@
     "reflect-metadata": "^0.2.1",
     "socket.io": "^4.7.2",
     "socket.io-client": "^4.7.2",
+    "sqlite3": "^5.1.6",
     "uuid": "^9.0.1",
     "winston": "^3.11.0",
     "ws": "^8.14.2",
