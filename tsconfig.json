@@ -67,7 +67,7 @@
     // "jest.setupFilesAfterEnv.ts",
     "babel.config.js",
     "config/**/*",
-    "__mocks__",
+    "__mocks__/**/*",
     "env.d.ts",
     // "node_modules/@prisma/client/**/*"
     // ;working; "./src/**/*", 
@@ -99,6 +99,7 @@
     // javascript - Why does Vite create two TypeScript config files: tsconfig.json and tsconfig.node.json? - Stack Overflow
     // https://stackoverflow.com/questions/72027949/why-does-vite-create-two-typescript-config-files-tsconfig-json-and-tsconfig-nod
     "test/**/*", // @todo vite exclude folder from build
+    "__mocks__/**/*", // @todo vite exclude folder from build
     // "test/!(randomTest)/**/*", // @todo vite exclude folder from build // doesnt work for vite, but works for intellisense ... 
     // "node_modules/@prisma/client/node_modules/**/*"
   ],

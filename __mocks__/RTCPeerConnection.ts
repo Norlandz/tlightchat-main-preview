@@ -42,7 +42,7 @@ class RTCPeerConnectionMock implements RTCPeerConnection {
 
   close(): void {}
 
-                                          
+  // @ts-ignore function overload thing...
   createAnswer(options?: RTCAnswerOptions): Promise<RTCSessionDescriptionInit> {
     return Promise.resolve({ type: 'answer', sdp: '' });
   }
@@ -51,16 +51,16 @@ class RTCPeerConnectionMock implements RTCPeerConnection {
     return {} as RTCDataChannel;
   }
 
-                                          
+  // @ts-ignore function overload thing...
   createOffer(options?: RTCOfferOptions): Promise<RTCSessionDescriptionInit> {
     return Promise.resolve({ type: 'offer', sdp: '' });
   }
 
-                                                                                                                                                    
-                                                                                                                                                            
-                                                                                                                                  
-                                                                                                                                                                     
-                                                                                                                                                                 
+  // addIceCandidate(candidate: RTCIceCandidateInit, successCallback: VoidFunction, failureCallback: RTCPeerConnectionErrorCallback): Promise<void>;
+  // createOffer(successCallback: RTCSessionDescriptionCallback, failureCallback: RTCPeerConnectionErrorCallback, options?: RTCOfferOptions): Promise<void>;
+  // createAnswer(successCallback: RTCSessionDescriptionCallback, failureCallback: RTCPeerConnectionErrorCallback): Promise<void>;
+  // setLocalDescription(description: RTCLocalSessionDescriptionInit, successCallback: VoidFunction, failureCallback: RTCPeerConnectionErrorCallback): Promise<void>;
+  // setRemoteDescription(description: RTCSessionDescriptionInit, successCallback: VoidFunction, failureCallback: RTCPeerConnectionErrorCallback): Promise<void>;
 
   getConfiguration(): RTCConfiguration {
     return {} as RTCConfiguration;
@@ -94,7 +94,7 @@ class RTCPeerConnectionMock implements RTCPeerConnection {
 
   setConfiguration(configuration: RTCConfiguration): void {}
 
-                                                                                         
+  // setIdentityProvider(provider: string, options?: RTCIdentityProviderOptions): void {}
 
   getLocalStreams(): MediaStream[] {
     return [];

@@ -9,11 +9,11 @@ import { Box, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup } from
 import { TitleCollapse } from '../../utilComponent/materialui/TitleCollapse';
 import { CollapseAuto } from '../../utilComponent/materialui/CollapseAuto';
 
-               
-                                                                                                                                                      
+// ############
+// export const OfferSentReceivedListPanel: React.FC<{ webrtcConnectionAnchor_self: WebrtcConnectionAnchor }> = ({ webrtcConnectionAnchor_self }) => {
 
 export const OfferSentReceivedListPanel: React.FC = () => {
-                                                                                               
+  // TODO @messy @pb-thought[a map of component with local states to share to other components]
   const mppWebrtcConnectionAnchor_rst = ReactRedux.useSelector((state: RootState) => state.reducer_mppWebrtcConnectionAnchor);
   const webrtcConnectionAnchorLocation_self_currSel_rst = ReactRedux.useSelector(
     (state: RootState) => state.reducer_videoConnectionLinkageDraftCurrSelected.reducer_webrtcConnectionAnchorLocation_self
@@ -25,8 +25,8 @@ export const OfferSentReceivedListPanel: React.FC = () => {
 
   if (webrtcConnectionAnchorLocation_self_currSel_rst == null) return 'webrtcConnectionAnchorLocation_self == null -- nothing is seleted';
   const webrtcConnectionAnchor_self = get_webrtcConnectionAnchor_self_helper(mppWebrtcConnectionAnchor_rst, webrtcConnectionAnchorLocation_self_currSel_rst);
-                                                                                                                                                
-                                                                                                                 
+  // const webrtcConnectionAnchor_self: WebrtcConnectionAnchor | null = videoConnectionLinkageDraftCurrSelected_rst.webrtcConnectionAnchor_self;
+  // if (webrtcConnectionAnchor_self == null) return 'webrtcConnectionAnchor_self == null -- nothing is seleted';
   return (
     <Box className={styles.css_GeneralShadowBox}>
       <Box id={styles.cssId_offerSendList} className={styles.css_GeneralShadowBox}>
@@ -44,15 +44,15 @@ export const OfferSentReceivedListPanel: React.FC = () => {
                         if (!signalserverWebsocketMsg) throw new TypeError();
                         if (signalserverWebsocketMsg.msgTo == null) throw new TypeError();
                         if (!(signalserverWebsocketMsg.msgTo instanceof WebrtcConnectionAnchorLocation)) throw new TypeError();
-                        if (signalserverWebsocketMsg.msgTo.signalserverWebsocketClientId === webrtcConnectionAnchor_self.webrtcConnectionAnchorLocation_self.signalserverWebsocketClientId) throw new TypeError();                   
-                        if (signalserverWebsocketMsg.msgTo.webrtcConnectionAnchorId === webrtcConnectionAnchor_self.webrtcConnectionAnchorLocation_self.webrtcConnectionAnchorId) throw new TypeError();                   
+                        if (signalserverWebsocketMsg.msgTo.signalserverWebsocketClientId === webrtcConnectionAnchor_self.webrtcConnectionAnchorLocation_self.signalserverWebsocketClientId) throw new TypeError(); // prettier-ignore
+                        if (signalserverWebsocketMsg.msgTo.webrtcConnectionAnchorId === webrtcConnectionAnchor_self.webrtcConnectionAnchorLocation_self.webrtcConnectionAnchorId) throw new TypeError(); // prettier-ignore
                         const webrtcConnectionAnchorLocation_peer_acceptor = new WebrtcConnectionAnchorLocation(signalserverWebsocketClientId_peer_msgTo, webrtcConnectionAnchorId_peer);
                         return (
                           <div key={webrtcConnectionAnchorId_peer}>
                             <FormControlLabel
                               control={<Radio sx={{ '&, &.Mui-checked': { color: 'olive' } }} />}
                               value={webrtcConnectionAnchorId_peer}
-                                                                                                          
+                              // yeah before that dk why doesnt moved to another , so tha t show was weird
                               label={`${webrtcConnectionAnchorId_peer} ${webrtcConnectionAnchorId_peer ===webrtcConnectionAnchor_self.webrtcConnectionAnchorLocation_peer?.webrtcConnectionAnchorId ? 'connected *<' : ''}`}
                               checked={webrtcConnectionAnchorLocation_peer_currSel_rst?.equals(webrtcConnectionAnchorLocation_peer_acceptor)}
                               onClick={() =>
@@ -74,7 +74,7 @@ export const OfferSentReceivedListPanel: React.FC = () => {
 
       <Box id={styles.cssId_lobbyUserList} className={styles.css_GeneralShadowBox}>
         <CollapseAuto title={<TitleCollapse>offer received:</TitleCollapse>}>
-          {                                                                        }
+          {/* <span> // forceRefresh {mppWebrtcConnectionAnchor_rst.size}</span> */}
           <ul>
             {Array.from(webrtcConnectionAnchor_self.offerReceivedList.mpp_OfferSentReceived, ([signalserverWebsocketClientId_peer_msgFrom, mpp_webrtcConnectionAnchorId_peer]) => {
               return (
@@ -88,8 +88,8 @@ export const OfferSentReceivedListPanel: React.FC = () => {
                         if (!signalserverWebsocketMsg) throw new TypeError();
                         if (signalserverWebsocketMsg.msgTo == null) throw new TypeError();
                         if (!(signalserverWebsocketMsg.msgTo instanceof WebrtcConnectionAnchorLocation)) throw new TypeError();
-                        if (signalserverWebsocketMsg.msgTo.signalserverWebsocketClientId !== webrtcConnectionAnchor_self.webrtcConnectionAnchorLocation_self.signalserverWebsocketClientId) throw new TypeError();                   
-                        if (signalserverWebsocketMsg.msgTo.webrtcConnectionAnchorId !== webrtcConnectionAnchor_self.webrtcConnectionAnchorLocation_self.webrtcConnectionAnchorId) throw new TypeError();                   
+                        if (signalserverWebsocketMsg.msgTo.signalserverWebsocketClientId !== webrtcConnectionAnchor_self.webrtcConnectionAnchorLocation_self.signalserverWebsocketClientId) throw new TypeError(); // prettier-ignore
+                        if (signalserverWebsocketMsg.msgTo.webrtcConnectionAnchorId !== webrtcConnectionAnchor_self.webrtcConnectionAnchorLocation_self.webrtcConnectionAnchorId) throw new TypeError(); // prettier-ignore
                         const webrtcConnectionAnchorLocation_peer_initiator = new WebrtcConnectionAnchorLocation(signalserverWebsocketClientId_peer_msgFrom, webrtcConnectionAnchorId_peer);
                         return (
                           <div key={webrtcConnectionAnchorId_peer}>
@@ -130,8 +130,8 @@ export const OfferSentReceivedListPanel: React.FC = () => {
                         if (!signalserverWebsocketMsg) throw new TypeError();
                         if (signalserverWebsocketMsg.msgTo == null) throw new TypeError();
                         if (!(signalserverWebsocketMsg.msgTo instanceof WebrtcConnectionAnchorLocation)) throw new TypeError();
-                        if (signalserverWebsocketMsg.msgTo.signalserverWebsocketClientId !== webrtcConnectionAnchor_self.webrtcConnectionAnchorLocation_self.signalserverWebsocketClientId) throw new TypeError();                   
-                        if (signalserverWebsocketMsg.msgTo.webrtcConnectionAnchorId !== webrtcConnectionAnchor_self.webrtcConnectionAnchorLocation_self.webrtcConnectionAnchorId) throw new TypeError();                   
+                        if (signalserverWebsocketMsg.msgTo.signalserverWebsocketClientId !== webrtcConnectionAnchor_self.webrtcConnectionAnchorLocation_self.signalserverWebsocketClientId) throw new TypeError(); // prettier-ignore
+                        if (signalserverWebsocketMsg.msgTo.webrtcConnectionAnchorId !== webrtcConnectionAnchor_self.webrtcConnectionAnchorLocation_self.webrtcConnectionAnchorId) throw new TypeError(); // prettier-ignore
                         const webrtcConnectionAnchorLocation_peer_initiator = new WebrtcConnectionAnchorLocation(signalserverWebsocketClientId_peer_msgFrom, webrtcConnectionAnchorId_peer);
                         return (
                           <div key={webrtcConnectionAnchorId_peer}>

@@ -1,8 +1,8 @@
-   
-                          
-   
+/**
+ * @jest-environment jsdom
+ */
 
-import { setImmediate } from 'timers';                                                
+import { setImmediate } from 'timers'; // https://github.com/prisma/prisma/issues/8558
 global.setImmediate = setImmediate;
 
 import { jest } from '@jest/globals';
@@ -33,7 +33,7 @@ describe('Test JestPreview', () => {
         <div>kinda slow</div>
       </div>
     );
-                                                      
+    // console.log(prettyDOM(renderResult.container));
     console.log(printHtmlHltAnsi(renderResult.container));
 
     preview.debug();
@@ -64,8 +64,8 @@ describe('Test JestPreview', () => {
       const renderResult = render(<App />);
       preview.debug();
 
-                                                       
-                                                                   
+      // if (setCount_U == null) throw new TypeError();
+      //? need_comfirm no_knowlres ... is this a proper way to use?
 
       await act(async () => {
         setCount_U(10 + testSn);
@@ -95,20 +95,20 @@ describe('Test JestPreview', () => {
           bbb<code className={styles.css_VideoConnectionLinkageDraftCurrSelected}>123</code>
           <pre>debug this</pre>
         </div>
-        {                     }
+        {/* <TestCssComp /> */}
       </div>
     );
-                                                    
-      
-                                                   
-                 
-                                
-                          
-                                                                                            
-                          
-                 
-           
-         
+    // import styles from './scss/index.module.css';
+    //
+    // export const TestCssComp: React.FC = () => {
+    //   return (
+    //     <div className="foo">
+    //       <div>BB</div>
+    //       <code className={styles.css_VideoConnectionLinkageDraftCurrSelected}>666</code>
+    //       <div>DD</div>
+    //     </div>
+    //   );
+    // };
     console.log(printHtmlHltAnsi(renderResult.container));
     console.log(styles.css_VideoConnectionLinkageDraftCurrSelected);
     preview.debug();

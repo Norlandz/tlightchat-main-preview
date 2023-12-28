@@ -19,23 +19,23 @@ import RingVolumeIcon from '@mui/icons-material/RingVolume';
 import PermPhoneMsgIcon from '@mui/icons-material/PermPhoneMsg';
 import { green, orange, pink, purple } from '@mui/material/colors';
 
-               
+// ############
 
 export const LobbyUserListPanel: React.FC<{
   signalserverWebsocketClientId_self_sessionReactApp: SignalserverWebsocketClientId;
   socketioClientSession_forWebrtcConnection: SocketioClientSession_forWebrtcConnection;
 }> = ({ signalserverWebsocketClientId_self_sessionReactApp, socketioClientSession_forWebrtcConnection }) => {
-                                                  
+  // @: no need update -- delegate to signalserver
   const lobbyUserList_rst = ReactRedux.useSelector((state: RootState) => state.reducer_lobbyUserList);
   const mppWebrtcConnectionAnchor_rst = ReactRedux.useSelector((state: RootState) => state.reducer_mppWebrtcConnectionAnchor);
-  const webrtcConnectionAnchorLocation_self_currSel_rst = ReactRedux.useSelector( (state: RootState) => state.reducer_videoConnectionLinkageDraftCurrSelected.reducer_webrtcConnectionAnchorLocation_self );                   
-  const webrtcConnectionAnchorLocation_peer_currSel_rst = ReactRedux.useSelector( (state: RootState) => state.reducer_videoConnectionLinkageDraftCurrSelected.reducer_webrtcConnectionAnchorLocation_peer );                   
+  const webrtcConnectionAnchorLocation_self_currSel_rst = ReactRedux.useSelector( (state: RootState) => state.reducer_videoConnectionLinkageDraftCurrSelected.reducer_webrtcConnectionAnchorLocation_self ); // prettier-ignore
+  const webrtcConnectionAnchorLocation_peer_currSel_rst = ReactRedux.useSelector( (state: RootState) => state.reducer_videoConnectionLinkageDraftCurrSelected.reducer_webrtcConnectionAnchorLocation_peer ); // prettier-ignore
 
   const dispatch = ReactRedux.useDispatch();
 
   React.useEffect(() => {
     const socketio_listener = (lobbyUserList_jsobj: LobbyUserList) => {
-                                                                                    
+      // why did i get the result before then? ... the change of that store still em
       const lobbyUserList = plainToInstance(LobbyUserList, lobbyUserList_jsobj);
       dispatch(slice_lobbyUserList.actions.overwriteList(lobbyUserList));
     };
@@ -44,7 +44,7 @@ export const LobbyUserListPanel: React.FC<{
     return () => {
       socketioClientSession_forWebrtcConnection.socket.off(SignalserverWebsocketMsgType.lobbyUserList, socketio_listener);
     };
-  }, [dispatch, socketioClientSession_forWebrtcConnection.socket]);                              
+  }, [dispatch, socketioClientSession_forWebrtcConnection.socket]); //@dk how dispatch wil change
 
   if (webrtcConnectionAnchorLocation_self_currSel_rst == null) {
     return (
@@ -55,7 +55,7 @@ export const LobbyUserListPanel: React.FC<{
   }
   const webrtcConnectionAnchor_self = get_webrtcConnectionAnchor_self_helper(mppWebrtcConnectionAnchor_rst, webrtcConnectionAnchorLocation_self_currSel_rst);
 
-                                                                
+  //       <Accordion> // Just those dealing with inconsistent..
   return (
     <Box id={styles.cssId_lobbyUserList} className={styles.css_GeneralShadowBox}>
       <CollapseAuto title={<TitleCollapse>lobby user list:</TitleCollapse>}>
@@ -64,7 +64,7 @@ export const LobbyUserListPanel: React.FC<{
             const det_IsSelf = signalserverWebsocketClientId_peer === signalserverWebsocketClientId_self_sessionReactApp;
 
             if (det_IsSelf) {
-                                                                                     
+              // remove self from the .. why though. ok was just the button select ok
               return (
                 <li key={signalserverWebsocketClientId_peer} className={styles.css_LobbyUserListSelf}>
                   <code>{socketClientOnlineInfo.userWeb.username}</code> <code>{socketClientOnlineInfo.userWeb.userWebId}</code> <code>{signalserverWebsocketClientId_peer}</code> <code>{'self *<'}</code>
@@ -79,7 +79,7 @@ export const LobbyUserListPanel: React.FC<{
                               value={webrtcConnectionAnchorId_peer}
                               label={`${lobbyUserInfo_peer.connectionAnchorName} ${webrtcConnectionAnchorId_peer} ${lobbyUserInfo_peer.connectionAnchorStatus}`}
                               disabled={true}
-                                                   
+                              // onClick={() => {}}
                             />
                           </div>
                         );
@@ -96,34 +96,34 @@ export const LobbyUserListPanel: React.FC<{
                   <FormControl>
                     <RadioGroup>
                       {Array.from(socketClientOnlineInfo.mpp_WebrtcConnectionAnchorOnlineInfo, ([webrtcConnectionAnchorId_peer, lobbyUserInfo_peer]) => {
-                                                                                                                        
-                        const signalserverWebsocketMsg_Sent = webrtcConnectionAnchor_self.offerSentList.mpp_OfferSentReceived.get(signalserverWebsocketClientId_peer)?.get(webrtcConnectionAnchorId_peer);                   
-                        const signalserverWebsocketMsg_Received = webrtcConnectionAnchor_self.offerReceivedList.mpp_OfferSentReceived.get(signalserverWebsocketClientId_peer)?.get(webrtcConnectionAnchorId_peer);                   
-                        const signalserverWebsocketMsg_Connected = webrtcConnectionAnchor_self.offerConnectedList.mpp_OfferSentReceived.get(signalserverWebsocketClientId_peer)?.get(webrtcConnectionAnchorId_peer);                   
+                        // @performance: how to avoid nested loop -- before everything just linear, now need compare ...
+                        const signalserverWebsocketMsg_Sent = webrtcConnectionAnchor_self.offerSentList.mpp_OfferSentReceived.get(signalserverWebsocketClientId_peer)?.get(webrtcConnectionAnchorId_peer); // prettier-ignore
+                        const signalserverWebsocketMsg_Received = webrtcConnectionAnchor_self.offerReceivedList.mpp_OfferSentReceived.get(signalserverWebsocketClientId_peer)?.get(webrtcConnectionAnchorId_peer); // prettier-ignore
+                        const signalserverWebsocketMsg_Connected = webrtcConnectionAnchor_self.offerConnectedList.mpp_OfferSentReceived.get(signalserverWebsocketClientId_peer)?.get(webrtcConnectionAnchorId_peer); // prettier-ignore
 
                         if (signalserverWebsocketMsg_Sent !== undefined) {
                           if (!signalserverWebsocketMsg_Sent) throw new TypeError();
                           if (signalserverWebsocketMsg_Sent.msgTo == null) throw new TypeError();
                           if (!(signalserverWebsocketMsg_Sent.msgTo instanceof WebrtcConnectionAnchorLocation)) throw new TypeError();
-                                                
-                          if (signalserverWebsocketMsg_Sent.msgTo.signalserverWebsocketClientId === webrtcConnectionAnchor_self.webrtcConnectionAnchorLocation_self.signalserverWebsocketClientId) throw new TypeError();                   
-                          if (signalserverWebsocketMsg_Sent.msgTo.webrtcConnectionAnchorId === webrtcConnectionAnchor_self.webrtcConnectionAnchorLocation_self.webrtcConnectionAnchorId) throw new TypeError();                   
+                          // if equal then wrong
+                          if (signalserverWebsocketMsg_Sent.msgTo.signalserverWebsocketClientId === webrtcConnectionAnchor_self.webrtcConnectionAnchorLocation_self.signalserverWebsocketClientId) throw new TypeError(); // prettier-ignore
+                          if (signalserverWebsocketMsg_Sent.msgTo.webrtcConnectionAnchorId === webrtcConnectionAnchor_self.webrtcConnectionAnchorLocation_self.webrtcConnectionAnchorId) throw new TypeError(); // prettier-ignore
                         }
                         if (signalserverWebsocketMsg_Received !== undefined) {
                           if (!signalserverWebsocketMsg_Received) throw new TypeError();
                           if (signalserverWebsocketMsg_Received.msgTo == null) throw new TypeError();
                           if (!(signalserverWebsocketMsg_Received.msgTo instanceof WebrtcConnectionAnchorLocation)) throw new TypeError();
-                                                    
-                          if (signalserverWebsocketMsg_Received.msgTo.signalserverWebsocketClientId !== webrtcConnectionAnchor_self.webrtcConnectionAnchorLocation_self.signalserverWebsocketClientId) throw new TypeError();                   
-                          if (signalserverWebsocketMsg_Received.msgTo.webrtcConnectionAnchorId !== webrtcConnectionAnchor_self.webrtcConnectionAnchorLocation_self.webrtcConnectionAnchorId) throw new TypeError();                   
+                          // if not equal then wrong
+                          if (signalserverWebsocketMsg_Received.msgTo.signalserverWebsocketClientId !== webrtcConnectionAnchor_self.webrtcConnectionAnchorLocation_self.signalserverWebsocketClientId) throw new TypeError(); // prettier-ignore
+                          if (signalserverWebsocketMsg_Received.msgTo.webrtcConnectionAnchorId !== webrtcConnectionAnchor_self.webrtcConnectionAnchorLocation_self.webrtcConnectionAnchorId) throw new TypeError(); // prettier-ignore
                         }
                         if (signalserverWebsocketMsg_Connected !== undefined) {
                           if (!signalserverWebsocketMsg_Connected) throw new TypeError();
                           if (signalserverWebsocketMsg_Connected.msgTo == null) throw new TypeError();
                           if (!(signalserverWebsocketMsg_Connected.msgTo instanceof WebrtcConnectionAnchorLocation)) throw new TypeError();
-                                                                                                                                                              
-                          if (signalserverWebsocketMsg_Connected.msgTo.signalserverWebsocketClientId !== webrtcConnectionAnchor_self.webrtcConnectionAnchorLocation_self.signalserverWebsocketClientId) throw new TypeError();                   
-                          if (signalserverWebsocketMsg_Connected.msgTo.webrtcConnectionAnchorId !== webrtcConnectionAnchor_self.webrtcConnectionAnchorLocation_self.webrtcConnectionAnchorId) throw new TypeError();                   
+                          // same as Received, cuz the `moveToSelfWithUpdate_OfferConnected` move with update -- takes offer with msgFrom peer, not msgTo peer
+                          if (signalserverWebsocketMsg_Connected.msgTo.signalserverWebsocketClientId !== webrtcConnectionAnchor_self.webrtcConnectionAnchorLocation_self.signalserverWebsocketClientId) throw new TypeError(); // prettier-ignore
+                          if (signalserverWebsocketMsg_Connected.msgTo.webrtcConnectionAnchorId !== webrtcConnectionAnchor_self.webrtcConnectionAnchorLocation_self.webrtcConnectionAnchorId) throw new TypeError(); // prettier-ignore
                         }
 
                         const webrtcConnectionAnchorLocation_peer_currInLobby = new WebrtcConnectionAnchorLocation(signalserverWebsocketClientId_peer, webrtcConnectionAnchorId_peer);
@@ -131,19 +131,19 @@ export const LobbyUserListPanel: React.FC<{
                         const det_ReceivedFrom = webrtcConnectionAnchorLocation_peer_currInLobby.equals(signalserverWebsocketMsg_Received?.msgFrom);
                         const det_ConnectedWith = webrtcConnectionAnchorLocation_peer_currInLobby.equals(signalserverWebsocketMsg_Connected?.msgFrom);
                         const det_CurrSel = webrtcConnectionAnchorLocation_peer_currInLobby.equals(webrtcConnectionAnchorLocation_peer_currSel_rst);
-                                                                                                     
+                        // idk better em ; or miss & still // may say the custom name those thing ...
 
                         return (
                           <div
                             key={webrtcConnectionAnchorId_peer}
-                                                                                                                                                        
+                            // (webrtcConnectionAnchor_self.webrtcConnectionAnchorLocation_peer ? styles.css_webrtcConnectionAnchor_peer_connected : '')
                           >
                             <FormControlLabel
                               control={<Radio sx={{ '&, &.Mui-checked': { color: 'olive' } }} />}
                               value={webrtcConnectionAnchorId_peer}
                               label={`${lobbyUserInfo_peer.connectionAnchorName} ${webrtcConnectionAnchorId_peer} ${lobbyUserInfo_peer.connectionAnchorStatus}`}
-                                                                                  
-                                                                                                                               
+                              //   // @pb: this is checking class instance ref ...
+                              // not sure this check for multi instance now // should check -- to sync with offer received list
                               checked={det_CurrSel}
                               onClick={() => {
                                 dispatch(slice_webrtcConnectionAnchorLocation_peer_currSel.actions.select_webrtcConnectionAnchorLocation_peer(webrtcConnectionAnchorLocation_peer_currInLobby));
@@ -169,7 +169,7 @@ export const LobbyUserListPanel: React.FC<{
   );
 };
 
-       
-                                                                              
-                                
-                                                        
+// TODO
+// emmm that allow later send and accept .. dk before should not allow but hum
+// also this seems no error emmm
+// said -- clear all other offer & xstate clean up thing

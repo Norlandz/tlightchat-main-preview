@@ -3,8 +3,8 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { useParams } from 'react-router-dom';
 import { useAuth0_debugDomain } from '../utilComponent/auth0/useAuth0_debugDomain';
 
-                                                                                                                                                                              
-                                      
+// Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components.eslint(react-refresh/only-export-components)
+// underscore in component name ? ... 
 export const UserProfileSimple = () => {
   const { user, isAuthenticated, isLoading, error } = useAuth0_debugDomain();
 

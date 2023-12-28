@@ -3,7 +3,7 @@ import { AppSessionRef } from '../../session/AppSession';
 
 export const useAuth0_debugDomain = (): Auth0ContextInterface<User> => {
   const auth0ContextInterface = useAuth0();
-                                                        
+  // if (!AppSessionRef.appSession.debugConfig.app_T1) {
   if (AppSessionRef.appSession.debugConfig.app_T2) {
     return {
       isAuthenticated: false,
@@ -17,7 +17,7 @@ export const useAuth0_debugDomain = (): Auth0ContextInterface<User> => {
       loginWithPopup:               async () => { throw new TypeError(); },
       logout:                       async () => { throw new TypeError(); },
       handleRedirectCallback:       async () => { throw new TypeError(); },
-    };                   
+    }; // prettier-ignore
   } else {
     return auth0ContextInterface;
   }
