@@ -1,0 +1,242 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'aws_TLightChat_MainApp'
+####
+Parameters:
+  amiAws:
+    Type: 'AWS::EC2::Image::Id'
+    Default: 'ami-061ac2e015473fbe2'
+  ec2Type:
+    Type: String
+    Default: 't2.micro'
+  vpcCidr:
+    Type: String
+    Default: '10.14.0.0/22'
+  subnetCidrPublic:
+    Type: String
+    Default: '10.14.0.0/24'
+  ipAddrIngressSgDeveloperSshHttp:
+    Type: String
+    Default: '185.40.122.100/32'
+    Description: 'allowed IPv4 address cidr block _ for ingress in security group _ of mainApp _ for ssh or http --ie: a developIp that has the permission to access some backend services for programming'
+    AllowedPattern: '^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\/[0-9]{1,2}$'
+    ConstraintDescription: 'Enter a valid IPv4 address cidr block'
+  portMainAppFrontendUi:
+    Type: Number
+    Default: 5173
+  portMainAppBackendServer:
+    Type: Number
+    Default: 3000
+####
+Resources:
+  ## !SECTION
+  ## SECTION ec2MainApp
+  ec2MainApp:
+    Type: 'AWS::EC2::Instance'
+    Properties:
+      ImageId: !Ref amiAws
+      InstanceType: !Ref ec2Type
+      IamInstanceProfile: !Ref iamProfileMainApp # instead of ec2-ssm-core we use a instance profile created in the same template for testability
+      NetworkInterfaces:
+        - DeviceIndex: 0
+          # AssociatePublicIpAddress: false # @config[if need Eic -: true]
+          # PrivateIpAddress: !Ref ipAddrPrivateMainApp
+          GroupSet: [!Ref sgMainApp]
+          SubnetId: !Ref subnetPublic
+          DeleteOnTermination: true
+      # BlockDeviceMappings:
+      #   - DeviceName: '/dev/xvda'
+      #     Ebs:
+      #       VolumeSize: 13
+      #       VolumeType: 'gp3'
+      #       Encrypted: false
+      #       DeleteOnTermination: true
+      #       # SnapshotId: 'snap-05a6245e68e6545b5'
+      # # AvailabilityZone: !Sub "${AWS::Region}a"
+      # # EbsOptimized: false
+      # # Tenancy: "default"
+      # # HibernationOptions:
+      # #   Configured: false
+      # # EnclaveOptions:
+      # #   Enabled: false
+      # // why i installed v17 ... # https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/setting-up-node-on-ec2-instance.html // wasnt in StackOverflow?... // node: /lib64/libm.so.6: version `GLIBC_2.27' not found (required by node)
+      # // do docker later ...
+      # the leading indent is pb, dont just copy and paste, remove those indent
+      KeyName: !Ref keyPairEc2MainApp
+      UserData:
+        Fn::Base64: |
+          #!/bin/bash
+          sudo su
+          set -x
+
+          #>> add swapfile @pb[npm install hang]
+          mkdir -p /usr/local/diskUsing && cd "$_"
+          sudo dd if=/dev/zero of=swapfile bs=1M count=1500
+          sudo mkswap swapfile
+          sudo chown root:root swapfile
+          sudo chmod 600 swapfile
+          sudo swapon swapfile
+          free|grep -i Swap
+          cat >> /etc/fstab <<EOF
+          /usr/local/diskUsing/swapfile    none    swap    sw    0   0
+          EOF
+          cat /etc/fstab
+          df -h
+          lsblk
+          
+          #>>
+          yum update -y
+
+          yum install -y git
+          # yum install -y nodejs
+          touch ~/.bash_profile
+          curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
+          . ~/.nvm/nvm.sh
+          # nvm install --lts
+          # nvm install 18.14.0
+          nvm install 17.9.1
+          node -e "console.log('Running Node.js ' + process.version)"
+          npm install -g pnpm@8.13.1
+
+          #>>
+          mkdir -p /usr/local/diskUsing && cd "$_"
+
+          { \
+            git clone https://github.com/Norlandz/tlightchat-main-preview ./tlightchat-main ; \
+            cd ./tlightchat-main ; \
+            pnpm install ; \
+          }
+          pnpm p2
+          export NODE_OPTIONS=--max-old-space-size=2048
+          # @atten: this is very dangerous! dont put secret here @todo # must add VITE_ at front even in cli
+          VITE_AUTH0_DOMAIN=dev-ungk7vwiexnlsg2o.us.auth0.com VITE_AUTH0_CLIENT_ID=r0yGlkoQJ7tx2oniskvEj7hq2IDl6EAI pnpm vite:build
+          pnpm run sigs &
+          pnpm run vite:preview &
+          echo "done"
+      Tags:
+        - { Key: 'ProjCate', Value: 'tlightchat-basic' }
+        - { Key: 'Name', Value: 'tlightchat-ec2MainApp' }
+    DependsOn:
+      - 'attachIgw' # cuz need internet to download things
+      #   - 'natInstance'
+  ## !SECTION
+  ## SECTION iam ec2MainApp
+  iamProfileMainApp:
+    Type: 'AWS::IAM::InstanceProfile'
+    Properties:
+      Roles:
+        - !Ref iamRoleSsm
+  iamRoleSsm:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: 'ec2.amazonaws.com'
+            Action: 'sts:AssumeRole'
+      ManagedPolicyArns:
+        - 'arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore'
+      Tags:
+        - { Key: 'ProjCate', Value: 'tlightchat-basic' }
+        - { Key: 'Name', Value: 'tlightchat-iamRoleSsm' }
+  ## !SECTION
+  ## SECTION sg ec2MainApp
+  sgMainApp:
+    Type: 'AWS::EC2::SecurityGroup'
+    Properties:
+      GroupName: 'sgMainApp'
+      GroupDescription: 'sgMainApp'
+      VpcId: !Ref vpcMainApp
+      SecurityGroupIngress:
+        - { IpProtocol: 'tcp', FromPort: 22, ToPort: 22, CidrIp: !Ref ipAddrIngressSgDeveloperSshHttp, Description: 'AllowIngress developerIp -to- MainApp' }
+        - { IpProtocol: 'tcp', FromPort: 443, ToPort: 443, CidrIp: '0.0.0.0/0', Description: 'Allow Ssm (only needed sometimes at first launch) stackoverflow.com/questions/62617661/aws-session-manager-cant-connect-unless-opening-ssh-port' }
+        # - { IpProtocol: 'tcp', FromPort: 22, ToPort: 22, CidrIp: '18.206.107.24/29', Description: 'Allow Eic stackoverflow.com/questions/56917634/amazon-ec2-instance-connect-for-ssh-security-group // us-east-1' } # @config[if need EIC -: uncomment]
+        # // guess 80 was reverse proxy intake... no need here now
+        # - { IpProtocol: 'tcp', FromPort: 80, ToPort: 80, CidrIp: '0.0.0.0/0', Description: 'AllowIngress anyIp -to- ReverseProxy -to- MainApp codeCommentRemover-Ui' }
+        - { IpProtocol: 'tcp', FromPort: !Ref portMainAppFrontendUi, ToPort: !Ref portMainAppFrontendUi, CidrIp: '0.0.0.0/0', Description: 'AllowIngress anyIp -to- MainApp tlightchat-ui-vite' }
+        - { IpProtocol: 'tcp', FromPort: !Ref portMainAppBackendServer, ToPort: !Ref portMainAppBackendServer, CidrIp: '0.0.0.0/0', Description: 'AllowIngress anyIp -to- MainApp tlightchat-signalserver' }
+      SecurityGroupEgress:
+        - { IpProtocol: '-1', FromPort: '-1', ToPort: '-1', CidrIp: '0.0.0.0/0' }
+      Tags:
+        - { Key: 'ProjCate', Value: 'tlightchat-basic' }
+        - { Key: 'Name', Value: 'tlightchat-sgMainApp' }
+  ## !SECTION
+  ## SECTION vpc
+  vpcMainApp:
+    Type: 'AWS::EC2::VPC'
+    Properties:
+      CidrBlock: !Ref vpcCidr
+      EnableDnsHostnames: true # @just_take
+      # EnableDnsSupport: true
+      # InstanceTenancy: "default"
+      Tags:
+        - { Key: 'ProjCate', Value: 'tlightchat-basic' }
+        - { Key: 'Name', Value: 'tlightchat-vpcMainApp' }
+  subnetPublic:
+    Type: 'AWS::EC2::Subnet'
+    Properties:
+      AvailabilityZone: !Select [0, !GetAZs ''] # @just_take # AvailabilityZone: !GetAtt EC2Instance.AvailabilityZone
+      VpcId: !Ref vpcMainApp
+      CidrBlock: !Ref subnetCidrPublic
+      MapPublicIpOnLaunch: true
+      Tags:
+        - { Key: 'ProjCate', Value: 'tlightchat-basic' }
+        - { Key: 'Name', Value: 'tlightchat-subnetPublic' }
+  # subnetMainAppPrivate:
+  #   Type: 'AWS::EC2::Subnet'
+  #   Properties:
+  #     AvailabilityZone: !Select [0, !GetAZs ''] # @just_take
+  #     VpcId: !Ref vpcMainApp
+  #     CidrBlock: !Ref subnetCidrMainPrivate
+  #     Tags:
+  #       - { Key: 'ProjCate', Value: 'tlightchat-basic' }
+  #       - { Key: 'Name', Value: 'tlightchat-subnetMainAppPrivate' }
+  ## !SECTION
+  ## SECTION igw
+  ###
+  igwMainApp:
+    Type: 'AWS::EC2::InternetGateway'
+    Properties: # {} # @just_take
+      Tags:
+        - { Key: 'ProjCate', Value: 'tlightchat-basic' }
+        - { Key: 'Name', Value: 'tlightchat-igwMainApp' }
+  attachIgw:
+    Type: 'AWS::EC2::VPCGatewayAttachment'
+    Properties:
+      VpcId: !Ref vpcMainApp
+      InternetGatewayId: !Ref igwMainApp
+  ###
+  routeTableSubnetPublic:
+    Type: 'AWS::EC2::RouteTable'
+    Properties:
+      VpcId: !Ref vpcMainApp
+      Tags:
+        - { Key: 'ProjCate', Value: 'tlightchat-basic' }
+        - { Key: 'Name', Value: 'tlightchat-routeTableSubnetPublic' }
+  routeSubnetPublicToIgw:
+    Type: 'AWS::EC2::Route'
+    Properties:
+      RouteTableId: !Ref routeTableSubnetPublic
+      DestinationCidrBlock: '0.0.0.0/0'
+      GatewayId: !Ref igwMainApp
+    DependsOn: 'attachIgw'
+  attachRouteTableSubnetPublic:
+    Type: 'AWS::EC2::SubnetRouteTableAssociation'
+    Properties:
+      RouteTableId: !Ref routeTableSubnetPublic
+      SubnetId: !Ref subnetPublic
+  ## !SECTION
+  ## SECTION keyPairEc2
+  keyPairEc2MainApp:
+    Type: 'AWS::EC2::KeyPair'
+    Properties:
+      KeyName: 'keyPairEc2MainApp' # KeyType: 'rsa' # KeyFormat: 'pem'
+  ## !SECTION
+####
+Outputs:
+  InstanceId:
+    Value: !Ref ec2MainApp
+    Description: 'Instance id'
+####

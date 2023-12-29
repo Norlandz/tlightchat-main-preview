@@ -11,7 +11,7 @@ export enum WebrtcConnectionStateMachineEventTypeName {
   evx_receive__offer_Declined = 'evx_receive__offer_Declined',
   evx_send__connection_Closed = 'evx_send__connection_Closed',
   evx_receive__connection_Closed = 'evx_receive__connection_Closed',
-  // evx__OfferNegotiationSessionCompleted = 'evx__OfferNegotiationSessionCompleted',
+                                                                                     
   evx__OfferNegotiationSessionSucceeded = 'evx__OfferNegotiationSessionSucceeded',
   evx__OfferNegotiationSessionFailed = 'evx__OfferNegotiationSessionFailed',
 }

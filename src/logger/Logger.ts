@@ -1,97 +1,97 @@
-// import winston from 'winston';
-// const { timestamp, combine, colorize, printf, errors, label, json } = winston.format;
-//
-//
-// // Typescript, merge object types? - Stack Overflow
-// // https://stackoverflow.com/questions/49682569/typescript-merge-object-types
-// // Union Type Merging in Typescript - DEV Community
-// // https://dev.to/lucianbc/union-type-merging-in-typescript-9al
-// // ~~~~// type just doesnt work, the Typescript cant recognize of 'key any' -- [key: string]: any property is missing
-// // ~~~~//no_knowlres cannot overwrite type for inline var
-// // >> Force Type
-// interface TransformableInfo_CustomMeta extends winston.Logform.TransformableInfo {
-//   topics: string[] | LoggerTopic[];
-//   tags: string[];
-// }
-//
-// const logFormat = printf((info: winston.Logform.TransformableInfo) => {
-//   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-//   const { timestamp, level, message, stack, topics, tags, label } = info as TransformableInfo_CustomMeta;
-//   return `${timestamp} ${topics} ${tags} ${level}: ${stack || message}`;
-// });
-//
-// export const logger = winston.createLogger({
-//   level: 'debug',
-//   // format: winston.format.simple(),
-//   format: combine(
-//     //
-//     colorize(),
-//     timestamp({ format: 'HH:mm:ss_SSS' }),
-//     // label({ label: 'T@g' }),
-//     errors({ stack: true }),
-//     // json(),
-//     logFormat
-//   ),
-//   // defaultMeta: { service: 'user-service' },
-//   transports: [
-//     //
-//     new winston.transports.Console(),
-//     // new winston.transports.File({ filename: 'combined.log' }),
-//   ],
-// });
-//
-// // //
-// // // If we're not in production then log to the `console` with the format:
-// // // `${info.level}: ${info.message} JSON.stringify({ ...rest }) `
-// // //
-// // if (process.env.NODE_ENV !== 'production') {
-// //   logger.add(new winston.transports.Console({
-// //     format: winston.format.simple(),
-// //   }));
-// // }
-//
-// // @knowlres,intro: winstonjs/winston: A logger for just about everything.
-// // @knowlres,intro: https://github.com/winstonjs/winston#profiling
-// // @knowlres,intro:
-// // @knowlres,intro: Node winston logging | logging in Node - YouTube
-// // @knowlres,intro: https://www.youtube.com/watch?v=A5YiqaQbsyI
-//
-// // "outputCapture": "std", // for winston logger
-//
-// // []
-// // Properties **besides level and message** are considered as "`meta`". i.e.:
-// //
-// // ```js
-// // const { level, message, ...meta } = info;
-// // ```
-// //
-// // Several of the formats in `logform` itself add additional properties:
-// //
-// // | Property | Format added by | Description |
-// // | --- | --- | --- |
-// // | `splat` | `splat()` | String interpolation splat for `%d %s`\-style messages. |
-// // | `timestamp` | `timestamp()` | timestamp the message was received. |
-// // | `label` | `label()` | Custom label associated with each message. |
-// // | `ms` | `ms()` | Number of milliseconds since the previous log message. |
-// // <>
-// // https://github.com/winstonjs/winston#profiling
-//
-// // ;no_knowlres; const category1 = winston.loggers.get('category1');
-// // ;no_knowlres; ~~~~// not tag logger; better just meta for now
-//
-// // logger.debug('Logger initialized');
-// // logger.debug('Logger initialized');
-// // logger.debug('Logger initialized');
-// // logger.error('Logger initialized');
-// // throw new Error('Logger initialized');
-// // logger.debug('Logger initialized');
+                                 
+                                                                                        
+  
+  
+                                                      
+                                                                                
+                                                      
+                                                                  
+                                                                                                                        
+                                                            
+                   
+                                                                                     
+                                      
+                    
+    
+  
+                                                                          
+                                                                        
+                                                                                                            
+                                                                           
+      
+  
+                                               
+                    
+                                        
+                     
+         
+                  
+                                             
+                                  
+                               
+                 
+                
+       
+                                                 
+                  
+         
+                                        
+                                                                    
+       
+      
+  
+        
+                                                                              
+                                                                      
+        
+                                                  
+                                                   
+                                          
+            
+       
+  
+                                                                             
+                                                                     
+                      
+                                                                       
+                                                                  
+  
+                                                   
+  
+        
+                                                                                
+     
+           
+                                               
+         
+     
+                                                                           
+     
+                                                  
+                         
+                                                                                       
+                                                                           
+                                                                          
+                                                                                
+        
+                                                    
+  
+                                                                       
+                                                                   
+  
+                                         
+                                         
+                                         
+                                         
+                                            
+                                         
 
 enum LoggerTopic {
   XstateParentChildMachineCommunication = 'XstateParentChildMachineCommunication',
 }
 
 class Logger {
-  public readonly arr_LogGivenTopics: (string | LoggerTopic)[] = []; // @config
+  public readonly arr_LogGivenTopics: (string | LoggerTopic)[] = [];           
   public mode_LogAllTopics = false;
   public mode_PrintWithTopics = false;
   public mode_PrintWithTags = false;
@@ -155,12 +155,12 @@ logger.mode_ShowEmptyTagArr = false;
 
 export default logger;
 
-// console.log('666');
-// console.log(['alpha', 'beta', 'gamma']);
-// console.log(['alpha', 'beta', 'gamma'] + 'Connn');
-// console.log(['alpha', 'beta', 'gamma'].toString());
-// logger.log({ msg: 'Sample go there.' }, ['Feat1', 'BookConstruction', LoggerTopic.XstateParentChildMachineCommunication], ['on fly', 'many dots']);
-// logger.log({ msg: 'Sample go there.' }, ['Feat1', 'BookConstruction', LoggerTopic.XstateParentChildMachineCommunication]);
-// logger.log({ msg: 'Sample go there.' });
+                      
+                                           
+                                                     
+                                                      
+                                                                                                                                                      
+                                                                                                                             
+                                           
 
-// TODO use builder pattern & support original log syntax 
+                                                          

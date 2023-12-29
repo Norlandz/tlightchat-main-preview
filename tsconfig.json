@@ -99,7 +99,15 @@
     // javascript - Why does Vite create two TypeScript config files: tsconfig.json and tsconfig.node.json? - Stack Overflow
     // https://stackoverflow.com/questions/72027949/why-does-vite-create-two-typescript-config-files-tsconfig-json-and-tsconfig-nod
     "test/**/*", // @todo vite exclude folder from build
-    "__mocks__/**/*", // @todo vite exclude folder from build
+    "__mocks__/**/*", // @todo vite exclude folder from build 
+    // must exclude this.. otherwise 
+    // // []
+    // // 12:15:05 AM: $ pnpm run vite:build
+    // // 12:15:05 AM: > tlightchat-main@0.0.0 vite:build /opt/build/repo
+    // // 12:15:05 AM: > tsc && vite build
+    // // 12:15:09 AM: __mocks__/RTCPeerConnection.ts(46,3): error TS2416: Property "createAnswer" in type "RTCPeerConnectionMock" is not assignable to the same property in base type "RTCPeerConnection".
+    // // <>
+    // // https://app.netlify.com/sites/precious-mermaid-f619e3/deploys/658d042e06910f6d8d48d08f
     // "test/!(randomTest)/**/*", // @todo vite exclude folder from build // doesnt work for vite, but works for intellisense ... 
     // "node_modules/@prisma/client/node_modules/**/*"
   ],
