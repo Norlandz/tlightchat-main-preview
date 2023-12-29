@@ -217,7 +217,7 @@ const ARR_VITE_DOMAIN = JSON.parse(
                                      
 z.array(z.string().url()).parse(ARR_VITE_DOMAIN);
 console.log('ARR_VITE_DOMAIN', ARR_VITE_DOMAIN);
-if (process.env.configGuard_dotenvFlow_Overwrite !== 'configGuard_dotenvFlow_Overwrite .env.local') throw new TypeError();
+if (process.env.configGuard_dotenvFlow_Overwrite !== 'configGuard_dotenvFlow_Overwrite .env.local') console.log('Not in local env || dotenvFlow didnt work');
 const io = new socketioServer.Server(server, {
   cors: {
                                                                                                                       
