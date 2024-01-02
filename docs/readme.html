@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Introduction</title>
+        <style>
+/* From extension vscode.github */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.vscode-dark img[src$=\#gh-light-mode-only],
+.vscode-light img[src$=\#gh-dark-mode-only] {
+	display: none;
+}
+
+</style>
+        
+        
+        <style>
+.task-list-item {
+    list-style-type: none;
+}
+
+.task-list-item-checkbox {
+    margin-left: -20px;
+    vertical-align: middle;
+    pointer-events: none;
+}
+</style>
+        <style>
+
+pre {
+  position: relative;
+}
+
+pre, pre code {
+  font-family: Consolas;
+  font-size: 12px;
+}
+
+h1 {
+  font-family: Consolas;
+  font-size: 32px;
+}
+
+h2 {
+  font-family: Bell MT;
+  font-size: 30px;
+}
+
+h3 {
+  font-family: Lucida Fax;
+  font-size: 22px;
+}
+
+h4 {
+  font-family: Bookman Old Style;
+  font-size: 18px;
+}
+
+h5 {
+  font-family: Palatino Linotype;
+  font-size: 16px;
+}
+
+h6 {
+  font-family: Arial;
+  font-size: 14px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  padding: 0;
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+}
+
+table, th, td {
+  border: 1px solid;
+}
+
+table {
+  margin: 1em;
+  border-collapse: collapse;
+  width: -moz-max-content;
+  width: max-content;
+  max-width: 1500px;
+}
+
+tbody tr:nth-child(even) {
+  background-color: rgba(245, 248, 255, 0.8);
+}
+
+tbody {
+  border: 5px solid rgba(147, 174, 207, 0.9);
+  border-top: 10px solid rgba(147, 174, 207, 0.9);
+}
+
+table p {
+  margin-bottom: 0.3em;
+}
+
+td {
+  padding: 0.3em;
+  text-align: left;
+  vertical-align: top;
+  font-size: 90%;
+}
+
+dl {
+  display: block;
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+
+dt {
+  display: block;
+}
+
+dd {
+  display: block;
+  margin: 0;
+  padding: 0;
+  margin-left: 1em;
+  position: relative;
+  line-height: 110%;
+  margin-bottom: 1.5em;
+}
+
+ol, ul {
+  display: block;
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+
+li {
+  margin: 0;
+  padding: 0;
+  margin-left: 1em;
+  /* padding-left: 1em; */
+}
+
+:is(ol, ul, dl)::before {
+  content: "";
+  background: linear-gradient(180deg, rgba(182, 182, 182, 0.5) 0%, rgba(241, 241, 241, 0.5) 15%, rgba(241, 241, 241, 0.5) 95%, rgba(182, 182, 182, 0.5) 100%);
+  display: block;
+  height: 100%;
+  width: 2px;
+  position: absolute;
+}
+
+img {
+  -o-object-fit: scale-down;
+     object-fit: scale-down;
+  max-width: 650px;
+  max-height: 200px;
+  text-align: center;
+}
+
+img {
+  cursor: zoom-in;
+}
+
+figure {
+  text-align: center;
+}
+
+
+a {
+  color: rgb(70, 2, 122);
+  text-decoration: none;
+}
+
+
+blockquote {
+  padding: 1px 0px 1px 1em;
+  border-left: 4px solid rgba(203, 203, 203, 0.8);
+  background-color: rgba(248, 248, 248, 0.8);
+}
+
+/*  */
+
+p {
+  margin: 0;
+}
+
+blockquote {
+  margin: 0.3em 0 0 0;
+}
+</style>
+    </head>
+    <body class="vscode-body vscode-light">
+        <h3 id="introduction">Introduction</h3>
+<p>Real time video &amp; text communication.</p>
+<ol>
+<li>go to tlightchat.netlify.app
+<ul>
+<li>(if the Server in <a href="https://tlightchat.netlify.app">https://tlightchat.netlify.app</a> is down,<br>
+use offline mode in <a href="https://tlightchat-offline.netlify.app">https://tlightchat-offline.netlify.app</a><br>
+or <a href="https://norlandz.github.io/tlightchat-main-preview/dist/index.html">https://norlandz.github.io/tlightchat-main-preview/dist/index.html</a> )</li>
+</ul>
+</li>
+<li>go to <code>WebrtcVideoCommunication</code> in nav bar</li>
+<li>wait for SignalServer respond</li>
+<li>wait for <code>WebrtcVideoCommunication</code> fully loaded</li>
+<li>follow instruction on <code>WebrtcVideoCommunication</code> -- choose a Peer to Connect with</li>
+</ol>
+<h3 id="demo-image">Demo image</h3>
+<h3 id="internal-design">Internal design</h3>
+<p>// todo (i will go brief on this, since i went some detailed on the other project, but was not worth it)</p>
+<h4 id="techstack--servers">techstack / servers</h4>
+<ul>
+<li>Vite -- frontend Ui</li>
+<li>WebRtc -- P2P video connection</li>
+<li>Xstate -- state management &amp; event dispatch</li>
+<li>SignalServer -- backend Server -- uses Websocket</li>
+<li>Aws -- host for the Services</li>
+<li>Netlify -- domain name &amp; reverse proxy</li>
+</ul>
+<h4 id="main-design">main design</h4>
+<ul>
+<li>
+<p><code>H:\Using\TLightChat\tlightchat-main\src\webrtcVideoCommunication\dataStructure\WebrtcConnectionAnchor.ts</code></p>
+<p>central data structure (/ model)</p>
+</li>
+<li>
+<p><code>H:\Using\TLightChat\tlightchat-main\src\webrtcVideoCommunication\service\WebrtcConnectionService.ts</code></p>
+<p>central service (-- app logic; webrtc connection; state management; event dispatch;)</p>
+</li>
+</ul>
+<p>--</p>
+<ul>
+<li>
+<p><code>H:\Using\TLightChat\tlightchat-main\src\webrtcVideoCommunication\panel\WebrtcConnectionAnchorGridPanel.tsx</code></p>
+<p>central panel for video connection</p>
+<p><code>H:\Using\TLightChat\tlightchat-main\src\webrtcVideoCommunication\panel\VideoConnectionControlPanel.tsx</code></p>
+<p>central panel for video connection control</p>
+</li>
+</ul>
+<p>--<br>
+--</p>
+<ul>
+<li>
+<p><code>H:\Using\TLightChat\tlightchat-main\src\SignalServer.ts</code></p>
+<p>SignalServer</p>
+</li>
+</ul>
+<p>--<br>
+--</p>
+<ul>
+<li>
+<p><code>H:\Using\TLightChat\tlightchat-main\src\webrtcVideoCommunication</code></p>
+<p>main folder for webrtcVideoCommunication</p>
+</li>
+<li>
+<p><code>H:\Using\TLightChat\tlightchat-main\src\webrtcVideoCommunication\service\xstate</code></p>
+<p>state machine</p>
+</li>
+<li>
+<p><code>H:\Using\TLightChat\tlightchat-main\src\session\AppSession.ts</code><br>
+<code>H:\Using\TLightChat\tlightchat-main\src\webrtcVideoCommunication\service\EventEmitterNested_forWebrtcConnection.ts</code><br>
+<code>H:\Using\TLightChat\tlightchat-main\src\webrtcVideoCommunication\App_WebrtcVideoCommunication_connectToServer.tsx</code></p>
+<p>session management</p>
+</li>
+<li>
+<p><code>H:\Using\TLightChat\tlightchat-main\src\webrtcVideoCommunication\redux</code></p>
+<p>redux</p>
+</li>
+</ul>
+<h4 id="demo-image-design----state-machine-class-uml">demo image design -- state machine; class uml;</h4>
+<h3 id="problems-facing">Problems facing</h3>
+<h4 id="domain-name--websocket">Domain name &amp; Websocket</h4>
+<ul>
+<li>domain name is &quot;borrowed&quot; from Netlify (I have no money to buy a domain name)<br>
+//repeat: Aws is the actual place where all the Services are hosted<br>
+//repeat: Netlify serves as a reverse proxy</li>
+<li>since Im using a reverse proxy, there is a issue with the Websocket</li>
+</ul>
+<h4 id="security">Security</h4>
+<ul>
+<li>this is an experimental project</li>
+<li>do not post any important information on the Chat -- this is insecure, though it appears to be https<br>
+(the database may be destroyed when server is down)</li>
+</ul>
+
+        
+        
+    </body>
+    </html>
