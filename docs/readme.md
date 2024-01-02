@@ -83,10 +83,11 @@ Real time video & text communication.
 #### demo image design -- state machine; class uml;
 
 - ![tlightchat xstate 20231124_0230_11488](https://github.com/Norlandz/tlightchat-main-preview/assets/43581880/1cef95c9-1af3-420b-80ac-4410a7473b5f)
-  <img src="https://github.com/Norlandz/tlightchat-main-preview/assets/43581880/3eed77d7-8525-432a-8387-7870e68cbcc8" alt="tlightchat xstate 20231227_161601C P2" style="width: 500px;">
-  <img src="https://github.com/Norlandz/tlightchat-main-preview/assets/43581880/a4c9ff49-523f-4162-baff-d6c5ea8662af" alt="tlightchat xstate 20231227_161601C P1" style="width: 500px;">
+  <img src="https://github.com/Norlandz/tlightchat-main-preview/assets/43581880/3eed77d7-8525-432a-8387-7870e68cbcc8" alt="tlightchat xstate 20231227_161601C P2" style="width: 400px;">
+  <img src="https://github.com/Norlandz/tlightchat-main-preview/assets/43581880/a4c9ff49-523f-4162-baff-d6c5ea8662af" alt="tlightchat xstate 20231227_161601C P1" style="width: 400px;">
 
-- 
+- ![TLightChat src_diagram 20231230_205627C manual_org](https://github.com/Norlandz/tlightchat-main-preview/assets/43581880/0d6c8da6-a29d-4dff-8cf8-e428121edaad)
+
 
 ### Problems facing
 
